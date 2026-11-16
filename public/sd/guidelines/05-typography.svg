@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title>StackDrove Typography</title><desc>StackDrove brand guideline asset. Source artwork preserved from the supplied final logo.</desc>
+<rect width="100%" height="100%" fill="#FFFFFF"/><text x="90" y="110" font-family="Inter,Arial,sans-serif" font-size="42" font-weight="800" fill="#141B28">TYPOGRAPHY</text>
+<text x="90" y="190" font-family="Inter,Arial,sans-serif" font-size="54" font-weight="800" fill="#0D1117">Inter Bold — Headlines</text>
+<text x="90" y="250" font-family="Inter,Arial,sans-serif" font-size="25" fill="#59616D">Clean, technical and modern. Use strong weight contrast for hierarchy.</text>
+<text x="90" y="355" font-family="Inter,Arial,sans-serif" font-size="36" font-weight="700" fill="#1E2739">Inter SemiBold — Subheads</text>
+<text x="90" y="420" font-family="Inter,Arial,sans-serif" font-size="21" fill="#59616D">Section titles, navigation, product labels and UI emphasis.</text>
+<text x="90" y="510" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="400" fill="#0D1117">Inter Regular — Body copy</text>
+<text x="90" y="560" font-family="Inter,Arial,sans-serif" font-size="20" fill="#59616D">Use comfortable line-height and short paragraphs for digital products.</text></svg>
