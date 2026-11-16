@@ -40,6 +40,8 @@
 }
 
 :root {
+  /* Native controls and scrollbars follow the theme the app is showing (the .dark rules below flip this). */
+  color-scheme: light;
   --background: #F4F5F8;
   --foreground: #111111;
   --popover-surface: #FFFFFF;
@@ -1418,5 +1420,277 @@ body {
   animation: gentleFloatB 6.5s ease-in-out infinite 0.5s;
 }
 
+/* ==========================================================================
+   App canvas — the backdrop the glass sits on
+   Painted on the app shell's root, which is a fixed full-viewport container
+   (the page scrolls inside it), so the backdrop stays still while content
+   glides over it. Cool, low-saturation tints only: it should read as depth,
+   not decoration. Pure gradients (no blur filters), so it is cheap to paint.
+   ========================================================================== */
+.app-canvas {
+  background-color: #EEF1F7;
+  background-image:
+    radial-gradient(1000px 640px at 14% 8%, rgba(35, 87, 214, 0.21), transparent 64%),
+    radial-gradient(900px 600px at 92% 24%, rgba(99, 102, 241, 0.16), transparent 62%),
+    radial-gradient(1000px 640px at 54% 108%, rgba(14, 165, 233, 0.16), transparent 64%),
+    radial-gradient(720px 520px at 0% 96%, rgba(100, 116, 139, 0.13), transparent 64%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 40%);
+  background-repeat: no-repeat;
+}
 
+.dark .app-canvas,
+[data-theme="dark"] .app-canvas {
+  background-color: #090A0F;
+  background-image:
+    radial-gradient(1000px 640px at 14% 8%, rgba(59, 108, 235, 0.3), transparent 64%),
+    radial-gradient(900px 600px at 92% 24%, rgba(99, 102, 241, 0.22), transparent 62%),
+    radial-gradient(1000px 640px at 54% 108%, rgba(14, 165, 233, 0.17), transparent 64%),
+    radial-gradient(720px 520px at 0% 96%, rgba(71, 85, 105, 0.2), transparent 64%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 40%);
+  background-repeat: no-repeat;
+}
 
+/* ==========================================================================
+   Command Center — glass surfaces, clean sections & motion  (namespaced `cc-`)
+   Principles: real frosted glass over the app canvas, defined by a light edge
+   and a hairline; sections separated by dividers rather than nested boxes; one
+   restrained accent; short, quiet transitions. One token set, flipped by the
+   .dark / [data-theme="dark"] block, so everything follows light / dark /
+   system. Everything animated is disabled under prefers-reduced-motion.
+   ========================================================================== */
+:root {
+  --cc-surface: rgba(255, 255, 255, 0.58);
+  --cc-surface-hover: rgba(255, 255, 255, 0.76);
+  --cc-surface-solid: #FFFFFF;
+  --cc-sheen: rgba(255, 255, 255, 0.4);
+  --cc-glass-edge: rgba(255, 255, 255, 0.78);
+  --cc-glass-hi: rgba(255, 255, 255, 0.7);
+  --cc-ring: rgba(16, 24, 40, 0.07);
+  --cc-soft: rgba(255, 255, 255, 0.34);
+  --cc-inset: rgba(16, 24, 40, 0.05);
+  --cc-edge: rgba(16, 24, 40, 0.085);
+  --cc-edge-strong: rgba(16, 24, 40, 0.16);
+  --cc-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 14px 34px -18px rgba(16, 24, 40, 0.2);
+  --cc-shadow-hover: 0 2px 6px rgba(16, 24, 40, 0.06), 0 18px 40px -18px rgba(16, 24, 40, 0.26);
+  --cc-accent: #2357D6;
+  --cc-focus: #2357D6;
+  --cc-ink: #101828;
+  --cc-ink-contrast: #FFFFFF;
+  --cc-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.dark,
+[data-theme="dark"] {
+  --cc-surface: rgba(22, 25, 38, 0.52);
+  --cc-surface-hover: rgba(30, 34, 50, 0.66);
+  --cc-surface-solid: #14161d;
+  --cc-sheen: rgba(255, 255, 255, 0.045);
+  --cc-glass-edge: rgba(255, 255, 255, 0.11);
+  --cc-glass-hi: rgba(255, 255, 255, 0.07);
+  --cc-ring: rgba(0, 0, 0, 0.4);
+  --cc-soft: rgba(255, 255, 255, 0.035);
+  --cc-inset: rgba(0, 0, 0, 0.3);
+  --cc-edge: rgba(255, 255, 255, 0.09);
+  --cc-edge-strong: rgba(255, 255, 255, 0.2);
+  --cc-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 18px 40px -20px rgba(0, 0, 0, 0.7);
+  --cc-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 22px 46px -20px rgba(0, 0, 0, 0.8);
+  --cc-accent: #7da2ff;
+  --cc-focus: #7da2ff;
+  --cc-ink: #f4f6fb;
+  --cc-ink-contrast: #0f1218;
+}
+
+.cc-stage {
+  position: relative;
+}
+
+/* Figures line up in columns, as in finance / admin consoles. Scoped to numbers only: applied to running
+   text it also widens punctuation (e.g. the hyphen in "C-Suite"). */
+.cc-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Frosted glass: translucent fill + a soft sheen, blur of the canvas behind it, a light edge, and a hairline ring */
+.cc-glass {
+  background:
+    linear-gradient(180deg, var(--cc-sheen), transparent 46%),
+    var(--cc-surface);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid var(--cc-glass-edge);
+  border-radius: 0.9rem;
+  box-shadow: var(--cc-shadow), 0 0 0 1px var(--cc-ring), inset 0 1px 0 var(--cc-glass-hi);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* A lighter surface for things that sit inside glass (no blur: nested blur is costly and invisible) */
+.cc-glass-soft {
+  background: var(--cc-soft);
+  border: 1px solid var(--cc-edge);
+  border-radius: 0.7rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cc-inset {
+  background: var(--cc-inset);
+  border-radius: 9999px;
+}
+
+/* Sections inside one panel are separated by a hairline, not wrapped in boxes of their own */
+.cc-section + .cc-section {
+  border-top: 1px solid var(--cc-edge);
+  padding-top: 1.25rem;
+}
+
+.cc-divide > * + * {
+  border-top: 1px solid var(--cc-edge);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .cc-glass {
+    background: var(--cc-surface-solid);
+  }
+}
+
+/* Selected item in section navigation: a quiet tint with an accent edge, not a heavy pill */
+.cc-nav-active {
+  background: var(--cc-inset);
+  color: var(--cc-ink);
+  font-weight: 600;
+  box-shadow: inset 2px 0 0 var(--cc-accent);
+}
+
+/* Selected chip (mobile navigation, filters): solid, high-contrast */
+.cc-chip-active {
+  background: var(--cc-ink);
+  color: var(--cc-ink-contrast);
+  border-color: transparent;
+}
+
+/* Interaction: borders and shadow respond; nothing floats or bounces */
+.cc-lift {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.cc-lift:hover {
+  border-color: var(--cc-edge-strong);
+  box-shadow: var(--cc-shadow-hover), 0 0 0 1px var(--cc-ring), inset 0 1px 0 var(--cc-glass-hi);
+  background-color: var(--cc-surface-hover);
+}
+
+.cc-press {
+  transition: transform 0.12s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.cc-press:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* Keyboard focus: visible, themed, and only for keyboard users */
+.cc-stage :where(button, a, select, summary, [role="tab"], [role="radio"]):focus-visible {
+  outline: 2px solid var(--cc-focus);
+  outline-offset: 2px;
+}
+
+.cc-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 128, 150, 0.4) transparent;
+}
+
+/* Motion: short, quiet, ease-out. `--i` (set inline) staggers siblings by 30ms. */
+@keyframes cc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cc-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cc-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes cc-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes cc-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.cc-enter {
+  animation: cc-rise 0.26s var(--cc-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+
+.cc-fade {
+  animation: cc-fade 0.2s ease backwards;
+}
+
+.cc-pop {
+  animation: cc-settle 0.22s var(--cc-ease) backwards;
+  animation-delay: calc(var(--i, 0) * 30ms + 80ms);
+}
+
+.cc-grow {
+  transform-origin: left center;
+  animation: cc-grow 0.6s var(--cc-ease) backwards;
+  animation-delay: 0.1s;
+}
+
+.cc-skeleton {
+  background: linear-gradient(100deg, var(--cc-inset) 30%, var(--cc-surface-hover) 50%, var(--cc-inset) 70%);
+  background-size: 200% 100%;
+  animation: cc-shimmer 1.6s linear infinite;
+  border-radius: 0.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-enter,
+  .cc-fade,
+  .cc-pop,
+  .cc-grow,
+  .cc-skeleton {
+    animation: none !important;
+  }
+
+  .cc-lift,
+  .cc-press,
+  .cc-glass,
+  .cc-glass-soft {
+    transition: none !important;
+  }
+
+  .cc-press:active:not(:disabled) {
+    transform: none !important;
+  }
+}

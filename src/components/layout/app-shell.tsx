@@ -36,7 +36,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen w-full relative overflow-hidden bg-[#F4F5F8] dark:bg-[#0A0A0C]">
+    // `app-canvas` paints the gradient backdrop (see globals.css). This root never scrolls (pages scroll inside it),
+    // so the backdrop stays fixed while glass panels move over it.
+    <div className="app-canvas flex h-screen w-full relative overflow-hidden">
       {/* Subtle Minimal Specular Light for Apple Glass Refraction */}
       <div
         className="pointer-events-none fixed -top-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-white/60 via-white/20 to-transparent dark:from-white/[0.03] dark:via-transparent dark:to-transparent blur-3xl z-0"

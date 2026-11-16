@@ -1,4 +1,11 @@
 // StackDrove CTMS - Enterprise Email Templates (Cross-Client & Outlook Compatible)
+import { getAppUrl } from "@/lib/integrations/app-url";
+
+function escapeHtml(value: string): string {
+  return String(value).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string
+  );
+}
 
 export interface TaskAssignedEmailProps {
   taskNo: number;
@@ -67,7 +74,7 @@ const baseEmailWrapper = (title: string, bodyContent: string) => `
       ${bodyContent}
     </div>
     <div class="email-footer">
-      Sent automatically via StackDrove Microsoft 365 Email Pipeline.<br>
+      Sent automatically by StackDrove CTMS.<br>
       © ${new Date().getFullYear()} StackDrove Technologies. All rights reserved.
     </div>
   </div>
@@ -112,7 +119,7 @@ export function renderTaskAssignedEmail(props: TaskAssignedEmailProps): { subjec
     </div>
 
     <center>
-      <a href="${props.shortLink || "http://localhost:3000/delegatee"}" class="btn">
+      <a href="${props.shortLink || `${getAppUrl()}/delegatee`}" class="btn">
         View Task & Update Progress →
       </a>
     </center>
@@ -147,7 +154,7 @@ export function renderTaskSubmittedEmail(props: TaskSubmittedEmailProps): { subj
     </div>
 
     <center>
-      <a href="${props.verifyLink || "http://localhost:3000/verify"}" class="btn" style="background-color: #00C48C; color: #0B1B3F !important;">
+      <a href="${props.verifyLink || `${getAppUrl()}/verify`}" class="btn" style="background-color: #00C48C; color: #0B1B3F !important;">
         Inspect & Verify Task →
       </a>
     </center>
@@ -184,9 +191,55 @@ export function renderTaskVerifiedEmail(props: TaskVerifiedEmailProps): { subjec
     </div>
 
     <center>
-      <a href="http://localhost:3000/scorecards" class="btn">
+      <a href="${getAppUrl()}/scorecards" class="btn">
         View My Performance Scorecard →
       </a>
+    </center>
+  `
+  );
+
+  return { subject, html };
+}
+
+export function renderDailyDigestEmail(props: DailyDigestEmailProps): { subject: string; html: string } {
+  const subject =
+    props.overdueCount > 0
+      ? `[Reminder] ${props.tasks.length} task(s) need attention - ${props.overdueCount} overdue`
+      : `[Reminder] ${props.tasks.length} task(s) due today`;
+
+  const rows = props.tasks
+    .map(
+      (t) => `
+      <tr>
+        <td style="padding:8px 10px;border-bottom:1px solid #E2E8F0;font-size:13px;font-weight:700;color:#0B1B3F;">#${t.taskNo}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #E2E8F0;font-size:13px;color:#0B1B3F;">${escapeHtml(t.title)}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #E2E8F0;font-size:12px;color:#475569;">${escapeHtml(t.priority)}</td>
+        <td style="padding:8px 10px;border-bottom:1px solid #E2E8F0;font-size:12px;color:#475569;">${escapeHtml(t.targetDate)}</td>
+      </tr>`
+    )
+    .join("");
+
+  const html = baseEmailWrapper(
+    subject,
+    `
+    <h2 style="font-size: 20px; margin-top: 0; color: #0B1B3F;">Task Follow-up Reminder</h2>
+    <p style="font-size: 14px; line-height: 1.6; color: #475569;">
+      Hi <strong>${escapeHtml(props.recipientName)}</strong>, the following tasks assigned to you are due today or overdue.
+      ${props.overdueCount > 0 ? `<strong style="color:#DC2626;">${props.overdueCount} overdue.</strong>` : ""}
+    </p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #E2E8F0;border-radius:8px;border-collapse:separate;">
+      <thead>
+        <tr style="background:#F8FAFC;">
+          <th align="left" style="padding:8px 10px;font-size:11px;color:#64748B;">TASK</th>
+          <th align="left" style="padding:8px 10px;font-size:11px;color:#64748B;">TITLE</th>
+          <th align="left" style="padding:8px 10px;font-size:11px;color:#64748B;">PRIORITY</th>
+          <th align="left" style="padding:8px 10px;font-size:11px;color:#64748B;">DUE</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <center>
+      <a href="${getAppUrl()}/delegatee" class="btn">Open My Tasks &amp; Update Status →</a>
     </center>
   `
   );

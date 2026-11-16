@@ -83,8 +83,25 @@ export function setThemePreference(preference: ThemePreference): void {
   applyTheme(effectiveMode, preference);
 }
 
+// Module-level handlers so initTheme() can be called more than once (React strict mode, remounts)
+// without stacking listeners.
+function handleSystemChange(e: MediaQueryListEvent) {
+  // Only follow the OS while the user has chosen "System".
+  if (getThemePreference() === "system") {
+    applyTheme(e.matches ? "dark" : "light", "system");
+  }
+}
+
+function handleStorageChange(e: StorageEvent) {
+  // Another tab changed the preference: mirror it here.
+  if (e.key !== THEME_STORAGE_KEY) return;
+  const pref = getThemePreference();
+  applyTheme(resolveThemeMode(pref), pref);
+}
+
 /**
- * Initializes theme on initial mount from localStorage or system preference.
+ * Initializes theme on initial mount from localStorage or system preference, and keeps it in sync with
+ * the operating system (while the preference is "system") and with other browser tabs.
  */
 export function initTheme(): ThemeMode {
   if (typeof window === "undefined") return "light";
@@ -93,20 +110,28 @@ export function initTheme(): ThemeMode {
   const effectiveTheme = resolveThemeMode(pref);
   applyTheme(effectiveTheme, pref);
 
-  // Listen to OS system preference changes in case preference === 'system'
   try {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleSystemChange = (e: MediaQueryListEvent) => {
-      const currentPref = getThemePreference();
-      if (currentPref === "system") {
-        applyTheme(e.matches ? "dark" : "light", "system");
-      }
-    };
     mediaQuery.removeEventListener("change", handleSystemChange);
     mediaQuery.addEventListener("change", handleSystemChange);
+    window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("storage", handleStorageChange);
   } catch {}
 
   return effectiveTheme;
+}
+
+/**
+ * Switches to a light / dark / system preference. Plays the circular wipe when the visible theme actually changes
+ * (e.g. choosing "System" while the OS already matches the current theme changes nothing on screen).
+ */
+export function setThemePreferenceAnimated(preference: ThemePreference, origin?: Element | null): void {
+  const target = resolveThemeMode(preference);
+  if (target === getCurrentTheme()) {
+    applyTheme(target, preference);
+    return;
+  }
+  wipeThemeTransition(origin, target, preference);
 }
 
 /**
@@ -114,7 +139,9 @@ export function initTheme(): ThemeMode {
  */
 export function wipeThemeTransition(
   origin?: Element | null,
-  targetTheme?: ThemeMode
+  targetTheme?: ThemeMode,
+  /** The preference to remember. Omit for an explicit light/dark choice. */
+  preference?: ThemePreference
 ): void {
   if (typeof document === "undefined" || typeof window === "undefined") return;
 
@@ -147,14 +174,14 @@ export function wipeThemeTransition(
     typeof document.startViewTransition !== "function" ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   ) {
-    applyTheme(nextTheme);
+    applyTheme(nextTheme, preference);
     return;
   }
 
   // Start the native view transition
   try {
     const transition = document.startViewTransition(() => {
-      applyTheme(nextTheme);
+      applyTheme(nextTheme, preference);
     });
 
     if (transition && transition.ready) {
@@ -180,10 +207,10 @@ export function wipeThemeTransition(
           }
         })
         .catch(() => {
-          applyTheme(nextTheme);
+          applyTheme(nextTheme, preference);
         });
     }
   } catch {
-    applyTheme(nextTheme);
+    applyTheme(nextTheme, preference);
   }
 }

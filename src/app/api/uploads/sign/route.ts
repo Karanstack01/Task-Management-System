@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateSignedUploadParams } from "@/lib/cloudinary/cloudinary-service";
-import { localDb } from "@/lib/data/dal";
+import { resolveCloudinaryConfig } from "@/lib/integrations/resolve";
 
 export async function POST(request: Request) {
   try {
@@ -17,15 +17,7 @@ export async function POST(request: Request) {
     // Retrieve tenant's custom Cloudinary credentials if configured
     let resolvedConfig = customConfig;
     if (!resolvedConfig && orgId) {
-      const settings = await localDb.getSystemSettings(orgId);
-      if (settings) {
-        resolvedConfig = {
-          cloudName: settings.cloudinary_cloud_name || undefined,
-          apiKey: settings.cloudinary_api_key || undefined,
-          apiSecret: settings.cloudinary_api_secret || undefined,
-          uploadPreset: settings.cloudinary_upload_preset || undefined,
-        };
-      }
+      resolvedConfig = await resolveCloudinaryConfig(orgId);
     }
 
     const result = generateSignedUploadParams({

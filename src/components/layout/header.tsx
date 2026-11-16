@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import {
   Menu,
-  Sun,
-  Moon,
   PanelLeft,
   HelpCircle,
   X,
@@ -21,11 +19,14 @@ import {
 } from "lucide-react";
 import { useUIStore, RoleType } from "@/lib/store/ui-store";
 import { NAV_SECTIONS } from "@/lib/navigation/navigation-config";
-import { wipeThemeTransition, getCurrentTheme, ThemeMode } from "@/lib/theme/theme-service";
+import { getCurrentTheme, setThemePreferenceAnimated } from "@/lib/theme/theme-service";
 import { NotificationPopover } from "@/components/notifications/notification-popover";
+import { ThemeSwitcher } from "./theme-switcher";
 import { SearchModal } from "@/components/common/search-modal";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { notify } from "@/lib/notifications/toast-service";
+
+const subscribeNoop = () => () => {};
 
 function ActiveSectionLabelContent({ activeSection }: { activeSection: string }) {
   const pathname = usePathname();
@@ -105,11 +106,12 @@ export function Header() {
     activeSection,
   } = useUIStore();
 
-  const [theme, setTheme] = useState<ThemeMode>("light");
+
   const [showHelp, setShowHelp] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // false while server-rendering / hydrating, true afterwards (portals can only render on the client)
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
   const helpRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const helpButtonRef = useRef<HTMLButtonElement>(null);
@@ -117,26 +119,6 @@ export function Header() {
   const [helpCoords, setHelpCoords] = useState<{ top: number; right: number }>({ top: 60, right: 16 });
   const [profileCoords, setProfileCoords] = useState<{ top: number; right: number }>({ top: 60, right: 16 });
 
-  useEffect(() => {
-    setMounted(true);
-    setTheme(getCurrentTheme());
-
-    const handleThemeEvent = (e: Event) => {
-      const customEvent = e as CustomEvent<{ theme: ThemeMode }>;
-      if (customEvent.detail?.theme) {
-        setTheme(customEvent.detail.theme);
-      } else {
-        setTheme(getCurrentTheme());
-      }
-    };
-
-    window.addEventListener("stackdrove:theme-change", handleThemeEvent);
-    window.addEventListener("storage", handleThemeEvent);
-    return () => {
-      window.removeEventListener("stackdrove:theme-change", handleThemeEvent);
-      window.removeEventListener("storage", handleThemeEvent);
-    };
-  }, []);
 
   const updateHelpCoords = () => {
     if (helpButtonRef.current) {
@@ -191,9 +173,7 @@ export function Header() {
       }
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "D" || e.key === "L" || e.key === "d" || e.key === "l")) {
         e.preventDefault();
-        const next = getCurrentTheme() === "dark" ? "light" : "dark";
-        wipeThemeTransition(null, next);
-        setTheme(next);
+        setThemePreferenceAnimated(getCurrentTheme() === "dark" ? "light" : "dark");
       }
       if (e.key === "?" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
         e.preventDefault();
@@ -223,12 +203,6 @@ export function Header() {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showHelp, showProfile]);
-
-  const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const next = theme === "dark" ? "light" : "dark";
-    wipeThemeTransition(e.currentTarget, next);
-    setTheme(next);
-  };
 
   return (
     <header className="glass-header mt-3 mr-3 ml-3 md:ml-0 h-16 shrink-0 relative z-40 flex items-center justify-between px-4 sm:px-6 select-none transition-colors rounded-2xl overflow-hidden shadow-xl shadow-black/[0.03] dark:shadow-black/50">
@@ -296,19 +270,8 @@ export function Header() {
       {/* (Exact replication from media_1793777075431_a617abfb.png)            */}
       {/* ------------------------------------------------------------------- */}
       <div className="flex items-center gap-1.5 sm:gap-2 relative">
-        {/* Theme Toggle (Circular Wipe Transition with Global Sync) */}
-        <button
-          onClick={handleToggleTheme}
-          className="p-2 rounded-full hover:bg-black/[0.05] dark:hover:bg-white/[0.08] text-[#111111] dark:text-white transition-all cursor-pointer group relative active:scale-95"
-          title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode (Ctrl+Shift+D)`}
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? (
-            <Sun size={17} className="transition-transform duration-300 group-hover:rotate-45 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
-          ) : (
-            <Moon size={17} className="transition-transform duration-300 group-hover:-rotate-12 text-[#111111]" />
-          )}
-        </button>
+        {/* Theme: Light / System / Dark (System follows the device live) */}
+        <ThemeSwitcher />
 
         {/* Rich CTMS Notifications Popover */}
         <NotificationPopover />

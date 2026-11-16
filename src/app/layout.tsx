@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
@@ -16,6 +16,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
 });
+
+/** Tells the browser the app supports both schemes and tints its UI (address bar, overscroll) to match the system. */
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F4F5F8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0B10" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "StackDrove CTMS — Enterprise Centralized Task Management",
@@ -42,7 +51,9 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('stackdrove_theme_pref');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(!s&&d)){document.documentElement.classList.add('dark');document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.classList.remove('dark');document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();`,
+            // Runs before first paint. "system" (and no saved choice) follows the OS; only an explicit
+            // "light" / "dark" overrides it. (Previously a saved "system" always painted light first.)
+            __html: `(function(){try{var s=localStorage.getItem('stackdrove_theme_pref');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var dark=s==='dark'||((!s||s==='system')&&d);var r=document.documentElement;if(dark){r.classList.add('dark');r.setAttribute('data-theme','dark');}else{r.classList.remove('dark');r.setAttribute('data-theme','light');}}catch(e){}})();`,
           }}
         />
       </head>

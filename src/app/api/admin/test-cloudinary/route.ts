@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyCloudinaryConnection } from "@/lib/cloudinary/cloudinary-service";
-import { localDb } from "@/lib/data/dal";
+import { resolveCloudinaryConfig } from "@/lib/integrations/resolve";
 
 export async function POST(request: Request) {
   try {
@@ -14,17 +14,9 @@ export async function POST(request: Request) {
       uploadPreset,
     };
 
-    // If specific fields not provided, look up from org system settings
+    // If specific fields not provided, use the organization's saved Cloudinary settings
     if (!configToTest.cloudName && !configToTest.apiKey) {
-      const settings = await localDb.getSystemSettings(orgId);
-      if (settings) {
-        configToTest = {
-          cloudName: settings.cloudinary_cloud_name || undefined,
-          apiKey: settings.cloudinary_api_key || undefined,
-          apiSecret: settings.cloudinary_api_secret || undefined,
-          uploadPreset: settings.cloudinary_upload_preset || undefined,
-        };
-      }
+      configToTest = { ...configToTest, ...((await resolveCloudinaryConfig(orgId)) ?? {}) };
     }
 
     const result = await verifyCloudinaryConnection(configToTest);

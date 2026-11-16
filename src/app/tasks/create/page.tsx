@@ -332,7 +332,7 @@ export default function CreateTaskPage() {
       }
 
       // 2. Generate Dynamic Short Link
-      const longUrl = `http://localhost:3000/delegatee?task=${newTask.task_no}`;
+      const longUrl = `${window.location.origin}/delegatee?task=${newTask.task_no}`;
       const shortLink = await generateShortUrl(longUrl);
       newTask.short_link = shortLink;
 
@@ -340,7 +340,7 @@ export default function CreateTaskPage() {
       const delegator = profiles.find((p) => p.id === delegatorId);
 
       // 3. Dispatch Multi-Channel Notifications via Server Action
-      await sendTaskAssignedAlertAction({
+      const alerts = await sendTaskAssignedAlertAction({
         orgId: "org-sd-01",
         recipientEmail: delegatee?.email,
         recipientPhone: delegatee?.phone_number,
@@ -353,9 +353,15 @@ export default function CreateTaskPage() {
         shortLink,
       });
 
-      toast.success(`Task #${newTask.task_no} Delegated Successfully!`, {
-        description: `Notifications dispatched to ${delegatee?.full_name || "Assignee"}.`,
-      });
+      if (alerts.failures.length > 0) {
+        toast.warning(`Task #${newTask.task_no} created, but a notification failed`, {
+          description: alerts.failures.join(" • "),
+        });
+      } else {
+        toast.success(`Task #${newTask.task_no} Delegated Successfully!`, {
+          description: `Notifications dispatched to ${delegatee?.full_name || "Assignee"}.`,
+        });
+      }
 
       router.push("/delegator");
     } catch (err: unknown) {

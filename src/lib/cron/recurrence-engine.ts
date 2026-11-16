@@ -2,7 +2,11 @@ import { localDb } from "@/lib/data/dal";
 import { isTaskOverdue } from "@/lib/data/task-utils";
 import { RecurringTemplate, HolidayCalendarItem, Task } from "@/types/database.types";
 import { generateShortUrl } from "@/lib/whatsapp/shortener";
-import { sendTaskAssignedAlertAction } from "@/app/actions/notification-actions";
+import {
+  sendTaskAssignedAlertAction,
+  sendTaskReminderDigestAction,
+} from "@/app/actions/notification-actions";
+import { getAppUrl } from "@/lib/integrations/app-url";
 
 /**
  * Calculates deadline advancing past weekends (Sat/Sun) and public holidays
@@ -149,7 +153,7 @@ export async function processRecurringTasks(
     // Mark the period as served before notifying, so a notification failure can't cause a duplicate.
     await localDb.updateRecurringTemplate(template.id, { last_spawned_at: now.toISOString() });
 
-    const shortLink = await generateShortUrl(`http://localhost:3000/delegatee?task=${newTask.task_no}`);
+    const shortLink = await generateShortUrl(`${getAppUrl()}/delegatee?task=${newTask.task_no}`);
     newTask.short_link = shortLink;
 
     const delegatee = profiles.find((p) => p.id === template.delegatee_id);
@@ -205,10 +209,27 @@ export async function processDailyReminders(orgId: string = "org-sd-01"): Promis
   let notifiedCount = 0;
   for (const [delegateeId, tasks] of Object.entries(groupedByAssignee)) {
     const profile = await localDb.getProfileById(delegateeId);
-    if (!profile) continue;
+    if (!profile || !profile.is_active) continue;
 
-    // Simulate / dispatch morning digest
-    notifiedCount++;
+    try {
+      const res = await sendTaskReminderDigestAction({
+        orgId,
+        recipientEmail: profile.email,
+        recipientPhone: profile.phone_number,
+        recipientName: profile.full_name,
+        tasks: tasks.map((t) => ({
+          taskNo: t.task_no,
+          title: t.title,
+          priority: t.priority,
+          targetDate: t.current_target_date,
+        })),
+        overdueCount: tasks.filter((t) => isTaskOverdue(t)).length,
+      });
+      // Count the assignee as notified only if at least one channel actually went out.
+      if (res.emailSent || res.whatsappSent) notifiedCount++;
+    } catch (err) {
+      console.error(`[cron] reminder for ${profile.email} failed:`, err);
+    }
   }
 
   return {
