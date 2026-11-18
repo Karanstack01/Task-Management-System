@@ -41,9 +41,9 @@ export default function PrivacyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F5F8] dark:bg-[#0A0A0C] text-[#111111] dark:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#F1F1F1] dark:bg-[#0A0A0A] text-[#111111] dark:text-white transition-colors duration-200">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#121216]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#111111]/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
               onClick={() => handleThemeChange("dark")}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md font-semibold transition-all ${
                 themePref === "dark"
-                  ? "bg-[#111111] text-white dark:bg-white dark:text-[#111111] shadow-xs"
+                  ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
                   : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
               }`}
             >
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
         </div>
 
         {/* Commitment Overview Card */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08] shadow-sm space-y-4">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] shadow-sm space-y-4">
           <h2 className="text-lg font-extrabold flex items-center gap-2">
             <ShieldCheck size={18} className="text-emerald-500" />
             <span>1. Enterprise Privacy Commitment</span>

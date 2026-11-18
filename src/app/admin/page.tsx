@@ -200,7 +200,7 @@ export default function AdminConsolePage() {
           onClick={() => setActiveTab("users")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
             activeTab === "users"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-2xs"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-2xs"
               : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
           }`}
         >
@@ -210,7 +210,7 @@ export default function AdminConsolePage() {
           onClick={() => setActiveTab("departments")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
             activeTab === "departments"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-2xs"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-2xs"
               : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
           }`}
         >
@@ -220,7 +220,7 @@ export default function AdminConsolePage() {
           onClick={() => setActiveTab("tasks")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
             activeTab === "tasks"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-2xs"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-2xs"
               : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
           }`}
         >
@@ -230,7 +230,7 @@ export default function AdminConsolePage() {
           onClick={() => setActiveTab("holidays")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
             activeTab === "holidays"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-2xs"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-2xs"
               : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
           }`}
         >
@@ -495,10 +495,10 @@ export default function AdminConsolePage() {
                     onChange={(e) => setRole(e.target.value as UserRole)}
                     className="w-full px-3 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
-                    <option value="DELEGATEE" className="dark:bg-[#111115] dark:text-white">DELEGATEE</option>
-                    <option value="DELEGATOR" className="dark:bg-[#111115] dark:text-white">DELEGATOR</option>
-                    <option value="BOSS" className="dark:bg-[#111115] dark:text-white">BOSS</option>
-                    <option value="ADMIN" className="dark:bg-[#111115] dark:text-white">ADMIN</option>
+                    <option value="DELEGATEE" className="dark:bg-[#111111] dark:text-white">DELEGATEE</option>
+                    <option value="DELEGATOR" className="dark:bg-[#111111] dark:text-white">DELEGATOR</option>
+                    <option value="BOSS" className="dark:bg-[#111111] dark:text-white">BOSS</option>
+                    <option value="ADMIN" className="dark:bg-[#111111] dark:text-white">ADMIN</option>
                   </select>
                 </div>
 
@@ -510,7 +510,7 @@ export default function AdminConsolePage() {
                     className="w-full px-3 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
                     {departments.map((d) => (
-                      <option key={d.id} value={d.id} className="dark:bg-[#111115] dark:text-white">
+                      <option key={d.id} value={d.id} className="dark:bg-[#111111] dark:text-white">
                         {d.name}
                       </option>
                     ))}

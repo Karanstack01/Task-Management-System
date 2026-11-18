@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:setup": "node scripts/supabase-setup.mjs",
+    "db:status": "node scripts/supabase-setup.mjs --status",
+    "db:check": "node scripts/supabase-check.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.1",
@@ -40,6 +43,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "pg": "^8.23.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

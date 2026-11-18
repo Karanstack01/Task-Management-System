@@ -113,7 +113,7 @@ export default function DelegateePortalPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs font-semibold text-[#111111] dark:text-white bg-black/[0.04] dark:bg-white/[0.06] px-3.5 py-1.5 rounded-full border border-black/[0.06] dark:border-white/[0.08]">
+          <span className="text-xs font-semibold text-[#111111] dark:text-white bg-neutral-100/90 dark:bg-white/[0.08] px-3.5 py-1.5 rounded-full border border-black/[0.06] dark:border-white/[0.08]">
             {inProgressCount} Active Work Items
           </span>
         </div>
@@ -163,15 +163,15 @@ export default function DelegateePortalPage() {
         />
       </div>
 
-      {/* Filter Pills with Glass Well & Elevated Pop */}
+      {/* Filter Pills with Proper White Section */}
       <div className="flex flex-wrap items-center justify-between gap-3 glass-section p-3 sm:p-4 shadow-sm">
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => setStatusFilter("ALL")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === "ALL"
-                ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs"
-                : "glass-well text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
+                ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
+                : "bg-neutral-100/80 hover:bg-neutral-200/70 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-[#666666] dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white border border-black/[0.04] dark:border-white/[0.06]"
             }`}
           >
             All ({tasks.length})
@@ -180,8 +180,8 @@ export default function DelegateePortalPage() {
             onClick={() => setStatusFilter("IN_PROGRESS")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === "IN_PROGRESS"
-                ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs"
-                : "glass-well text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
+                ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
+                : "bg-neutral-100/80 hover:bg-neutral-200/70 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-[#666666] dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white border border-black/[0.04] dark:border-white/[0.06]"
             }`}
           >
             In Progress ({inProgressCount})
@@ -190,8 +190,8 @@ export default function DelegateePortalPage() {
             onClick={() => setStatusFilter("AWAITING_VERIFICATION")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === "AWAITING_VERIFICATION"
-                ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs"
-                : "glass-well text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
+                ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
+                : "bg-neutral-100/80 hover:bg-neutral-200/70 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-[#666666] dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white border border-black/[0.04] dark:border-white/[0.06]"
             }`}
           >
             Awaiting Verification ({awaitingCount})
@@ -200,8 +200,8 @@ export default function DelegateePortalPage() {
             onClick={() => setStatusFilter("DONE")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === "DONE"
-                ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs"
-                : "glass-well text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
+                ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
+                : "bg-neutral-100/80 hover:bg-neutral-200/70 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] text-[#666666] dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white border border-black/[0.04] dark:border-white/[0.06]"
             }`}
           >
             Completed ({doneCount})
@@ -263,7 +263,7 @@ export default function DelegateePortalPage() {
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A1A1A6] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
+              className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A3A3A3] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
             >
               Clear &times;
             </button>

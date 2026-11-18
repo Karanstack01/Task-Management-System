@@ -15,7 +15,7 @@ export interface WaTemplateCache {
  * Runs on the SERVER only. Secrets are encrypted at rest and are never sent back to the browser.
  *
  * Persistence:
- *  - "supabase": table `integration_settings` (see supabase/migrations/20261116_integration_settings.sql).
+ *  - "supabase": table `integration_settings` (see supabase/migrations/20261116000000_integration_settings.sql).
  *    Used when NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY are real values.
  *  - "memory":   server memory only. Survives page reloads but is lost on server restart / serverless
  *    cold start. Fine for local development; use Supabase in production.
@@ -155,7 +155,7 @@ async function writeRaw(orgId: string, raw: Record<string, unknown>): Promise<vo
     if (error) {
       throw new Error(
         `Could not save to the database: ${error.message}. ` +
-          `Make sure the migration supabase/migrations/20261116_integration_settings.sql has been run.`
+          `Run "npm run db:setup" to create the table (migration 20261116000000_integration_settings.sql), then "npm run db:check".`
       );
     }
     return;

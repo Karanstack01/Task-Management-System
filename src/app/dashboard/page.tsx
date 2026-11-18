@@ -1,264 +1,249 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { localDb } from "@/lib/data/dal";
-import {
-  BarChart3,
-  TrendingUp,
-  CheckCircle2,
-  Clock,
-  AlertTriangle,
-  Award,
-  Users,
-  Building,
-  ArrowUpRight,
-  ExternalLink,
-  Calendar,
-} from "lucide-react";
+import { CheckCircle2, Clock, AlertTriangle, Timer, Award, ArrowUpRight, RefreshCcw, Layers } from "lucide-react";
 import { DashboardSkeleton } from "@/components/common/skeleton-loaders";
-import { LiquidStatsCard } from "@/components/common/liquid-stats-card";
+import {
+  Kpi,
+  Panel,
+  Donut,
+  WeeklyColumns,
+  SegmentBar,
+  BarRow,
+  PriorityPill,
+  CHART_COLORS,
+  INK,
+  MUTED,
+} from "@/components/analytics/charts";
 
-interface AnalyticsData {
-  totalTasks: number;
-  completedCount: number;
-  inProgressCount: number;
-  awaitingVerificationCount: number;
-  overdueCount: number;
-  completionRate: number;
-  onTimeDeliveryRate: number;
-  averageTurnaroundDays: number;
-  departmentBreakdown: {
-    departmentName: string;
-    code?: string | null;
-    total: number;
-    completed: number;
-    overdue: number;
-  }[];
-}
+type AnalyticsData = Awaited<ReturnType<typeof localDb.getAnalyticsSummary>>;
 
 export default function AnalyticsDashboardPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
   const orgId = "org-sd-01";
 
   useEffect(() => {
-    loadAnalytics();
+    localDb.getAnalyticsSummary(orgId).then(setData);
   }, []);
 
-  async function loadAnalytics() {
-    setLoading(true);
-    try {
-      const summary = await localDb.getAnalyticsSummary(orgId);
-      setData(summary);
-    } finally {
-      setLoading(false);
-    }
-  }
+  if (!data) return <DashboardSkeleton />;
 
-  if (loading || !data) {
-    return <DashboardSkeleton />;
-  }
+  const slaTone = data.onTimeDeliveryRate >= 90 ? "neutral" : data.onTimeDeliveryRate >= 75 ? "warn" : "bad";
+  const maxLoad = Math.max(1, ...data.workload.map((w) => w.open));
+  const maxDept = Math.max(1, ...data.departmentBreakdown.map((d) => d.total));
+  const a = data.aging;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header with Enterprise Glass Section */}
-      <div className="glass-section p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-black/[0.04] dark:bg-white/[0.08] text-[#111111] dark:text-white border border-black/[0.04] dark:border-white/[0.08]">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-[#111111] dark:text-white tracking-tight">
-                Executive CTMS Analytics
-              </h1>
-              <p className="text-xs text-[#86868B] dark:text-[#A1A1A6]">
-                Real-time SLA punctuality, throughput performance, and department bottlenecks
-              </p>
-            </div>
-          </div>
+    <div className="space-y-6 max-w-7xl mx-auto pb-8">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+        <div>
+          <h1 className={`text-2xl font-semibold tracking-tight ${INK}`}>Executive Analytics</h1>
+          <p className={`text-sm mt-1 ${MUTED}`}>Delivery performance, deadline risk and team workload across the organisation.</p>
         </div>
-
-        <div className="flex items-center gap-2">
-          <a
-            href="/scorecards"
-            className="apple-btn-primary inline-flex items-center gap-2 px-4 h-9 rounded-xl text-xs font-semibold cursor-pointer"
-          >
-            <Award className="w-4 h-4" />
-            <span>Employee Leaderboard</span>
-          </a>
-        </div>
+        <Link
+          href="/scorecards"
+          className="apple-btn-primary inline-flex items-center gap-2 px-4 h-9 rounded-xl text-xs font-semibold self-start"
+        >
+          <Award className="w-4 h-4" />
+          Employee Leaderboard
+        </Link>
       </div>
 
-      {/* Primary Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <LiquidStatsCard
-          title="Overall Completion"
-          value={`${data.completionRate}%`}
-          subtitle={`${data.completedCount}/${data.totalTasks} Done`}
-          progress={data.completionRate}
-          change={+4.8}
-          changePeriod="vs last sprint"
-          changeType="increase-is-good"
+      {/* KPI row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <Kpi
+          label="Completion rate"
+          value={data.completionRate}
+          unit="%"
+          hint={`${data.completedCount} of ${data.totalTasks} tasks delivered`}
           icon={CheckCircle2}
-          variant="chartreuse"
+          progress={data.completionRate}
         />
-
-        <LiquidStatsCard
-          title="On-Time Delivery SLA"
-          value={`${data.onTimeDeliveryRate}%`}
-          subtitle="Target: >90%"
-          progress={data.onTimeDeliveryRate}
-          change={+2.3}
-          changePeriod="SLA Target Met"
-          changeType="increase-is-good"
+        <Kpi
+          label="On-time delivery"
+          value={data.onTimeDeliveryRate}
+          unit="%"
+          hint="Target ≥ 90% of completed tasks"
           icon={Clock}
-          variant="electric"
+          tone={slaTone}
+          progress={data.onTimeDeliveryRate}
         />
-
-        <LiquidStatsCard
-          title="Avg Turnaround Time"
+        <Kpi
+          label="Avg. turnaround"
           value={data.averageTurnaroundDays}
-          subtitle="Working Days"
-          change={-12.5}
-          changePeriod="faster delivery"
-          changeType="decrease-is-good"
-          icon={TrendingUp}
-          variant="navy"
+          unit="days"
+          hint="Start to completion, completed tasks"
+          icon={Timer}
         />
-
-        <LiquidStatsCard
-          title="Overdue Tasks"
+        <Kpi
+          label="Overdue now"
           value={data.overdueCount}
-          subtitle={data.overdueCount === 0 ? "Zero Delays" : "Past Deadline"}
-          change={data.overdueCount > 0 ? -15.0 : 0}
-          changePeriod={data.overdueCount === 0 ? "clean queue" : "action required"}
-          changeType="decrease-is-good"
+          unit={`of ${data.openCount} open`}
+          hint={data.overdueCount === 0 ? "No open work past its deadline" : "Open tasks past deadline"}
           icon={AlertTriangle}
-          variant={data.overdueCount > 0 ? "rose" : "ice"}
+          tone={data.overdueCount > 0 ? "bad" : "neutral"}
         />
       </div>
 
-      {/* Department Breakdown & Status Distribution */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Department Performance Bar Chart */}
-        <div className="lg:col-span-2 glass-section p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-bold text-[#111111] dark:text-white text-base">Department Throughput</h3>
-              <p className="text-xs text-[#86868B] dark:text-[#A1A1A6]">
-                Total vs Completed task distribution across operational units
-              </p>
-            </div>
-            <span className="text-xs font-semibold text-[#111111] dark:text-white bg-black/[0.04] dark:bg-white/[0.08] px-3 py-1 rounded-full border border-black/[0.05] dark:border-white/[0.08]">
-              {data.departmentBreakdown.length} Departments
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            {data.departmentBreakdown.map((dept) => {
-              const pct = dept.total > 0 ? Math.round((dept.completed / dept.total) * 100) : 0;
-              return (
-                <div key={dept.code || dept.departmentName} className="space-y-1.5 text-xs">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-semibold text-[#111111] dark:text-white bg-black/[0.04] dark:bg-white/[0.08] px-2 py-0.5 rounded-lg border border-black/[0.05] dark:border-white/[0.08]">
-                        {dept.code || dept.departmentName.substring(0, 4).toUpperCase()}
-                      </span>
-                      <span className="font-semibold text-[#111111] dark:text-white">{dept.departmentName}</span>
-                    </div>
-                    <div className="flex items-center gap-3 font-medium">
-                      {dept.overdue > 0 && (
-                        <span className="text-rose-600 dark:text-rose-400 font-semibold">{dept.overdue} Overdue</span>
-                      )}
-                      <span className="text-[#86868B] dark:text-[#A1A1A6]">
-                        {dept.completed} / {dept.total} ({pct}%)
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="w-full bg-black/[0.04] dark:bg-white/[0.08] rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-[#111111] dark:bg-white h-full transition-all"
-                      style={{ width: `${pct}%` }}
-                    />
-                    {dept.overdue > 0 && (
-                      <div
-                        className="bg-rose-500 h-full"
-                        style={{
-                          width: `${Math.min(100 - pct, (dept.overdue / dept.total) * 100)}%`,
-                        }}
-                      />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Operational Pipeline Breakdown */}
-        <div className="glass-section p-6 space-y-6 flex flex-col justify-between">
-          <div>
-            <h3 className="font-bold text-[#111111] dark:text-white text-base">Pipeline State</h3>
-            <p className="text-xs text-[#86868B] dark:text-[#A1A1A6]">Active tasks across all lifecycle phases</p>
-
-            <div className="space-y-2.5 mt-5 text-xs">
-              <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2 h-2 rounded-full bg-[#2357D6]" />
-                  <span className="font-medium text-[#111111] dark:text-white">In Progress</span>
-                </div>
-                <span className="font-bold text-[#111111] dark:text-white">{data.inProgressCount} Tasks</span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span className="font-medium text-[#111111] dark:text-white">Awaiting Verification</span>
-                </div>
-                <span className="font-bold text-[#111111] dark:text-white">
-                  {data.awaitingVerificationCount} Tasks
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="font-medium text-[#111111] dark:text-white">Completed &amp; Verified</span>
-                </div>
-                <span className="font-bold text-[#111111] dark:text-white">{data.completedCount} Tasks</span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.06]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2 h-2 rounded-full bg-rose-500" />
-                  <span className="font-medium text-[#111111] dark:text-white">Critical Overdue</span>
-                </div>
-                <span className="font-bold text-rose-600 dark:text-rose-400">{data.overdueCount} Tasks</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between text-xs">
-            <a
-              href="/verify"
-              className="text-[#111111] dark:text-white font-semibold hover:text-[#2357D6] flex items-center gap-1 transition-colors"
-            >
-              <span>Audit Verifications</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-
-            <a
-              href="/boss"
-              className="text-[#86868B] hover:text-[#111111] dark:text-[#A1A1A6] dark:hover:text-white font-medium flex items-center gap-1 transition-colors"
-            >
-              <span>Boss Matrix</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
+      {/* Trend + status */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Panel title="Weekly throughput" subtitle="Tasks created vs completed, last 8 weeks" className="lg:col-span-3">
+          <WeeklyColumns data={data.weekly} />
+        </Panel>
+        <Panel title="Pipeline status" subtitle="All tasks by lifecycle stage" className="lg:col-span-2">
+          <Donut
+            centerLabel="Total tasks"
+            centerValue={data.totalTasks}
+            slices={[
+              { label: "Pending", value: data.pendingCount, color: "#BDBDBD" },
+              { label: "In progress", value: data.inProgressCount, color: "#666666" },
+              { label: "Awaiting verification", value: data.awaitingVerificationCount, color: CHART_COLORS.amber },
+              { label: "Completed", value: data.completedCount, color: "var(--sd-ink)" },
+            ]}
+          />
+          <Link href="/verify" className={`mt-5 pt-4 border-t border-black/[0.06] dark:border-white/[0.08] inline-flex items-center gap-1 text-xs font-semibold hover:text-brand ${INK}`}>
+            Review verification queue <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
+        </Panel>
       </div>
+
+      {/* Deadline risk + priority */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Panel title="Deadline health" subtitle="Open tasks grouped by time to / past deadline">
+          <SegmentBar
+            segments={[
+              { label: "Overdue > 7 days", value: a.overdueOver7, color: "#B42318" },
+              { label: "Overdue 3–7 days", value: a.overdue3to7, color: CHART_COLORS.red },
+              { label: "Overdue < 3 days", value: a.overdue0to3, color: "#F97066" },
+              { label: "Due in < 3 days", value: a.dueIn3, color: CHART_COLORS.amber },
+              { label: "Due in 3–7 days", value: a.dueIn7, color: "#666666" },
+              { label: "Due later", value: a.later, color: "#BDBDBD" },
+            ]}
+          />
+        </Panel>
+
+        <Panel title="Open work by priority" subtitle="Share of active tasks that are already overdue">
+          <div className="space-y-4">
+            {data.priorityBreakdown.map((p) => (
+              <BarRow
+                key={p.priority}
+                label={p.priority.charAt(0) + p.priority.slice(1).toLowerCase()}
+                value={p.open}
+                alert={p.overdue}
+                max={Math.max(1, ...data.priorityBreakdown.map((x) => x.open))}
+                right={
+                  <span className={MUTED}>
+                    <span className={`font-semibold ${INK}`}>{p.open}</span> open
+                    {p.overdue > 0 && <span className="text-[#F04438] font-semibold"> · {p.overdue} overdue</span>}
+                  </span>
+                }
+              />
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      {/* Departments + workload */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Panel title="Department performance" subtitle="Completed share of tasks; red marks overdue work">
+          <div className="space-y-4">
+            {data.departmentBreakdown
+              .filter((d) => d.total > 0)
+              .sort((x, y) => y.total - x.total)
+              .map((d) => {
+                const pct = Math.round((d.completed / d.total) * 100);
+                return (
+                  <BarRow
+                    key={d.code || d.departmentName}
+                    label={d.departmentName}
+                    sublabel={d.code || undefined}
+                    value={d.total}
+                    alert={d.overdue}
+                    max={maxDept}
+                    color={CHART_COLORS.green}
+                    right={
+                      <span className={MUTED}>
+                        <span className={`font-semibold ${INK}`}>{pct}%</span> done · {d.completed}/{d.total}
+                        {d.overdue > 0 && <span className="text-[#F04438] font-semibold"> · {d.overdue} late</span>}
+                      </span>
+                    }
+                  />
+                );
+              })}
+          </div>
+        </Panel>
+
+        <Panel title="Team workload" subtitle="Open tasks per assignee">
+          {data.workload.length === 0 ? (
+            <p className={`text-sm ${MUTED}`}>No open work is currently assigned.</p>
+          ) : (
+            <div className="space-y-4">
+              {data.workload.map((w) => (
+                <BarRow
+                  key={w.userId}
+                  label={w.name}
+                  value={w.open}
+                  alert={w.overdue}
+                  max={maxLoad}
+                  right={
+                    <span className={MUTED}>
+                      <span className={`font-semibold ${INK}`}>{w.open}</span> open
+                      {w.overdue > 0 && <span className="text-[#F04438] font-semibold"> · {w.overdue} overdue</span>}
+                    </span>
+                  }
+                />
+              ))}
+            </div>
+          )}
+        </Panel>
+      </div>
+
+      {/* Needs attention */}
+      <Panel
+        title="Needs attention"
+        subtitle="Longest-overdue open tasks"
+        action={
+          <span className={`inline-flex items-center gap-1.5 text-xs ${MUTED}`}>
+            <RefreshCcw className="w-3.5 h-3.5" /> Revision rate {data.revisionRate}%
+          </span>
+        }
+      >
+        {data.topOverdue.length === 0 ? (
+          <p className={`text-sm ${MUTED}`}>Nothing is overdue. 🎉</p>
+        ) : (
+          <div className="overflow-x-auto -mx-1">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className={`text-left text-[11px] uppercase tracking-[0.08em] ${MUTED}`}>
+                  <th className="px-1 py-2 font-semibold">Task</th>
+                  <th className="px-1 py-2 font-semibold">Assignee</th>
+                  <th className="px-1 py-2 font-semibold">Priority</th>
+                  <th className="px-1 py-2 font-semibold text-right">Days late</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-black/[0.05] dark:divide-white/[0.06]">
+                {data.topOverdue.map((t) => (
+                  <tr key={t.id}>
+                    <td className={`px-1 py-3 font-medium ${INK}`}>
+                      <span className={`text-xs tabular-nums mr-2 ${MUTED}`}>#{t.taskNo}</span>
+                      {t.title}
+                    </td>
+                    <td className={`px-1 py-3 ${MUTED}`}>{t.assignee}</td>
+                    <td className="px-1 py-3"><PriorityPill priority={t.priority} /></td>
+                    <td className="px-1 py-3 text-right font-semibold tabular-nums text-[#F04438]">{t.daysLate}d</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <div className={`mt-4 flex items-center gap-1.5 text-xs ${MUTED}`}>
+          <Layers className="w-3.5 h-3.5" />
+          <Link href="/boss" className="hover:text-brand">Open Boss matrix for reassignment</Link>
+        </div>
+      </Panel>
     </div>
   );
 }

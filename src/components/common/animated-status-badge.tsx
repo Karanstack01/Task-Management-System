@@ -75,10 +75,10 @@ export function normalizeStatusVariant(status: string): StatusVariant {
  */
 function QueuedIcon() {
   return (
-    <div className="relative w-4 h-4 rounded-full bg-[#8B5CF6] dark:bg-[#A78BFA] flex items-center justify-center shrink-0 shadow-xs">
+    <div className="relative w-4 h-4 rounded-full bg-[#666666] dark:bg-[#A3A3A3] flex items-center justify-center shrink-0 shadow-xs">
       {/* Clock Face & Animated Hand */}
       <svg
-        className="w-3 h-3 text-white dark:text-[#1E1B4B]"
+        className="w-3 h-3 text-white dark:text-[#111111]"
         viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -115,9 +115,9 @@ function QueuedIcon() {
  */
 function ScheduledIcon() {
   return (
-    <div className="relative w-4 h-4 rounded-[5px] bg-[#0284C7] dark:bg-[#38BDF8] flex items-center justify-center shrink-0 shadow-xs animate-icon-calendar">
+    <div className="relative w-4 h-4 rounded-[5px] bg-[#666666] dark:bg-[#A3A3A3] flex items-center justify-center shrink-0 shadow-xs animate-icon-calendar">
       <svg
-        className="w-3 h-3 text-white dark:text-[#082F49]"
+        className="w-3 h-3 text-white dark:text-[#111111]"
         viewBox="0 0 16 16"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
@@ -189,9 +189,9 @@ function HighPriorityIcon() {
  */
 function ReadyIcon() {
   return (
-    <div className="relative w-4 h-4 rounded-full bg-[#0D9488] dark:bg-[#2DD4BF] flex items-center justify-center shrink-0 shadow-xs animate-icon-check">
+    <div className="relative w-4 h-4 rounded-full bg-[#666666] dark:bg-[#A3A3A3] flex items-center justify-center shrink-0 shadow-xs animate-icon-check">
       <svg
-        className="w-2.5 h-2.5 text-white dark:text-[#042F2E]"
+        className="w-2.5 h-2.5 text-white dark:text-[#111111]"
         viewBox="0 0 12 12"
         fill="none"
         stroke="currentColor"
@@ -213,7 +213,7 @@ function WaitingIcon() {
   return (
     <div className="relative w-4 h-4 shrink-0 flex items-center justify-center">
       <svg
-        className="w-4 h-4 text-[#C026D3] dark:text-[#E879F9]"
+        className="w-4 h-4 text-[#666666] dark:text-[#A3A3A3]"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -257,9 +257,9 @@ function PausedIcon() {
  */
 function ReviewingIcon() {
   return (
-    <div className="relative w-4 h-4 rounded-[4px] bg-[#00838F] dark:bg-[#22D3EE] flex items-center justify-center shrink-0 shadow-xs animate-icon-search">
+    <div className="relative w-4 h-4 rounded-[4px] bg-[#666666] dark:bg-[#A3A3A3] flex items-center justify-center shrink-0 shadow-xs animate-icon-search">
       <svg
-        className="w-2.5 h-2.5 text-white dark:text-[#083344]"
+        className="w-2.5 h-2.5 text-white dark:text-[#111111]"
         viewBox="0 0 16 16"
         fill="none"
         stroke="currentColor"
@@ -294,20 +294,20 @@ const STATUS_CONFIGS: Record<
 > = {
   queued: {
     defaultLabel: "Queued",
-    bgLight: "bg-[#F3E8FF]",
+    bgLight: "bg-[#EEEEEE]",
     bgDark: "dark:bg-purple-950/45",
-    textLight: "text-[#7E22CE]",
-    textDark: "dark:text-[#C084FC]",
+    textLight: "text-[#666666]",
+    textDark: "dark:text-[#A3A3A3]",
     borderLight: "border-purple-200/90",
     borderDark: "dark:border-purple-800/40",
     renderIcon: QueuedIcon,
   },
   scheduled: {
     defaultLabel: "Scheduled",
-    bgLight: "bg-[#E0F2FE]",
+    bgLight: "bg-[#EEEEEE]",
     bgDark: "dark:bg-sky-950/45",
-    textLight: "text-[#0284C7]",
-    textDark: "dark:text-[#38BDF8]",
+    textLight: "text-[#666666]",
+    textDark: "dark:text-[#A3A3A3]",
     borderLight: "border-sky-200/90",
     borderDark: "dark:border-sky-800/40",
     renderIcon: ScheduledIcon,
@@ -334,20 +334,20 @@ const STATUS_CONFIGS: Record<
   },
   ready: {
     defaultLabel: "Ready",
-    bgLight: "bg-[#CCFBF1]",
+    bgLight: "bg-[#EEEEEE]",
     bgDark: "dark:bg-teal-950/45",
-    textLight: "text-[#0D9488]",
-    textDark: "dark:text-[#2DD4BF]",
+    textLight: "text-[#666666]",
+    textDark: "dark:text-[#A3A3A3]",
     borderLight: "border-teal-200/90",
     borderDark: "dark:border-teal-800/40",
     renderIcon: ReadyIcon,
   },
   waiting: {
     defaultLabel: "Waiting",
-    bgLight: "bg-[#FCE7F3]",
+    bgLight: "bg-[#EEEEEE]",
     bgDark: "dark:bg-pink-950/45",
-    textLight: "text-[#C026D3]",
-    textDark: "dark:text-[#E879F9]",
+    textLight: "text-[#666666]",
+    textDark: "dark:text-[#A3A3A3]",
     borderLight: "border-pink-200/90",
     borderDark: "dark:border-pink-800/40",
     renderIcon: WaitingIcon,
@@ -364,10 +364,10 @@ const STATUS_CONFIGS: Record<
   },
   reviewing: {
     defaultLabel: "Reviewing",
-    bgLight: "bg-[#E0F7FA]",
+    bgLight: "bg-[#EEEEEE]",
     bgDark: "dark:bg-cyan-950/45",
-    textLight: "text-[#00838F]",
-    textDark: "dark:text-[#22D3EE]",
+    textLight: "text-[#666666]",
+    textDark: "dark:text-[#A3A3A3]",
     borderLight: "border-cyan-200/90",
     borderDark: "dark:border-cyan-800/40",
     renderIcon: ReviewingIcon,
@@ -465,8 +465,8 @@ export function AnimatedStatusFilterBar({
         className={cn(
           "px-3.5 py-1.5 rounded-2xl text-xs font-semibold border transition-all cursor-pointer",
           selected === "ALL"
-            ? "bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-[#111111] dark:border-white shadow-xs"
-            : "bg-white/70 dark:bg-white/[0.06] text-[#666666] dark:text-[#A1A1A6] border-black/[0.06] dark:border-white/[0.08] hover:bg-black/[0.03] dark:hover:bg-white/[0.1]"
+            ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white border-[#111111] dark:border-white shadow-xs"
+            : "bg-white/70 dark:bg-white/[0.06] text-[#666666] dark:text-[#A3A3A3] border-black/[0.06] dark:border-white/[0.08] hover:bg-black/[0.03] dark:hover:bg-white/[0.1]"
         )}
       >
         All Tasks

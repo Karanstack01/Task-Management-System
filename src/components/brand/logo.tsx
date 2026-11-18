@@ -114,18 +114,18 @@ export function StackDroveLogo({
         <div className="flex flex-col leading-none">
           <span
             className={cn(
-              "font-extrabold text-base tracking-tight text-slate-900 dark:text-white",
+              "font-bold text-base tracking-[-0.03em] text-[#111111] dark:text-white",
               textClassName
             )}
           >
             StackDrove
           </span>
           {tagline === "brand" ? (
-            <span className="text-[10px] font-bold text-[#2357D6] dark:text-[#D4F20D] tracking-wider uppercase mt-0.5">
+            <span className="text-[10px] font-medium text-[#666666] dark:text-[#A3A3A3] tracking-[0.12em] uppercase mt-1">
               Build. Automate. Scale.
             </span>
           ) : tagline === "ctms" ? (
-            <span className="text-[10px] font-bold text-[#2357D6] dark:text-[#D4F20D] tracking-wider uppercase mt-0.5">
+            <span className="text-[10px] font-medium text-[#666666] dark:text-[#A3A3A3] tracking-[0.12em] uppercase mt-1">
               CTMS Enterprise
             </span>
           ) : null}

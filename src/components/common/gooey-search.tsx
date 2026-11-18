@@ -329,22 +329,22 @@ export function GooeySearch({
           className={cn(
             "relative flex items-center rounded-full transition-shadow duration-200 cursor-pointer overflow-hidden outline-none",
             step === 1
-              ? "bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] text-[#111111] dark:text-[#F5F5F7] border border-black/[0.08] dark:border-white/[0.12] px-3.5 py-1.5 shadow-xs"
-              : "bg-white dark:bg-[#18181B] text-[#111111] dark:text-[#F5F5F7] border border-black/[0.12] dark:border-white/[0.18] px-3 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.08)] ring-2 ring-black/5 dark:ring-white/10"
+              ? "bg-black/[0.05] dark:bg-white/[0.08] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] text-[#111111] dark:text-[#F7F7F7] border border-black/[0.08] dark:border-white/[0.12] px-3.5 py-1.5 shadow-xs"
+              : "bg-white dark:bg-[#181818] text-[#111111] dark:text-[#F7F7F7] border border-black/[0.12] dark:border-white/[0.18] px-3 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.08)] ring-2 ring-black/5 dark:ring-white/10"
           )}
         >
           {step === 1 ? (
             <div className="flex items-center justify-center gap-2 w-full text-xs font-semibold tracking-tight">
-              <Search className="w-3.5 h-3.5 text-[#86868B] dark:text-[#A1A1A6]" />
+              <Search className="w-3.5 h-3.5 text-[#666666] dark:text-[#A3A3A3]" />
               <span className="truncate">{buttonLabel}</span>
             </div>
           ) : (
             <div className="flex items-center w-full pr-8">
-              <Search className="w-3.5 h-3.5 text-[#86868B] dark:text-[#A1A1A6] mr-2 shrink-0" />
+              <Search className="w-3.5 h-3.5 text-[#666666] dark:text-[#A3A3A3] mr-2 shrink-0" />
               <input
                 ref={inputRef}
                 type="text"
-                className="gooey-search-input w-full bg-transparent border-none outline-none text-xs font-medium text-[#111111] dark:text-[#F5F5F7]"
+                className="gooey-search-input w-full bg-transparent border-none outline-none text-xs font-medium text-[#111111] dark:text-[#F7F7F7]"
                 placeholder={placeholder}
                 aria-label="Search input"
                 value={searchText}
@@ -395,13 +395,13 @@ export function GooeySearch({
                 maxWidth: "340px",
                 zIndex: 99999,
               }}
-              className="rounded-2xl bg-white dark:bg-[#18181B] border border-black/[0.08] dark:border-white/[0.12] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22)] dark:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7)] p-2 overflow-hidden text-[#111111] dark:text-[#F5F5F7] select-none"
+              className="rounded-2xl bg-white dark:bg-[#181818] border border-black/[0.08] dark:border-white/[0.12] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22)] dark:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7)] p-2 overflow-hidden text-[#111111] dark:text-[#F7F7F7] select-none"
               role="listbox"
             >
               {/* Header: Suggestions Count */}
-              <div className="flex items-center justify-between px-2.5 py-1 mb-1 border-b border-black/[0.04] dark:border-white/[0.06] text-[10px] font-bold uppercase tracking-wider text-[#86868B] dark:text-[#A1A1A6]">
+              <div className="flex items-center justify-between px-2.5 py-1 mb-1 border-b border-black/[0.04] dark:border-white/[0.06] text-[10px] font-bold uppercase tracking-wider text-[#666666] dark:text-[#A3A3A3]">
                 <div className="flex items-center gap-1.5">
-                  <Sparkles className="w-3 h-3 text-[#2357D6] dark:text-[#D4F20D]" />
+                  <Sparkles className="w-3 h-3 text-brand dark:text-brand" />
                   <span>Matching Results</span>
                 </div>
                 <span className="font-semibold text-[9px] px-1.5 py-0.2 rounded-full bg-black/[0.04] dark:bg-white/[0.08]">
@@ -433,7 +433,7 @@ export function GooeySearch({
                             "w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-colors",
                             isSelected
                               ? "bg-black/[0.08] dark:bg-white/[0.14] text-[#111111] dark:text-white"
-                              : "bg-black/[0.03] dark:bg-white/[0.06] text-[#86868B] group-hover:text-[#111111] dark:group-hover:text-white"
+                              : "bg-black/[0.03] dark:bg-white/[0.06] text-[#666666] group-hover:text-[#111111] dark:group-hover:text-white"
                           )}
                         >
                           <Navigation className="w-3 h-3 rotate-45" />
@@ -448,8 +448,8 @@ export function GooeySearch({
                           className={cn(
                             "text-[10px] font-semibold flex items-center gap-0.5 transition-opacity",
                             isSelected
-                              ? "opacity-100 text-[#2357D6] dark:text-[#D4F20D]"
-                              : "opacity-0 group-hover:opacity-75 text-[#86868B]"
+                              ? "opacity-100 text-brand dark:text-brand"
+                              : "opacity-0 group-hover:opacity-75 text-[#666666]"
                           )}
                         >
                           Jump <CornerDownLeft className="w-2.5 h-2.5" />
@@ -461,7 +461,7 @@ export function GooeySearch({
               </div>
 
               {/* Footer Hint */}
-              <div className="px-2.5 pt-1.5 mt-1 border-t border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between text-[10px] text-[#86868B]">
+              <div className="px-2.5 pt-1.5 mt-1 border-t border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between text-[10px] text-[#666666]">
                 <span>Navigate with ↑ ↓</span>
                 <span>Select ↵</span>
               </div>

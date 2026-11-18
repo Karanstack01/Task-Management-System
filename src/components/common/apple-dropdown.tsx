@@ -303,13 +303,13 @@ export function AppleDropdown({
           {/* Badge & Chevron */}
           <div className="flex items-center gap-1.5 shrink-0 ml-2">
             {selectedItem?.badge !== undefined && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A1A1A6]">
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A3A3A3]">
                 {selectedItem.badge}
               </span>
             )}
 
             <ChevronDown
-              className={`w-3.5 h-3.5 text-[#86868B] dark:text-neutral-400 transition-transform duration-200 shrink-0 ${
+              className={`w-3.5 h-3.5 text-[#666666] dark:text-neutral-400 transition-transform duration-200 shrink-0 ${
                 isOpen ? "rotate-180 text-[#111111] dark:text-white" : ""
               }`}
             />
@@ -334,7 +334,7 @@ export function AppleDropdown({
               maxWidth: matchTriggerWidth ? "calc(100vw - 24px)" : "360px",
               zIndex: 99999,
             }}
-            className="animate-in fade-in zoom-in-95 duration-200 origin-top rounded-2xl bg-white/95 dark:bg-[#121216]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.12] p-2 shadow-2xl text-[#111111] dark:text-[#F5F5F7] select-none"
+            className="animate-in fade-in zoom-in-95 duration-200 origin-top rounded-2xl bg-white/95 dark:bg-[#111111]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/[0.12] p-2 shadow-2xl text-[#111111] dark:text-[#F7F7F7] select-none"
             role="listbox"
           >
             {/* Header: Displays Category/Active Title matching Video */}
@@ -369,14 +369,14 @@ export function AppleDropdown({
             {/* Optional Integrated Search */}
             {showSearch && !activeSubMenu && (
               <div className="relative mb-2 px-1">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#86868B]" />
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-[#666666]" />
                 <input
                   ref={searchInputRef}
                   type="text"
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.05] dark:border-white/[0.08] outline-none focus:ring-1 focus:ring-[#2357D6] text-[#111111] dark:text-white placeholder-[#86868B]"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg bg-black/[0.03] dark:bg-white/[0.06] border border-black/[0.05] dark:border-white/[0.08] outline-none focus:ring-1 focus:ring-brand text-[#111111] dark:text-white placeholder-[#666666]"
                 />
               </div>
             )}
@@ -384,7 +384,7 @@ export function AppleDropdown({
             {/* ITEM LIST */}
             <div className="max-h-[260px] overflow-y-auto space-y-0.5 pr-0.5 custom-scrollbar">
               {displayedItems.length === 0 ? (
-                <div className="px-3 py-4 text-center text-xs text-[#86868B]">
+                <div className="px-3 py-4 text-center text-xs text-[#666666]">
                   No options found
                 </div>
               ) : (
@@ -404,7 +404,7 @@ export function AppleDropdown({
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         {item.icon ? (
-                          <div className="w-4 h-4 flex items-center justify-center shrink-0 text-[#666666] dark:text-[#A1A1A6] group-hover:text-[#111111] dark:group-hover:text-white">
+                          <div className="w-4 h-4 flex items-center justify-center shrink-0 text-[#666666] dark:text-[#A3A3A3] group-hover:text-[#111111] dark:group-hover:text-white">
                             {item.icon}
                           </div>
                         ) : item.thumbnail ? (
@@ -413,14 +413,14 @@ export function AppleDropdown({
                           </div>
                         ) : hasChildren ? (
                           <div className="w-5 h-5 rounded-md bg-black/[0.05] dark:bg-white/[0.08] flex items-center justify-center transition-colors shrink-0">
-                            <ChevronDown className="w-3 h-3 text-[#666666] dark:text-[#A1A1A6]" />
+                            <ChevronDown className="w-3 h-3 text-[#666666] dark:text-[#A3A3A3]" />
                           </div>
                         ) : null}
 
                         <div className="min-w-0 text-left">
                           <div className="truncate font-medium">{item.label}</div>
                           {item.sublabel && (
-                            <div className="text-[10px] text-[#86868B] truncate">
+                            <div className="text-[10px] text-[#666666] truncate">
                               {item.sublabel}
                             </div>
                           )}
@@ -430,12 +430,12 @@ export function AppleDropdown({
                       {/* Right Indicator / Badge / Checkmark */}
                       <div className="flex items-center gap-1.5 shrink-0 ml-2">
                         {item.badge !== undefined && (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A1A1A6]">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A3A3A3]">
                             {item.badge}
                           </span>
                         )}
                         {isSelected && !hasChildren && (
-                          <Check className="w-3.5 h-3.5 text-[#2357D6] dark:text-[#2357D6] stroke-[2.5]" />
+                          <Check className="w-3.5 h-3.5 text-brand dark:text-brand stroke-[2.5]" />
                         )}
                       </div>
                     </div>

@@ -568,7 +568,7 @@ export default function CompanyAdminPage() {
             >
               <option value="">Choose a person…</option>
               {appointable.map((u) => (
-                <option key={u.id} value={u.id} className="dark:bg-[#111115] dark:text-white">
+                <option key={u.id} value={u.id} className="dark:bg-[#111111] dark:text-white">
                   {u.full_name} ({ROLE_LABEL[u.role]})
                 </option>
               ))}

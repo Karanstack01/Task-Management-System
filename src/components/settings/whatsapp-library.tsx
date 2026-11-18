@@ -204,7 +204,7 @@ export function WhatsappLibrary({
                   aria-pressed={filter === id}
                   className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition-colors ${
                     filter === id
-                      ? "bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-[#111111] dark:border-white"
+                      ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white border-[#111111] dark:border-white"
                       : "border-black/[0.08] dark:border-white/[0.1] text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
                   }`}
                 >
@@ -226,7 +226,7 @@ export function WhatsappLibrary({
                       aria-pressed={active}
                       className={`cc-press w-full text-left rounded-xl border p-3 transition-all duration-200 hover:-translate-y-px hover:shadow-md ${
                         active
-                          ? "border-[#2357D6]/60 dark:border-[#7da2ff]/70 bg-white/95 dark:bg-white/[0.1] shadow-md ring-1 ring-[#2357D6]/20 dark:ring-[#7da2ff]/25"
+                          ? "border-brand/60 dark:border-brand/70 bg-white/95 dark:bg-white/[0.1] shadow-md ring-1 ring-brand/20 dark:ring-brand/25"
                           : "border-black/[0.07] dark:border-white/[0.1] bg-white/60 dark:bg-white/[0.04] hover:bg-white/90 dark:hover:bg-white/[0.08]"
                       } ${t.supported ? "" : "opacity-70"}`}
                     >

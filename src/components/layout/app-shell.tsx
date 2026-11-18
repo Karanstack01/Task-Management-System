@@ -48,11 +48,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed top-0 right-1/4 w-[500px] h-[250px] rounded-full bg-gradient-to-b from-white/40 via-transparent to-transparent dark:from-white/[0.02] dark:via-transparent dark:to-transparent blur-3xl z-0"
         aria-hidden="true"
       />
+      <div key={`progress-${pathname}`} className="route-progress" aria-hidden="true" />
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-transparent transition-colors duration-300 relative z-10">
         <Header />
-        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto overflow-x-hidden relative z-10 transition-all duration-300 section-fade-in">
-          {children}
+        <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto overflow-x-hidden relative z-10">
+          {/* Keyed by route so every section switch replays the enter + stagger animation. */}
+          <div key={pathname} className="page-enter">
+            {children}
+          </div>
         </main>
         <MobileNav />
       </div>

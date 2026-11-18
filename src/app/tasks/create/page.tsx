@@ -120,7 +120,7 @@ export default function CreateTaskPage() {
         sublabel: p.email,
         badge: p.role.replace("_", " "),
         thumbnail: (
-          <div className="w-5 h-5 rounded-full bg-[#111111] dark:bg-white text-white dark:text-[#111111] flex items-center justify-center text-[9px] font-bold">
+          <div className="w-5 h-5 rounded-full bg-[#111111] dark:bg-white dark:text-[#111111] text-white flex items-center justify-center text-[9px] font-bold">
             {initials}
           </div>
         ),
@@ -241,7 +241,7 @@ export default function CreateTaskPage() {
         label: recurrenceConfig ? recurrenceConfig.summaryText : "Custom Recurrence...",
         sublabel: "Configure daily, weekly, monthly, or yearly cadence",
         badge: "Custom",
-        icon: <Repeat size={14} className="text-[#2563EB] dark:text-blue-400" />,
+        icon: <Repeat size={14} className="text-brand dark:text-blue-400" />,
       },
       {
         id: "DAILY",
@@ -573,7 +573,7 @@ export default function CreateTaskPage() {
                     <button
                       type="button"
                       onClick={() => setIsRecurrenceModalOpen(true)}
-                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#2563EB]/10 text-[#2563EB] dark:text-blue-400 hover:bg-[#2563EB]/20 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-brand/10 text-brand dark:text-blue-400 hover:bg-brand/20 transition-colors cursor-pointer"
                     >
                       <Repeat size={10} />
                       <span>Edit Rule</span>
@@ -591,7 +591,7 @@ export default function CreateTaskPage() {
                   placeholder="Select recurrence..."
                 />
                 {recurrenceConfig && frequency !== "ONE_TIME" && (
-                  <div className="mt-1.5 flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] text-[#2563EB] dark:text-blue-400 animate-in fade-in">
+                  <div className="mt-1.5 flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 text-[11px] text-brand dark:text-blue-400 animate-in fade-in">
                     <div className="flex items-center gap-1.5 truncate">
                       <Repeat size={12} className="shrink-0" />
                       <span className="truncate font-medium">{recurrenceConfig.summaryText}</span>
@@ -599,7 +599,7 @@ export default function CreateTaskPage() {
                     <button
                       type="button"
                       onClick={() => setIsRecurrenceModalOpen(true)}
-                      className="ml-2 underline text-[10px] font-semibold hover:text-[#1D4ED8] dark:hover:text-blue-300 transition-colors cursor-pointer shrink-0"
+                      className="ml-2 underline text-[10px] font-semibold hover:text-[#666666] dark:hover:text-blue-300 transition-colors cursor-pointer shrink-0"
                     >
                       Configure
                     </button>

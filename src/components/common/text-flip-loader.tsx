@@ -106,7 +106,7 @@ export function TextFlipLoader({
           currentSize.loader
         )}
       >
-        <p className={cn("text-[#7C7C7C] dark:text-[#A1A1A6]", currentSize.prefix)}>
+        <p className={cn("text-[#7C7C7C] dark:text-[#A3A3A3]", currentSize.prefix)}>
           {prefix}
         </p>
         <div className={cn("uiverse-words", currentSize.words)}>
@@ -143,7 +143,7 @@ export function FullPageLoader({
   subtitle?: string;
 }) {
   return (
-    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#EEF1F6]/90 dark:bg-[#0A0B10]/90 backdrop-blur-2xl transition-all">
+    <div className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#F1F1F1]/90 dark:bg-[#0A0A0A]/90 backdrop-blur-2xl transition-all">
       <TextFlipLoader
         prefix={prefix}
         words={words}
@@ -153,7 +153,7 @@ export function FullPageLoader({
         className="shadow-2xl hover:scale-105 transition-transform"
       />
       {subtitle && (
-        <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#A1A1A6]">
+        <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#A3A3A3]">
           {subtitle}
         </span>
       )}

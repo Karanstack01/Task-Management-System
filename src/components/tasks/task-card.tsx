@@ -66,7 +66,7 @@ export function PriorityBadge({ priority }: { priority: TaskPriority | string })
       );
     case "HIGH":
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10.5px] font-medium bg-[#F4EBFF]/90 text-[#6941C6] dark:bg-[#6941C6]/20 dark:text-[#B692F6] border border-[#E9D7FE]/60 dark:border-[#6941C6]/30 select-none">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10.5px] font-medium bg-[#EEEEEE]/90 text-[#333333] dark:bg-[#333333]/20 dark:text-[#A3A3A3] border border-[#EEEEEE]/60 dark:border-[#333333]/30 select-none">
           <span className="font-semibold">P</span> High
         </span>
       );
@@ -111,8 +111,8 @@ export function TaskCard({
       <div>
         {/* Top Header: Code + Priority Badge */}
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 text-xs text-[#666666] dark:text-[#A1A1A6]">
-            <Link2 className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#2357D6] dark:group-hover:text-[#D4F20D] transition-colors shrink-0" />
+          <div className="flex items-center gap-1.5 text-xs text-[#666666] dark:text-[#A3A3A3]">
+            <Link2 className="w-3.5 h-3.5 text-[#666666] group-hover:text-brand dark:group-hover:text-brand transition-colors shrink-0" />
             <span className="tracking-tight font-mono text-[10.5px] font-medium text-neutral-700 dark:text-neutral-300 px-1.5 py-0.5 rounded bg-black/[0.035] dark:bg-white/[0.05] border border-black/[0.04] dark:border-white/[0.06]">
               {code}
             </span>
@@ -122,20 +122,20 @@ export function TaskCard({
         </div>
 
         {/* Task Title - Brand Book Inter SemiBold */}
-        <h4 className="mt-2 text-[13px] font-semibold tracking-[-0.011em] text-[#111111] dark:text-neutral-100 leading-snug line-clamp-2 group-hover:text-[#2357D6] dark:group-hover:text-[#D4F20D] transition-colors">
+        <h4 className="mt-2 text-[13px] font-semibold tracking-[-0.011em] text-[#111111] dark:text-neutral-100 leading-snug line-clamp-2 group-hover:text-brand dark:group-hover:text-brand transition-colors">
           {task.title}
         </h4>
 
         {/* Subtitle / Description - Subtle Regular */}
         {task.description && (
-          <p className="mt-1 text-[11.5px] text-[#666666] dark:text-[#8E8E93] font-normal leading-relaxed line-clamp-1">
+          <p className="mt-1 text-[11.5px] text-[#666666] dark:text-[#666666] font-normal leading-relaxed line-clamp-1">
             {task.description}
           </p>
         )}
 
         {/* Due Date Pill - Refined compact chip */}
-        <div className="mt-2.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10.5px] font-normal bg-black/[0.025] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06] text-[#666666] dark:text-[#8E8E93]">
-          <Calendar className="w-3 h-3 text-[#86868B] shrink-0" />
+        <div className="mt-2.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10.5px] font-normal bg-black/[0.025] dark:bg-white/[0.04] border border-black/[0.04] dark:border-white/[0.06] text-[#666666] dark:text-[#666666]">
+          <Calendar className="w-3 h-3 text-[#666666] shrink-0" />
           <span className={cn(isOverdue && "text-rose-600 dark:text-rose-400 font-medium")}>
             Due to: {formatDueDate(task.current_target_date)}
           </span>
@@ -153,7 +153,7 @@ export function TaskCard({
         <div className="flex items-center -space-x-1.5">
           {/* Avatar 1: Delegatee */}
           <div
-            className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181920] shadow-2xs bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[8px] font-medium overflow-hidden"
+            className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181818] shadow-2xs bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[8px] font-medium overflow-hidden"
             title={`Assignee: ${task.delegatee?.full_name || "Assignee"}`}
           >
             {task.delegatee?.avatar_url ? (
@@ -170,7 +170,7 @@ export function TaskCard({
 
           {/* Avatar 2: Delegator */}
           <div
-            className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181920] shadow-2xs bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[8px] font-medium overflow-hidden"
+            className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181818] shadow-2xs bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[8px] font-medium overflow-hidden"
             title={`Assigner: ${task.delegator?.full_name || "Manager"}`}
           >
             {task.delegator?.avatar_url ? (
@@ -186,15 +186,15 @@ export function TaskCard({
           </div>
 
           {/* Avatar 3: Team Indicator Pill */}
-          <div className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181920] shadow-2xs bg-purple-100 dark:bg-purple-950/70 text-purple-600 dark:text-purple-300 flex items-center justify-center text-[8px] font-medium">
+          <div className="relative w-5 h-5 rounded-full ring-2 ring-white dark:ring-[#181818] shadow-2xs bg-purple-100 dark:bg-purple-950/70 text-purple-600 dark:text-purple-300 flex items-center justify-center text-[8px] font-medium">
             +2
           </div>
         </div>
 
         {/* Right Info: Comment Count & Creation Date */}
-        <div className="flex items-center gap-2 text-[10.5px] text-[#86868B] dark:text-[#8E8E93]">
+        <div className="flex items-center gap-2 text-[10.5px] text-[#666666] dark:text-[#666666]">
           <div className="flex items-center gap-1 font-normal px-1.5 py-0.5 rounded bg-black/[0.025] dark:bg-white/[0.04]">
-            <MessageSquare className="w-3 h-3 text-[#86868B]" />
+            <MessageSquare className="w-3 h-3 text-[#666666]" />
             <span>{commentCount}</span>
           </div>
 

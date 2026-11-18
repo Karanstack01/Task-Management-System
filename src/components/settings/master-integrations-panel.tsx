@@ -639,8 +639,9 @@ export function MasterIntegrationsPanel({ orgId, section, whatsappTab, onWhatsap
           <details className="mt-1">
             <summary className="cursor-pointer font-semibold">How to make it permanent</summary>
             <div className="mt-1">
-              Set <code>SUPABASE_SERVICE_ROLE_KEY</code> and a real <code>NEXT_PUBLIC_SUPABASE_URL</code>, then run{" "}
-              <code>supabase/migrations/20261116_integration_settings.sql</code> in Supabase.
+              Add your Supabase keys to <code>.env.local</code> (<code>NEXT_PUBLIC_SUPABASE_URL</code>,{" "}
+              <code>SUPABASE_SERVICE_ROLE_KEY</code>), then run <code>npm run db:setup</code>. Full steps are in{" "}
+              <code>SUPABASE_SETUP.md</code>.
             </div>
           </details>
         </ResultBox>
@@ -666,7 +667,7 @@ export function MasterIntegrationsPanel({ orgId, section, whatsappTab, onWhatsap
                 onClick={() => set("email_provider", p)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                   form.email_provider === p
-                    ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-2xs"
+                    ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-2xs"
                     : "border border-black/[0.06] dark:border-white/[0.08] text-[#111111] dark:text-white bg-white/60 dark:bg-white/[0.04]"
                 }`}
               >

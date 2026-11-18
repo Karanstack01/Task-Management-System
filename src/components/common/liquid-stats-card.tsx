@@ -2,6 +2,7 @@
 
 import React from "react";
 import { LucideIcon, ArrowUpRight, ArrowDownRight, Minus } from "lucide-react";
+import { RollingNumber } from "@/components/common/rolling-number";
 
 export type MetricVariant = "chartreuse" | "electric" | "navy" | "ice" | "rose" | "amber";
 
@@ -56,21 +57,21 @@ export function LiquidStatsCard({
       <div className="flex items-start justify-between gap-2">
         <div className="space-y-1">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#86868B] dark:text-[#A1A1A6]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#666666] dark:text-[#A3A3A3]">
               {title}
             </span>
             {badge && (
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full glass-well text-[#86868B] dark:text-[#A1A1A6]">
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full glass-well text-[#666666] dark:text-[#A3A3A3]">
                 {badge}
               </span>
             )}
           </div>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111] dark:text-white">
-              {value}
+              <RollingNumber value={value} />
             </span>
             {subtitle && (
-              <span className="text-xs text-[#86868B] dark:text-[#A1A1A6] font-medium">{subtitle}</span>
+              <span className="text-xs text-[#666666] dark:text-[#A3A3A3] font-medium">{subtitle}</span>
             )}
           </div>
         </div>
@@ -86,7 +87,7 @@ export function LiquidStatsCard({
         <div className="mt-3.5 space-y-1">
           <div className="w-full glass-sunken rounded-full h-1.5 overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-500 ease-out bg-[#111111] dark:bg-white"
+              className="h-full rounded-full transition-all duration-1000 ease-out bg-[#111111] dark:bg-white"
               style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
             />
           </div>
@@ -100,7 +101,7 @@ export function LiquidStatsCard({
             <span
               className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold shadow-xs ${
                 isNeutral
-                  ? "glass-well text-[#86868B] dark:text-[#A1A1A6]"
+                  ? "glass-well text-[#666666] dark:text-[#A3A3A3]"
                   : isGood
                   ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                   : "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20"
@@ -113,9 +114,9 @@ export function LiquidStatsCard({
               ) : (
                 <ArrowDownRight className="w-3 h-3" />
               )}
-              {Math.abs(change)}%
+              <RollingNumber value={Math.abs(change)} decimals={1} suffix="%" duration={900} />
             </span>
-            <span className="text-[11px] text-[#86868B] dark:text-[#A1A1A6] font-medium">{changePeriod}</span>
+            <span className="text-[11px] text-[#666666] dark:text-[#A3A3A3] font-medium">{changePeriod}</span>
           </div>
         </div>
       )}

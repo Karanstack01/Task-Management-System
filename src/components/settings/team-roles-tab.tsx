@@ -128,7 +128,7 @@ export function TeamRolesTab() {
     <div className="space-y-6">
       {/* Top Header */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#8EABC7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A3A3A3]">
           Settings / Team & Roles
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
@@ -136,16 +136,16 @@ export function TeamRolesTab() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Team & roles
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-1 max-w-xl">
+            <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-1 max-w-xl">
               Manage organization teammates, hierarchical permissions, and department access.
             </p>
           </div>
 
           <button
             onClick={() => setShowInviteModal(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#0C132B] dark:bg-[#2357D6] hover:bg-[#16234D] text-white shadow-md transition-all self-start cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shadow-md transition-all self-start cursor-pointer"
           >
-            <Plus size={14} className="text-[#D4F20D]" />
+            <Plus size={14} className="text-brand" />
             <span>Invite member</span>
           </button>
         </div>
@@ -164,7 +164,7 @@ export function TeamRolesTab() {
           />
         </div>
 
-        <span className="text-xs font-semibold text-[#86868B] dark:text-[#A1A1A6]">
+        <span className="text-xs font-semibold text-[#666666] dark:text-[#A3A3A3]">
           {members.length} total seats used
         </span>
       </div>
@@ -206,7 +206,7 @@ export function TeamRolesTab() {
                     </div>
                   </td>
 
-                  <td className="py-3 text-slate-600 dark:text-[#DFECF7] font-medium">
+                  <td className="py-3 text-slate-600 dark:text-[#EEEEEE] font-medium">
                     {m.department}
                   </td>
 
@@ -245,13 +245,13 @@ export function TeamRolesTab() {
       {/* Invite Member Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-md bg-white dark:bg-[#0D1530] border border-slate-200 dark:border-white/20 rounded-3xl p-6 shadow-2xl relative">
+          <div className="w-full max-w-md bg-white dark:bg-[#111111] border border-slate-200 dark:border-white/20 rounded-3xl p-6 shadow-2xl relative">
             <div className="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-white/10">
               <div>
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">
                   Invite team member
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-0.5">
                   Grant workspace access and assign a CTMS operational role.
                 </p>
               </div>
@@ -274,7 +274,7 @@ export function TeamRolesTab() {
                   onChange={(e) => setInviteName(e.target.value)}
                   placeholder="e.g. Vikram Sharma"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
                 />
               </div>
 
@@ -288,7 +288,7 @@ export function TeamRolesTab() {
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="name@stackdrove.com"
                   required
-                  className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
                 />
               </div>
 
@@ -300,7 +300,7 @@ export function TeamRolesTab() {
                   <select
                     value={inviteRole}
                     onChange={(e) => setInviteRole(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
+                    className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
                   >
                     <option value="DELEGATEE">Delegatee</option>
                     <option value="DELEGATOR">Delegator (Manager)</option>
@@ -316,7 +316,7 @@ export function TeamRolesTab() {
                   <select
                     value={inviteDept}
                     onChange={(e) => setInviteDept(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
+                    className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
                   >
                     <option value="Technology">Technology</option>
                     <option value="Operations">Operations</option>
@@ -336,7 +336,7 @@ export function TeamRolesTab() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#0C132B] dark:bg-[#2357D6] text-white shadow-md"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shadow-md"
                 >
                   Send invitation
                 </button>

@@ -88,7 +88,7 @@ function NotificationPopUpBar({
           )}
         </div>
         {description && (
-          <p className="text-[11px] text-[#A1A1A6] leading-snug mt-0.5 truncate font-normal">
+          <p className="text-[11px] text-[#A3A3A3] leading-snug mt-0.5 truncate font-normal">
             {description}
           </p>
         )}
@@ -111,7 +111,7 @@ function NotificationPopUpBar({
       {!action && (
         <button
           onClick={() => toast.dismiss(id)}
-          className="p-1 rounded-md text-[#71717A] hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 -mr-1"
+          className="p-1 rounded-md text-[#666666] hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 -mr-1"
           aria-label="Dismiss notification"
         >
           <X size={13} />
@@ -148,7 +148,7 @@ export const notify = {
       (id) => (
         <NotificationPopUpBar
           id={id}
-          iconBg="bg-[#2357D6] text-white"
+          iconBg="bg-brand text-white dark:text-[#111111]"
           icon={<Info size={12} strokeWidth={2.8} />}
           title={title}
           description={options?.description}
@@ -210,7 +210,7 @@ export const notify = {
       (id) => (
         <NotificationPopUpBar
           id={id}
-          iconBg="bg-[#2357D6] text-white"
+          iconBg="bg-brand text-white dark:text-[#111111]"
           icon={<FileCheck2 size={12} strokeWidth={2.8} />}
           title={title}
           description={options?.description}
@@ -249,7 +249,7 @@ export const notify = {
       (id) => (
         <NotificationPopUpBar
           id={id}
-          iconBg="bg-[#2357D6] text-white"
+          iconBg="bg-brand text-white dark:text-[#111111]"
           icon={<UploadCloud size={12} strokeWidth={2.8} />}
           title={title}
           description={`${fileName}${

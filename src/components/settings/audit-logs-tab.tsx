@@ -214,7 +214,7 @@ const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
       avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
     },
     action: "Approved a maintenance spend",
-    target: "V-077 • $1,240",
+    target: "V-077 • ₹1,240",
     source: "Web • Oakland, CA",
     sourceType: "web",
   },
@@ -268,7 +268,7 @@ export function AuditLogsTab() {
     <div className="space-y-6">
       {/* Top Header & Breadcrumbs */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#8EABC7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A3A3A3]">
           Settings / Audit logs
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
@@ -276,14 +276,14 @@ export function AuditLogsTab() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Audit logs
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-1 max-w-xl">
+            <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-1 max-w-xl">
               Every change made by people and agents, with who, what and when. Kept for 2 years and cannot be edited.
             </p>
           </div>
 
           {/* Top Right Action & Badges */}
           <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-[#DFECF7] border border-slate-200 dark:border-white/15">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-[#EEEEEE] border border-slate-200 dark:border-white/15">
               <span>3,482 events in October</span>
             </span>
 
@@ -294,7 +294,7 @@ export function AuditLogsTab() {
 
             <button
               onClick={handleRetentionPolicy}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-[#DFECF7] hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-[#EEEEEE] hover:bg-slate-100 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 transition-colors cursor-pointer"
             >
               <Lock size={13} />
               <span>Retention policy</span>
@@ -302,7 +302,7 @@ export function AuditLogsTab() {
 
             <button
               onClick={handleExportCSV}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#7C3AED] hover:bg-[#6D28D9] dark:bg-[#2357D6] dark:hover:bg-[#1a44a6] text-white shadow-md transition-all hover:scale-[1.02] cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shadow-md transition-all hover:scale-[1.02] cursor-pointer"
             >
               <Download size={14} />
               <span>Export CSV</span>
@@ -312,12 +312,12 @@ export function AuditLogsTab() {
       </div>
 
       {/* Sub-Stats Summary Row */}
-      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#8EABC7] border-b border-slate-100 dark:border-white/10 pb-3">
+      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-[#A3A3A3] border-b border-slate-100 dark:border-white/10 pb-3">
         <div className="flex items-center gap-4">
           <span className="font-semibold text-slate-900 dark:text-white">
             142 events today
           </span>
-          <span className="text-[#7C3AED] dark:text-[#60A5FA] font-medium">
+          <span className="text-[#111111] dark:text-brand font-medium">
             118 by agents
           </span>
           <span className="text-slate-600 dark:text-slate-300 font-medium">
@@ -409,7 +409,7 @@ export function AuditLogsTab() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search audit trail..."
-            className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-white/60 dark:bg-white/[0.06] backdrop-blur-md border border-black/[0.06] dark:border-white/[0.1] text-[#111111] dark:text-white placeholder-slate-400 outline-none focus:ring-1 focus:ring-[#7C3AED] dark:focus:ring-[#2357D6]"
+            className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl bg-white/60 dark:bg-white/[0.06] backdrop-blur-md border border-black/[0.06] dark:border-white/[0.1] text-[#111111] dark:text-white placeholder-slate-400 outline-none focus:ring-1 focus:ring-[#111111] dark:focus:ring-brand"
           />
         </div>
       </div>
@@ -419,7 +419,7 @@ export function AuditLogsTab() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-black/[0.06] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-[11px] font-bold text-[#86868B] dark:text-[#A1A1A6] uppercase tracking-wider">
+              <tr className="border-b border-black/[0.06] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-[11px] font-bold text-[#666666] dark:text-[#A3A3A3] uppercase tracking-wider">
                 <th className="py-3 px-4 w-28">Time</th>
                 <th className="py-3 px-4 w-44">Actor</th>
                 <th className="py-3 px-4">Action</th>
@@ -434,7 +434,7 @@ export function AuditLogsTab() {
                   className="hover:bg-slate-50/80 dark:hover:bg-white/[0.03] transition-colors"
                 >
                   {/* Time */}
-                  <td className="py-3 px-4 font-medium text-slate-500 dark:text-[#8EABC7]">
+                  <td className="py-3 px-4 font-medium text-slate-500 dark:text-[#A3A3A3]">
                     {item.time}
                   </td>
 
@@ -442,7 +442,7 @@ export function AuditLogsTab() {
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2.5">
                       {item.actor.type === "agent" ? (
-                        <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-purple-950/70 text-[#7C3AED] dark:text-[#A78BFA] flex items-center justify-center ring-1 ring-purple-500/30 shrink-0">
+                        <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-purple-950/70 text-[#111111] dark:text-[#A3A3A3] flex items-center justify-center ring-1 ring-purple-500/30 shrink-0">
                           <Bot size={14} />
                         </div>
                       ) : item.actor.avatarUrl ? (
@@ -463,7 +463,7 @@ export function AuditLogsTab() {
                   </td>
 
                   {/* Action */}
-                  <td className="py-3 px-4 font-normal text-slate-700 dark:text-[#DFECF7]">
+                  <td className="py-3 px-4 font-normal text-slate-700 dark:text-[#EEEEEE]">
                     {item.action}
                   </td>
 

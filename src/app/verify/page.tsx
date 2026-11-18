@@ -308,7 +308,7 @@ export default function VerificationPortalPage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Pinned Header */}
-            <div className="shrink-0 px-5 sm:px-6 py-3.5 sm:py-4 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between bg-white/80 dark:bg-[#161618]/80 backdrop-blur-xl">
+            <div className="shrink-0 px-5 sm:px-6 py-3.5 sm:py-4 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between bg-white/80 dark:bg-[#111111]/80 backdrop-blur-xl">
               <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.08] flex items-center justify-center text-[#111111] dark:text-white shrink-0 shadow-2xs">
                   <ShieldCheck className="w-4 h-4" />

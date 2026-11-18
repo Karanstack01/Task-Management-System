@@ -77,7 +77,7 @@ export default function SaasExpiredPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#0B1B3F] text-white flex items-center justify-center text-sm font-semibold">
+        <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center text-sm font-semibold">
           Loading system status...
         </div>
       }

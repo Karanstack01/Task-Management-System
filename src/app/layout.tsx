@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
 import { AppShell } from "@/components/layout/app-shell";
 
-const inter = Inter({
-  variable: "--font-inter",
+// Brand typeface: a neutral grotesk with tight tracking (the brand book's wordmark and headings).
+const geist = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const geistMono = Geist_Mono({
@@ -21,8 +21,8 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F4F5F8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0A0B10" },
+    { media: "(prefers-color-scheme: light)", color: "#F1F1F1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
   ],
 };
 
@@ -46,7 +46,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
+      className={`${geist.variable} ${geistMono.variable} h-full antialiased overflow-x-hidden`}
     >
       <head>
         <script
@@ -57,7 +57,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex bg-[#F4F5F8] dark:bg-[#0A0A0C] transition-colors duration-300 overflow-x-hidden">
+      <body className="min-h-full flex bg-[#F1F1F1] dark:bg-[#0A0A0A] transition-colors duration-300 overflow-x-hidden">
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>

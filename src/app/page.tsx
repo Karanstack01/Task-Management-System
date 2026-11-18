@@ -27,9 +27,9 @@ export default function HomePage() {
       value: "128",
       subtext: "Across 6 departments",
       icon: Briefcase,
-      color: "text-[#2357D6]",
-      bg: "bg-[#DFECF7]/70",
-      border: "border-[#DFECF7]",
+      color: "text-brand",
+      bg: "bg-[#EEEEEE]/70",
+      border: "border-[#EEEEEE]",
     },
     {
       title: "Tasks In Progress",
@@ -45,9 +45,9 @@ export default function HomePage() {
       value: "19",
       subtext: "Proof submitted by assignees",
       icon: CheckCircle2,
-      color: "text-[#0C132B]",
-      bg: "bg-[#D4F20D]/30",
-      border: "border-[#D4F20D]/50",
+      color: "text-[#111111]",
+      bg: "bg-brand/30",
+      border: "border-brand/50",
     },
     {
       title: "Overdue Bottlenecks",
@@ -68,7 +68,7 @@ export default function HomePage() {
       desc: "Whitelist corporate domains, assign subscription tiers, seat limits, and operate emergency kill switch.",
       href: "/superadmin",
       icon: Crown,
-      accent: "from-[#2357D6] to-[#0C132B]",
+      accent: "from-brand to-[#111111]",
     },
     {
       title: "Company Admin Portal",
@@ -77,7 +77,7 @@ export default function HomePage() {
       desc: "Configure Cloudinary, Microsoft 365 Email, WhatsApp API v20, and appoint operational Admins.",
       href: "/company-admin",
       icon: Building2,
-      accent: "from-[#0C132B] to-[#1943AA]",
+      accent: "from-[#111111] to-[#333333]",
     },
     {
       title: "Operational Admin Console",
@@ -86,7 +86,7 @@ export default function HomePage() {
       desc: "Manage departments, user directory, role assignments, SLA parameters, and column permissions.",
       href: "/admin",
       icon: Shield,
-      accent: "from-[#2357D6] to-[#111A38]",
+      accent: "from-brand to-[#111111]",
     },
     {
       title: "Boss / Executive View",
@@ -95,7 +95,7 @@ export default function HomePage() {
       desc: "Bird's-eye view across all departments, overdue bottlenecks, executive reminders, and team scorecards.",
       href: "/boss",
       icon: Briefcase,
-      accent: "from-[#0C132B] via-[#111A38] to-[#2357D6]",
+      accent: "from-[#111111] via-[#111111] to-brand",
     },
     {
       title: "Delegator / Manager Workspace",
@@ -104,7 +104,7 @@ export default function HomePage() {
       desc: "Create tasks, review extension requests, inspect submitted proof files, and award punctuality scores.",
       href: "/delegator",
       icon: UserCheck,
-      accent: "from-[#1943AA] to-[#0C132B]",
+      accent: "from-[#333333] to-[#111111]",
     },
     {
       title: "Delegatee / My Tasks",
@@ -113,7 +113,7 @@ export default function HomePage() {
       desc: "View personal task queue, update completion progress, upload proof deliverables, and view score.",
       href: "/delegatee",
       icon: ListTodo,
-      accent: "from-[#2357D6] to-[#0C132B]",
+      accent: "from-brand to-[#111111]",
     },
   ];
 
@@ -124,7 +124,7 @@ export default function HomePage() {
       {/* ------------------------------------------------------------------- */}
       <div className="apple-card p-7 sm:p-9 relative overflow-hidden">
         {/* Subtle Ambient Refraction Orb */}
-        <div className="absolute right-[-5%] top-[-20%] w-[320px] h-[320px] rounded-full bg-[#2357D6]/[0.04] dark:bg-[#2357D6]/[0.06] blur-[100px] pointer-events-none" />
+        <div className="absolute right-[-5%] top-[-20%] w-[320px] h-[320px] rounded-full bg-brand/[0.04] dark:bg-brand/[0.06] blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold tracking-wide mb-3">
@@ -134,7 +134,7 @@ export default function HomePage() {
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111] dark:text-white">
             Enterprise Centralized Task Management System
           </h1>
-          <p className="text-[#86868B] dark:text-[#A1A1A6] text-xs sm:text-sm mt-2 leading-relaxed">
+          <p className="text-[#666666] dark:text-[#A3A3A3] text-xs sm:text-sm mt-2 leading-relaxed">
             Eliminating spreadsheet concurrency limits with high-throughput PostgreSQL,
             multi-channel notifications (Microsoft 365 + WhatsApp Meta v20), and automated
             mathematical SLA delay deductions.
@@ -168,7 +168,7 @@ export default function HomePage() {
               className="apple-card p-5"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#86868B] dark:text-[#A1A1A6] uppercase tracking-wider">
+                <span className="text-xs font-bold text-[#666666] dark:text-[#A3A3A3] uppercase tracking-wider">
                   {m.title}
                 </span>
                 <div className={`p-2.5 rounded-xl ${m.bg} ${m.color} border ${m.border}`}>
@@ -179,7 +179,7 @@ export default function HomePage() {
                 <span className="text-3xl font-black text-[#111111] dark:text-white tracking-tight">
                   {m.value}
                 </span>
-                <p className="text-xs text-[#86868B] dark:text-[#A1A1A6] mt-1 font-medium">{m.subtext}</p>
+                <p className="text-xs text-[#666666] dark:text-[#A3A3A3] mt-1 font-medium">{m.subtext}</p>
               </div>
             </div>
           );
@@ -193,7 +193,7 @@ export default function HomePage() {
             <h2 className="text-lg font-bold text-[#111111] dark:text-white">
               Role-Based Portals &amp; Governance
             </h2>
-            <p className="text-xs text-[#86868B] dark:text-[#A1A1A6]">
+            <p className="text-xs text-[#666666] dark:text-[#A3A3A3]">
               Select a portal according to your active permission tier (Active:{" "}
               <span className="font-bold text-[#111111] dark:text-white uppercase tracking-wide">{activeRole}</span>)
             </p>
@@ -219,17 +219,17 @@ export default function HomePage() {
                   <div className="w-10 h-10 rounded-xl bg-black/[0.04] dark:bg-white/[0.08] text-[#111111] dark:text-white flex items-center justify-center border border-black/[0.04] dark:border-white/[0.08] group-hover:scale-105 transition-transform">
                     <Icon size={18} />
                   </div>
-                  <span className="text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-full bg-black/[0.03] dark:bg-white/[0.06] text-[#86868B] dark:text-[#A1A1A6]">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-full bg-black/[0.03] dark:bg-white/[0.06] text-[#666666] dark:text-[#A3A3A3]">
                     {p.badge}
                   </span>
                 </div>
-                <h3 className="text-sm font-semibold text-[#111111] dark:text-white mt-3.5 group-hover:text-[#2357D6] dark:group-hover:text-[#60A5FA] transition-colors">
+                <h3 className="text-sm font-semibold text-[#111111] dark:text-white mt-3.5 group-hover:text-brand dark:group-hover:text-brand transition-colors">
                   {p.title}
                 </h3>
-                <p className="text-xs text-[#86868B] dark:text-[#A1A1A6] mt-1 leading-relaxed line-clamp-2">
+                <p className="text-xs text-[#666666] dark:text-[#A3A3A3] mt-1 leading-relaxed line-clamp-2">
                   {p.desc}
                 </p>
-                <div className="mt-4 pt-3 border-t border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between text-xs font-semibold text-[#111111] dark:text-white group-hover:text-[#2357D6] dark:group-hover:text-[#60A5FA]">
+                <div className="mt-4 pt-3 border-t border-black/[0.04] dark:border-white/[0.06] flex items-center justify-between text-xs font-semibold text-[#111111] dark:text-white group-hover:text-brand dark:group-hover:text-brand">
                   <span>Enter Portal</span>
                   <ArrowRight
                     size={14}

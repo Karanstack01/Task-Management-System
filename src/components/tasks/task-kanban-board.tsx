@@ -216,8 +216,8 @@ export function TaskKanbanBoard({
               className={cn(
                 "glass-column flex flex-col min-w-[280px] p-3 sm:p-3.5 transition-all duration-300 relative",
                 isColumnTargeted && [
-                  "ring-2 ring-[#2357D6]/70 dark:ring-[#2357D6]/80",
-                  "bg-gradient-to-b from-[#2357D6]/[0.06] via-[#2357D6]/[0.02] to-transparent",
+                  "ring-2 ring-brand/70 dark:ring-brand/80",
+                  "bg-gradient-to-b from-brand/[0.06] via-brand/[0.02] to-transparent",
                   "shadow-[0_14px_36px_-6px_rgba(35,87,214,0.22)]",
                   "scale-[1.01] -translate-y-0.5"
                 ]
@@ -233,7 +233,7 @@ export function TaskKanbanBoard({
                     className={cn(
                       "px-2 py-0.5 rounded-full text-[10.5px] font-medium select-none shadow-2xs border border-black/[0.04] dark:border-white/[0.08] transition-all duration-200",
                       col.badgeClass,
-                      isColumnTargeted && "scale-110 ring-2 ring-[#2357D6]/40"
+                      isColumnTargeted && "scale-110 ring-2 ring-brand/40"
                     )}
                   >
                     {columnTasks.length}
@@ -242,7 +242,7 @@ export function TaskKanbanBoard({
 
                 <button
                   type="button"
-                  className="p-1 rounded-md text-[#86868B] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
+                  className="p-1 rounded-md text-[#666666] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
                   title={`${col.title} options`}
                 >
                   <MoreVertical className="w-3.5 h-3.5" />
@@ -253,9 +253,9 @@ export function TaskKanbanBoard({
               <div className="flex-1 space-y-3.5 min-h-[300px]">
                 {/* Dynamic Animated Drop Target Indicator at top of populated column */}
                 {isColumnTargeted && columnTasks.length > 0 && (
-                  <div className="rounded-xl border-2 border-dashed border-[#2357D6] dark:border-[#2357D6] bg-gradient-to-r from-[#2357D6]/10 via-blue-600/15 to-[#2357D6]/10 p-3.5 flex items-center justify-between text-xs font-bold text-[#2357D6] dark:text-blue-300 animate-kanban-dropzone animate-in fade-in slide-in-from-top-2 duration-200 select-none shadow-[0_4px_16px_rgba(35,87,214,0.15)] relative overflow-hidden">
+                  <div className="rounded-xl border-2 border-dashed border-brand dark:border-brand bg-gradient-to-r from-brand/10 via-blue-600/15 to-brand/10 p-3.5 flex items-center justify-between text-xs font-bold text-brand dark:text-blue-300 animate-kanban-dropzone animate-in fade-in slide-in-from-top-2 duration-200 select-none shadow-[0_4px_16px_rgba(35,87,214,0.15)] relative overflow-hidden">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-[#2357D6]/20 dark:bg-[#2357D6]/30 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-brand/20 dark:bg-brand/30 flex items-center justify-center shrink-0">
                         <ArrowDownToLine className="w-4 h-4 animate-bounce" />
                       </div>
                       <div className="flex flex-col">
@@ -265,27 +265,27 @@ export function TaskKanbanBoard({
                         </span>
                       </div>
                     </div>
-                    <div className="w-2 h-2 rounded-full bg-[#2357D6] animate-ping" />
+                    <div className="w-2 h-2 rounded-full bg-brand animate-ping" />
                   </div>
                 )}
 
                 {columnTasks.length === 0 ? (
                   isColumnTargeted ? (
-                    <div className="h-32 rounded-2xl border-2 border-dashed border-[#2357D6] dark:border-[#2357D6] bg-[#2357D6]/10 dark:bg-[#2357D6]/15 flex flex-col items-center justify-center gap-2 text-center p-4 animate-kanban-dropzone animate-in fade-in zoom-in-95 duration-200 select-none">
-                      <div className="w-10 h-10 rounded-full bg-[#2357D6]/20 dark:bg-[#2357D6]/30 flex items-center justify-center text-[#2357D6] dark:text-blue-300">
+                    <div className="h-32 rounded-2xl border-2 border-dashed border-brand dark:border-brand bg-brand/10 dark:bg-brand/15 flex flex-col items-center justify-center gap-2 text-center p-4 animate-kanban-dropzone animate-in fade-in zoom-in-95 duration-200 select-none">
+                      <div className="w-10 h-10 rounded-full bg-brand/20 dark:bg-brand/30 flex items-center justify-center text-brand dark:text-blue-300">
                         <ArrowDownToLine className="w-5 h-5 animate-bounce" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-[#2357D6] dark:text-blue-300">
+                        <p className="text-xs font-bold text-brand dark:text-blue-300">
                           Drop task into {col.title}
                         </p>
-                        <p className="text-[11px] text-[#666666] dark:text-[#A1A1A6] mt-0.5">
+                        <p className="text-[11px] text-[#666666] dark:text-[#A3A3A3] mt-0.5">
                           Will transition to {col.title}
                         </p>
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center p-8 rounded-xl border border-dashed border-black/[0.08] dark:border-white/[0.1] text-center text-xs text-[#86868B] dark:text-[#A1A1A6]">
+                    <div className="flex flex-col items-center justify-center p-8 rounded-xl border border-dashed border-black/[0.08] dark:border-white/[0.1] text-center text-xs text-[#666666] dark:text-[#A3A3A3]">
                       <span>No tasks in {col.title}</span>
                     </div>
                   )
@@ -300,7 +300,7 @@ export function TaskKanbanBoard({
                         <div
                           key={task.id}
                           style={{ height: dragCardSize?.height || 160 }}
-                          className="w-full rounded-2xl border-2 border-dashed border-[#2357D6]/40 dark:border-[#2357D6]/40 bg-[#2357D6]/[0.03] dark:bg-[#2357D6]/[0.06] flex items-center justify-center text-xs font-semibold text-[#2357D6]/70 dark:text-blue-300/70 animate-pulse transition-all duration-200 select-none"
+                          className="w-full rounded-2xl border-2 border-dashed border-brand/40 dark:border-brand/40 bg-brand/[0.03] dark:bg-brand/[0.06] flex items-center justify-center text-xs font-semibold text-brand/70 dark:text-blue-300/70 animate-pulse transition-all duration-200 select-none"
                         >
                           <span>Moving #{task.task_no}...</span>
                         </div>
@@ -315,7 +315,7 @@ export function TaskKanbanBoard({
                           "relative rounded-2xl select-none touch-none",
                           !draggingTask && "cursor-grab active:cursor-grabbing hover:-translate-y-1 hover:shadow-lg transition-all duration-200 ease-out",
                           draggingTask && "opacity-85 transition-opacity duration-300",
-                          isJustDropped && "animate-kanban-land ring-2 ring-[#2357D6] dark:ring-[#2357D6]"
+                          isJustDropped && "animate-kanban-land ring-2 ring-brand dark:ring-brand"
                         )}
                       >
                         {/* Celebratory Just Landed Badge */}
@@ -350,7 +350,7 @@ export function TaskKanbanBoard({
       </div>
 
       {(cancelledCount > 0 || isReadOnly) && (
-        <p className="-mt-3 px-1 text-[11px] text-[#86868B] dark:text-neutral-500">
+        <p className="-mt-3 px-1 text-[11px] text-[#666666] dark:text-neutral-500">
           {isReadOnly && "Read-only board. "}
           {cancelledCount > 0 &&
             `${cancelledCount} cancelled task${cancelledCount === 1 ? " is" : "s are"} hidden from the board — switch to list view to see ${cancelledCount === 1 ? "it" : "them"}.`}
@@ -372,7 +372,7 @@ export function TaskKanbanBoard({
               transform: "scale(1.025) rotate(1deg)",
               transition: "transform 0.1s ease-out",
             }}
-            className="apple-card ring-2 ring-[#2357D6] dark:ring-[#2357D6] shadow-[0_24px_50px_-10px_rgba(35,87,214,0.35),0_12px_24px_-8px_rgba(0,0,0,0.25)] rounded-2xl select-none"
+            className="apple-card ring-2 ring-brand dark:ring-brand shadow-[0_24px_50px_-10px_rgba(35,87,214,0.35),0_12px_24px_-8px_rgba(0,0,0,0.25)] rounded-2xl select-none"
           >
             <TaskCard task={draggingTask} />
           </div>,

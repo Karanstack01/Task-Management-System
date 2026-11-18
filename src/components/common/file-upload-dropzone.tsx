@@ -135,13 +135,13 @@ export function FileUploadDropzone({
   return (
     <div className={`space-y-3 ${className}`}>
       {/* Zero DB Blob Architecture Banner */}
-      <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-100 dark:border-white/10 text-[11px] text-[#0C132B] dark:text-white">
+      <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-100 dark:border-white/10 text-[11px] text-[#111111] dark:text-white">
         <div className="flex items-center gap-1.5 font-bold">
-          <Cloud className="w-3.5 h-3.5 text-[#2357D6] dark:text-[#60A5FA]" />
+          <Cloud className="w-3.5 h-3.5 text-brand dark:text-brand" />
           <span>Cloudinary Direct Storage</span>
         </div>
-        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2357D6] dark:text-[#60A5FA]">
-          <ShieldCheck className="w-3 h-3 text-[#2357D6] dark:text-[#60A5FA]" />
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-brand dark:text-brand">
+          <ShieldCheck className="w-3 h-3 text-brand dark:text-brand" />
           Zero DB Blobs
         </span>
       </div>

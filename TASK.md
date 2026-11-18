@@ -75,7 +75,7 @@ _Next.js 15 • Supabase • Cloudinary • Microsoft 365 Email • CEOITBOX Wha
 
 ### 2.2 Schema Execution (DDL Migrations)
 
-- [x] Create comprehensive PostgreSQL DDL migration `supabase/migrations/20261102_initial_schema.sql` covering:
+- [x] Create comprehensive PostgreSQL DDL migration `supabase/migrations/20261102000000_initial_schema.sql` covering:
   - Core enums (`user_role`, `org_subscription_status`, `subscription_tier`, `task_priority`, `task_status`, `task_frequency`, `attachment_type`).
   - Relational tables: `organizations`, `departments`, `profiles`, `tasks` (30+ columns), `task_attachments`, `task_revisions`, `task_verifications`, `recurring_templates`, `holiday_calendar`, `system_settings`, `notification_logs`.
   - Sequential `task_no` sequence and trigger.
@@ -579,7 +579,7 @@ _Next.js 15 • Supabase • Cloudinary • Microsoft 365 Email • CEOITBOX Wha
 ### 14.1 Database Optimization & PostgreSQL 16 Schema
 
 - [x] Indexed primary foreign keys (`org_id`, `delegator_id`, `delegatee_id`, `status`, `current_target_date`).
-- [x] Defined PostgreSQL 16 DDL migration schema with RLS policies and triggers in `supabase/migrations/20261102_initial_schema.sql`.
+- [x] Defined PostgreSQL 16 DDL migration schema with RLS policies and triggers in `supabase/migrations/20261102000000_initial_schema.sql`.
 
 ### 14.2 Security Audit & Corporate Domain Whitelisting
 

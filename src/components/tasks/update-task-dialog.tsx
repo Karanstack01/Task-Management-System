@@ -141,7 +141,7 @@ export function UpdateTaskDialog({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Pinned Header */}
-        <div className="shrink-0 px-5 sm:px-6 py-4 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between bg-white/80 dark:bg-[#161618]/80 backdrop-blur-xl">
+        <div className="shrink-0 px-5 sm:px-6 py-4 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between bg-white/80 dark:bg-[#111111]/80 backdrop-blur-xl">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.08] text-[#111111] dark:text-white flex items-center justify-center shrink-0 shadow-2xs">
               <CheckCircle2 size={18} />
@@ -151,7 +151,7 @@ export function UpdateTaskDialog({
                 <h3 className="font-semibold text-sm sm:text-base text-[#111111] dark:text-white truncate tracking-tight">
                   Update Progress
                 </h3>
-                <span className="px-2 py-0.5 rounded-lg bg-[#2B4887]/10 dark:bg-[#3B82F6]/20 text-[#2B4887] dark:text-[#60A5FA] font-medium text-xs tracking-tight shrink-0">
+                <span className="px-2 py-0.5 rounded-lg bg-[#111111]/10 dark:bg-brand/20 text-[#111111] dark:text-brand font-medium text-xs tracking-tight shrink-0">
                   #{task.task_no}
                 </span>
               </div>
@@ -171,7 +171,7 @@ export function UpdateTaskDialog({
                 className="px-2.5 py-1.5 rounded-xl hover:bg-black/[0.05] dark:hover:bg-white/[0.08] text-neutral-600 dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold bg-black/[0.03] dark:bg-white/[0.05]"
                 title="Edit Full Task Details"
               >
-                <Pencil size={13} className="text-[#2B4887] dark:text-[#3B82F6]" />
+                <Pencil size={13} className="text-[#111111] dark:text-brand" />
                 <span className="hidden sm:inline">Edit Details</span>
               </button>
             )}
@@ -258,7 +258,7 @@ export function UpdateTaskDialog({
               {/* Deliverables Upload with compact dropzone */}
               <div>
                 <label className="text-xs font-semibold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight block mb-1.5">
-                  <Upload size={14} className="text-[#2B4887] dark:text-[#3B82F6]" />
+                  <Upload size={14} className="text-[#111111] dark:text-brand" />
                   <span>Proof of Work Deliverable (Cloudinary Upload)</span>
                 </label>
                 <FileUploadDropzone

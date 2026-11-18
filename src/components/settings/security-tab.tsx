@@ -120,7 +120,7 @@ export function SecurityTab() {
     <div className="space-y-6">
       {/* Top Header & Breadcrumbs */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#8EABC7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A3A3A3]">
           Settings / Security
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
@@ -128,20 +128,20 @@ export function SecurityTab() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Security
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-1 max-w-xl">
+            <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-1 max-w-xl">
               Sign in, session telemetry, and enterprise data protection for the StackDrove workspace.
             </p>
           </div>
 
           <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60">
-              <ShieldCheck size={14} className="text-[#2357D6] dark:text-[#D4F20D]" />
+              <ShieldCheck size={14} className="text-brand dark:text-brand" />
               <span>SOC 2 Type II Verified</span>
             </span>
 
             <button
               onClick={() => handleDownloadDoc("Enterprise Security Audit Report")}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-[#DFECF7] hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-[#EEEEEE] hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
             >
               <Download size={13} />
               <span>Security report</span>
@@ -166,7 +166,7 @@ export function SecurityTab() {
                     description: "SSO directory metadata verified with okta.stackdrove.com",
                   })
                 }
-                className="text-xs font-semibold text-[#2357D6] dark:text-[#DFECF7] hover:underline"
+                className="text-xs font-semibold text-brand dark:text-[#EEEEEE] hover:underline"
               >
                 Okta settings
               </button>
@@ -186,12 +186,12 @@ export function SecurityTab() {
                 <button
                   onClick={() => setSsoEnabled(!ssoEnabled)}
                   className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-                    ssoEnabled ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+                    ssoEnabled ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
                   }`}
                 >
                   <div
                     className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                      ssoEnabled ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                      ssoEnabled ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
                     }`}
                   />
                 </button>
@@ -211,14 +211,14 @@ export function SecurityTab() {
                   onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
                   className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
                     twoFactorEnabled
-                      ? "bg-[#2357D6] dark:bg-[#D4F20D]"
+                      ? "bg-[#111111] dark:bg-white"
                       : "bg-slate-200 dark:bg-white/20"
                   }`}
                 >
                   <div
                     className={`w-3.5 h-3.5 rounded-full transition-transform ${
                       twoFactorEnabled
-                        ? "translate-x-4 bg-white dark:bg-[#070B18]"
+                        ? "translate-x-4 bg-white dark:bg-[#0A0A0A]"
                         : "translate-x-0 bg-white"
                     }`}
                   />
@@ -239,14 +239,14 @@ export function SecurityTab() {
                   onClick={() => setIpRestricted(!ipRestricted)}
                   className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
                     ipRestricted
-                      ? "bg-[#2357D6] dark:bg-[#D4F20D]"
+                      ? "bg-[#111111] dark:bg-white"
                       : "bg-slate-200 dark:bg-white/20"
                   }`}
                 >
                   <div
                     className={`w-3.5 h-3.5 rounded-full transition-transform ${
                       ipRestricted
-                        ? "translate-x-4 bg-white dark:bg-[#070B18]"
+                        ? "translate-x-4 bg-white dark:bg-[#0A0A0A]"
                         : "translate-x-0 bg-white"
                     }`}
                   />
@@ -263,10 +263,10 @@ export function SecurityTab() {
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-500 dark:text-slate-400">Allowed email domain</span>
                 <div className="flex gap-1.5">
-                  <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-[#DFECF7]">
+                  <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-[#EEEEEE]">
                     stackdrove.com
                   </span>
-                  <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-[#DFECF7]">
+                  <span className="px-2 py-0.5 rounded-md font-mono text-[11px] font-bold bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-[#EEEEEE]">
                     ctms.com
                   </span>
                 </div>
@@ -323,9 +323,9 @@ export function SecurityTab() {
                 </div>
                 <button
                   disabled
-                  className="w-9 h-5 flex items-center rounded-full p-1 bg-[#2357D6] dark:bg-[#D4F20D] opacity-90 cursor-default"
+                  className="w-9 h-5 flex items-center rounded-full p-1 bg-[#111111] dark:bg-white opacity-90 cursor-default"
                 >
-                  <div className="w-3.5 h-3.5 rounded-full translate-x-4 bg-white dark:bg-[#070B18]" />
+                  <div className="w-3.5 h-3.5 rounded-full translate-x-4 bg-white dark:bg-[#0A0A0A]" />
                 </button>
               </div>
             </div>
@@ -341,7 +341,7 @@ export function SecurityTab() {
               </h3>
               <button
                 onClick={handleSignOutOtherSessions}
-                className="text-xs font-semibold text-[#2357D6] dark:text-[#DFECF7] hover:underline cursor-pointer"
+                className="text-xs font-semibold text-brand dark:text-[#EEEEEE] hover:underline cursor-pointer"
               >
                 Sign out other sessions
               </button>
@@ -398,11 +398,11 @@ export function SecurityTab() {
             <div className="mt-3 divide-y divide-slate-100 dark:divide-white/10">
               {INITIAL_EVENTS.map((ev) => (
                 <div key={ev.id} className="py-2.5 flex items-start gap-3 text-xs">
-                  <div className="p-1 rounded-lg bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-[#DFECF7] shrink-0 mt-0.5">
+                  <div className="p-1 rounded-lg bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-[#EEEEEE] shrink-0 mt-0.5">
                     {ev.type === "blocked" ? (
                       <AlertTriangle size={13} className="text-amber-500" />
                     ) : (
-                      <Shield size={13} className="text-[#2357D6] dark:text-[#D4F20D]" />
+                      <Shield size={13} className="text-brand dark:text-brand" />
                     )}
                   </div>
                   <div>
@@ -419,12 +419,12 @@ export function SecurityTab() {
       </div>
 
       {/* Compliance Documents Footer Bar */}
-      <div className="bg-white/95 dark:bg-[#0D1530] border border-slate-200/90 dark:border-white/18 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white/95 dark:bg-[#111111] border border-slate-200/90 dark:border-white/18 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
             Compliance documents
           </h4>
-          <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-0.5">
             Share attested compliance reports with enterprise auditors and client executives.
           </p>
         </div>

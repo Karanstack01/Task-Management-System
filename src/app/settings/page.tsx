@@ -77,7 +77,7 @@ const SETTINGS_TABS: NavTabItem[] = [
     label: "Security",
     icon: Shield,
     badge: "SOC 2",
-    badgeColor: "bg-[#2357D6]/10 text-[#2357D6] dark:bg-[#2357D6]/20 dark:text-[#60A5FA]",
+    badgeColor: "bg-brand/10 text-brand dark:bg-brand/20 dark:text-brand",
     roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN"],
   },
   {
@@ -141,8 +141,8 @@ function SettingsContent() {
               onClick={() => handleSelectTab(tab.id)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 transition-all ${
                 isActive
-                  ? "bg-[#111111] text-white dark:bg-white dark:text-[#111111] shadow-xs"
-                  : "bg-white dark:bg-[#161618] border border-black/[0.06] dark:border-white/[0.08] text-[#666666] dark:text-slate-300"
+                  ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
+                  : "bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] text-[#666666] dark:text-slate-300"
               }`}
             >
               <Icon size={13} />

@@ -61,7 +61,7 @@ export function TaskListView({
     if (items.length === 0) {
       return (
         <tr>
-          <td colSpan={7} className="px-6 py-8 text-center text-xs text-[#86868B] dark:text-[#A1A1A6]">
+          <td colSpan={7} className="px-6 py-8 text-center text-xs text-[#666666] dark:text-[#A3A3A3]">
             No tasks found in this view.
           </td>
         </tr>
@@ -81,14 +81,14 @@ export function TaskListView({
           {/* # Task Code */}
           <td className="px-5 py-3.5 font-mono font-bold text-xs text-[#111111] dark:text-white whitespace-nowrap">
             <div className="flex items-center gap-1.5">
-              <span className="px-2 py-0.5 rounded-md glass-well text-[11px] font-bold text-neutral-800 dark:text-neutral-200">
+              <span className="px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/10 border border-black/[0.04] dark:border-white/[0.06] text-[11px] font-bold text-neutral-800 dark:text-neutral-200">
                 {code}
               </span>
               {t.short_link && (
                 <button
                   type="button"
                   onClick={(e) => handleCopyLink(e, t.short_link)}
-                  className="opacity-0 group-hover:opacity-100 text-[#86868B] hover:text-[#2357D6] transition-opacity p-1 rounded hover:bg-black/[0.04] dark:hover:bg-white/[0.08]"
+                  className="opacity-0 group-hover:opacity-100 text-[#666666] hover:text-brand transition-opacity p-1 rounded hover:bg-black/[0.04] dark:hover:bg-white/[0.08]"
                   title="Copy shortlink"
                 >
                   <Share2 className="w-3 h-3" />
@@ -99,16 +99,16 @@ export function TaskListView({
 
           {/* Title & Description */}
           <td className="px-5 py-3.5 max-w-xs md:max-w-sm">
-            <div className="font-bold text-xs text-[#111111] dark:text-white truncate group-hover:text-[#2357D6] dark:group-hover:text-[#D4F20D] transition-colors">
+            <div className="font-bold text-xs text-[#111111] dark:text-white truncate group-hover:text-brand dark:group-hover:text-brand transition-colors">
               {t.title}
             </div>
             {t.description && (
-              <div className="text-[11px] text-[#86868B] dark:text-[#A1A1A6] truncate mt-0.5">
+              <div className="text-[11px] text-[#666666] dark:text-[#A3A3A3] truncate mt-0.5">
                 {t.description}
               </div>
             )}
             {t.attachments && t.attachments.length > 0 && (
-              <div className="flex items-center gap-1 text-[10px] text-[#2357D6] dark:text-[#D4F20D] font-medium mt-0.5">
+              <div className="flex items-center gap-1 text-[10px] text-brand dark:text-brand font-medium mt-0.5">
                 <Paperclip className="w-3 h-3" />
                 <span>{t.attachments.length} attachment(s)</span>
               </div>
@@ -125,7 +125,7 @@ export function TaskListView({
                 <div className="text-xs font-semibold text-[#111111] dark:text-white truncate">
                   {t.delegatee?.full_name || "Assignee"}
                 </div>
-                <div className="text-[10px] text-[#86868B] dark:text-[#A1A1A6] truncate">
+                <div className="text-[10px] text-[#666666] dark:text-[#A3A3A3] truncate">
                   By: {t.delegator?.full_name || "Manager"}
                 </div>
               </div>
@@ -178,7 +178,7 @@ export function TaskListView({
     <div className={cn("apple-card overflow-hidden shadow-md", className)}>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs text-[#666666] dark:text-neutral-400 select-none">
-          <thead className="glass-well text-[11px] font-semibold text-[#111111] dark:text-white uppercase tracking-wider border-b border-black/[0.06] dark:border-white/[0.08]">
+          <thead className="bg-neutral-50/90 dark:bg-white/[0.04] text-[11px] font-semibold text-[#111111] dark:text-white uppercase tracking-wider border-b border-black/[0.06] dark:border-white/[0.08]">
             <tr>
               <th className="px-5 py-3.5"># Task</th>
               <th className="px-5 py-3.5">Title & Deliverable</th>
@@ -206,7 +206,7 @@ export function TaskListView({
                           [group.code]: !prev[group.code],
                         }))
                       }
-                      className="glass-well cursor-pointer hover:bg-black/[0.05] dark:hover:bg-white/[0.08] transition-colors"
+                      className="bg-neutral-50/80 dark:bg-white/[0.03] cursor-pointer hover:bg-neutral-100 dark:hover:bg-white/[0.06] transition-colors border-y border-black/[0.04] dark:border-white/[0.06]"
                     >
                       <td colSpan={7} className="px-5 py-2.5">
                         <div className="flex items-center justify-between">

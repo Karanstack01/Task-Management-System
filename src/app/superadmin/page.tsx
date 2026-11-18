@@ -136,7 +136,7 @@ export default function SuperadminPage() {
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-[#111111] dark:text-white">
             Superadmin Licensing &amp; Tenant Master
           </h1>
-          <p className="text-[#86868B] dark:text-slate-400 text-xs md:text-sm mt-1 max-w-xl leading-relaxed">
+          <p className="text-[#666666] dark:text-slate-400 text-xs md:text-sm mt-1 max-w-xl leading-relaxed">
             Provision corporate domains, manage enterprise subscription quotas, and trigger
             the remote platform kill switch.
           </p>
@@ -144,7 +144,7 @@ export default function SuperadminPage() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-2 bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-slate-200 font-semibold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all hover:scale-[1.01] active:scale-[0.98] shrink-0 cursor-pointer"
+          className="bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] inline-flex items-center gap-2 font-semibold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all hover:scale-[1.01] active:scale-[0.98] shrink-0 cursor-pointer"
         >
           <Plus size={15} />
           <span>Provision New Tenant</span>
@@ -155,22 +155,22 @@ export default function SuperadminPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="apple-card p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#86868B] dark:text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#666666] dark:text-slate-400 uppercase tracking-wider">
               Total Tenants
             </span>
-            <Building2 size={18} className="text-[#86868B]" />
+            <Building2 size={18} className="text-[#666666]" />
           </div>
           <div className="mt-3">
             <span className="text-3xl font-extrabold text-[#111111] dark:text-white">
               {organizations.length}
             </span>
-            <p className="text-[11px] text-[#86868B] mt-1 font-medium">Managed client organizations</p>
+            <p className="text-[11px] text-[#666666] mt-1 font-medium">Managed client organizations</p>
           </div>
         </div>
 
         <div className="apple-card p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#86868B] dark:text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#666666] dark:text-slate-400 uppercase tracking-wider">
               Active Subscriptions
             </span>
             <ShieldCheck size={18} className="text-emerald-600 dark:text-emerald-400" />
@@ -179,13 +179,13 @@ export default function SuperadminPage() {
             <span className="text-3xl font-extrabold text-[#111111] dark:text-white">
               {activeCount}
             </span>
-            <p className="text-[11px] text-[#86868B] mt-1 font-medium">Healthy active licenses</p>
+            <p className="text-[11px] text-[#666666] mt-1 font-medium">Healthy active licenses</p>
           </div>
         </div>
 
         <div className="apple-card p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#86868B] dark:text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#666666] dark:text-slate-400 uppercase tracking-wider">
               Kill Switch / Suspended
             </span>
             <ShieldAlert size={18} className="text-rose-500" />
@@ -194,22 +194,22 @@ export default function SuperadminPage() {
             <span className="text-3xl font-extrabold text-rose-600 dark:text-rose-400">
               {suspendedCount}
             </span>
-            <p className="text-[11px] text-[#86868B] mt-1 font-medium">Locked out or expired</p>
+            <p className="text-[11px] text-[#666666] mt-1 font-medium">Locked out or expired</p>
           </div>
         </div>
 
         <div className="apple-card p-5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#86868B] dark:text-slate-400 uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#666666] dark:text-slate-400 uppercase tracking-wider">
               Total User Seats
             </span>
-            <Users size={18} className="text-[#86868B]" />
+            <Users size={18} className="text-[#666666]" />
           </div>
           <div className="mt-3">
             <span className="text-3xl font-extrabold text-[#111111] dark:text-white">
               {totalSeats}
             </span>
-            <p className="text-[11px] text-[#86868B] mt-1 font-medium">Licensed seats across all orgs</p>
+            <p className="text-[11px] text-[#666666] mt-1 font-medium">Licensed seats across all orgs</p>
           </div>
         </div>
       </div>
@@ -218,13 +218,13 @@ export default function SuperadminPage() {
       <div className="apple-card overflow-hidden">
         <div className="p-4 border-b border-black/[0.06] dark:border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="relative w-full sm:w-80">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#86868B]" />
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#666666]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Filter by organization or domain..."
-              className="w-full pl-9 pr-4 py-2 text-xs apple-input rounded-full placeholder:text-[#86868B]"
+              className="w-full pl-9 pr-4 py-2 text-xs apple-input rounded-full placeholder:text-[#666666]"
             />
           </div>
           <button
@@ -237,11 +237,11 @@ export default function SuperadminPage() {
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-xs text-[#86868B]">Loading tenants...</div>
+          <div className="p-8 text-center text-xs text-[#666666]">Loading tenants...</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-black/[0.02] dark:bg-white/[0.02] text-[#86868B] uppercase font-semibold tracking-wider text-[11px] border-b border-black/[0.06] dark:border-white/[0.08]">
+              <thead className="bg-black/[0.02] dark:bg-white/[0.02] text-[#666666] uppercase font-semibold tracking-wider text-[11px] border-b border-black/[0.06] dark:border-white/[0.08]">
                 <tr>
                   <th className="px-4 py-3.5">Organization</th>
                   <th className="px-4 py-3.5">Whitelisted Domains</th>
@@ -267,7 +267,7 @@ export default function SuperadminPage() {
                     >
                       <td className="px-4 py-3.5">
                         <div className="font-semibold text-[#111111] dark:text-white text-xs">{org.name}</div>
-                        <div className="text-[10px] text-[#86868B]">/{org.slug}</div>
+                        <div className="text-[10px] text-[#666666]">/{org.slug}</div>
                       </td>
                       <td className="px-4 py-3.5">
                         <div className="flex flex-wrap gap-1">
@@ -276,7 +276,7 @@ export default function SuperadminPage() {
                               key={d}
                               className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-[#111111] dark:text-white border border-black/[0.06] dark:border-white/[0.08] text-[10px] font-medium"
                             >
-                              <Globe size={10} className="text-[#86868B]" />
+                              <Globe size={10} className="text-[#666666]" />
                               <span>@{d}</span>
                             </span>
                           ))}
@@ -288,7 +288,7 @@ export default function SuperadminPage() {
                       <td className="px-4 py-3.5 text-[#111111] dark:text-white">
                         {org.max_users} Users
                       </td>
-                      <td className="px-4 py-3.5 text-[#86868B]">
+                      <td className="px-4 py-3.5 text-[#666666]">
                         <span className="inline-flex items-center gap-1">
                           <Calendar size={12} />
                           <span>
@@ -351,7 +351,7 @@ export default function SuperadminPage() {
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-[#86868B] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.08] text-sm font-bold transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[#666666] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.08] text-sm font-bold transition-colors cursor-pointer"
                 title="Close modal"
               >
                 <X size={15} />
@@ -404,7 +404,7 @@ export default function SuperadminPage() {
                   placeholder="e.g. acmeglobal.com, acme.co"
                   className="w-full px-3.5 py-2.5 apple-input"
                 />
-                <span className="text-[11px] text-[#86868B] font-medium mt-1 block">
+                <span className="text-[11px] text-[#666666] font-medium mt-1 block">
                   Only users registering with these email domains will be allowed access.
                 </span>
               </div>

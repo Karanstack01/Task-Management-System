@@ -212,7 +212,7 @@ export function CustomRecurrenceModal({
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/45 backdrop-blur-xs select-none animate-in fade-in duration-150">
       <div
-        className="relative bg-white dark:bg-[#18181B] text-[#111111] dark:text-neutral-100 rounded-2xl shadow-2xl border border-black/10 dark:border-white/10 w-full max-w-[360px] p-5 space-y-4 animate-in zoom-in-95 duration-150"
+        className="relative bg-white dark:bg-[#181818] text-[#111111] dark:text-neutral-100 rounded-2xl shadow-2xl border border-black/10 dark:border-white/10 w-full max-w-[360px] p-5 space-y-4 animate-in zoom-in-95 duration-150"
         role="dialog"
         aria-modal="true"
         aria-labelledby="recurrence-modal-title"
@@ -249,7 +249,7 @@ export function CustomRecurrenceModal({
             <select
               value={unit}
               onChange={(e) => setUnit(e.target.value as "day" | "week" | "month" | "year")}
-              className="h-8 px-2.5 text-xs font-medium apple-input rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#202024] cursor-pointer"
+              className="h-8 px-2.5 text-xs font-medium apple-input rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#1F1F1F] cursor-pointer"
             >
               <option value="day">day</option>
               <option value="week">week</option>
@@ -275,7 +275,7 @@ export function CustomRecurrenceModal({
                     onClick={() => handleToggleDay(day.key)}
                     className={`w-8 h-8 rounded-full text-xs font-semibold flex items-center justify-center transition-all ${
                       isSelected
-                        ? "bg-[#2563EB] text-white shadow-xs scale-105"
+                        ? "bg-brand text-white dark:text-[#111111] shadow-xs scale-105"
                         : "bg-black/[0.04] dark:bg-white/[0.06] text-neutral-600 dark:text-neutral-400 hover:bg-black/[0.08] dark:hover:bg-white/[0.12]"
                     }`}
                     title={day.name}
@@ -319,14 +319,14 @@ export function CustomRecurrenceModal({
         {unit === "month" && (
           <div className="space-y-1.5 pt-1">
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#2563EB] text-white">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-brand text-white dark:text-[#111111]">
                 Click Frequency
               </span>
             </div>
             <select
               value={monthlyOption}
               onChange={(e) => setMonthlyOption(e.target.value as "day_of_month" | "day_of_week")}
-              className="w-full h-8 px-2.5 text-xs font-medium apple-input rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#202024] cursor-pointer"
+              className="w-full h-8 px-2.5 text-xs font-medium apple-input rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#1F1F1F] cursor-pointer"
             >
               <option value="day_of_month">Monthly on day {pattern.dayOfMonth}</option>
               <option value="day_of_week">Monthly on {pattern.ordinalText}</option>
@@ -346,7 +346,7 @@ export function CustomRecurrenceModal({
                 name="recurrence_end"
                 checked={endType === "never"}
                 onChange={() => setEndType("never")}
-                className="w-4 h-4 text-[#2563EB] accent-[#2563EB] cursor-pointer"
+                className="w-4 h-4 text-brand accent-brand cursor-pointer"
               />
               <span className="font-normal text-neutral-800 dark:text-neutral-200">Never</span>
             </label>
@@ -359,7 +359,7 @@ export function CustomRecurrenceModal({
                 name="recurrence_end"
                 checked={endType === "on_date"}
                 onChange={() => setEndType("on_date")}
-                className="w-4 h-4 text-[#2563EB] accent-[#2563EB] cursor-pointer"
+                className="w-4 h-4 text-brand accent-brand cursor-pointer"
               />
               <label htmlFor="end_on_date" className="cursor-pointer shrink-0 font-normal text-neutral-800 dark:text-neutral-200">
                 On
@@ -371,7 +371,7 @@ export function CustomRecurrenceModal({
                 onChange={(e) => setEndDate(e.target.value)}
                 className={`flex-1 h-7 px-2 text-xs rounded-lg border transition-all ${
                   endType === "on_date"
-                    ? "apple-input border-black/15 dark:border-white/15 bg-white dark:bg-[#202024]"
+                    ? "apple-input border-black/15 dark:border-white/15 bg-white dark:bg-[#1F1F1F]"
                     : "bg-black/[0.04] dark:bg-white/[0.04] border-transparent text-neutral-400 cursor-not-allowed"
                 }`}
               />
@@ -385,7 +385,7 @@ export function CustomRecurrenceModal({
                 name="recurrence_end"
                 checked={endType === "after_occurrences"}
                 onChange={() => setEndType("after_occurrences")}
-                className="w-4 h-4 text-[#2563EB] accent-[#2563EB] cursor-pointer"
+                className="w-4 h-4 text-brand accent-brand cursor-pointer"
               />
               <label
                 htmlFor="end_after_occurrences"
@@ -402,7 +402,7 @@ export function CustomRecurrenceModal({
                 onChange={(e) => setOccurrences(Math.max(1, parseInt(e.target.value) || 1))}
                 className={`w-14 h-7 text-center text-xs font-semibold rounded-lg border transition-all ${
                   endType === "after_occurrences"
-                    ? "apple-input border-black/15 dark:border-white/15 bg-white dark:bg-[#202024]"
+                    ? "apple-input border-black/15 dark:border-white/15 bg-white dark:bg-[#1F1F1F]"
                     : "bg-black/[0.04] dark:bg-white/[0.04] border-transparent text-neutral-400 cursor-not-allowed"
                 }`}
               />
@@ -423,7 +423,7 @@ export function CustomRecurrenceModal({
           <button
             type="button"
             onClick={handleDone}
-            className="px-5 py-1.5 rounded-lg text-xs font-medium bg-[#2563EB] hover:bg-[#1D4ED8] text-white shadow-xs transition-colors cursor-pointer"
+            className="px-5 py-1.5 rounded-lg text-xs font-medium bg-brand hover:bg-[#666666] text-white shadow-xs transition-colors cursor-pointer"
           >
             Done
           </button>

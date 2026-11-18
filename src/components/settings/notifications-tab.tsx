@@ -26,7 +26,7 @@ export function NotificationsTab() {
     <div className="space-y-6">
       {/* Top Header */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#8EABC7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A3A3A3]">
           Settings / Notifications
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
@@ -34,7 +34,7 @@ export function NotificationsTab() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Notification preferences
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-1 max-w-xl">
+            <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-1 max-w-xl">
               Configure real-time communication channels, daily summaries, and urgency thresholds.
             </p>
           </div>
@@ -42,9 +42,9 @@ export function NotificationsTab() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#0C132B] dark:bg-[#2357D6] hover:bg-[#16234D] text-white shadow-md transition-all self-start cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shadow-md transition-all self-start cursor-pointer"
           >
-            <Save size={14} className="text-[#D4F20D]" />
+            <Save size={14} className="text-brand" />
             <span>{saving ? "Saving..." : "Save preferences"}</span>
           </button>
         </div>
@@ -67,12 +67,12 @@ export function NotificationsTab() {
           <button
             onClick={() => setWaAlerts(!waAlerts)}
             className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-              waAlerts ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+              waAlerts ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
             }`}
           >
             <div
               className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                waAlerts ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                waAlerts ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
               }`}
             />
           </button>
@@ -94,12 +94,12 @@ export function NotificationsTab() {
           <button
             onClick={() => setEmailAlerts(!emailAlerts)}
             className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-              emailAlerts ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+              emailAlerts ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
             }`}
           >
             <div
               className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                emailAlerts ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                emailAlerts ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
               }`}
             />
           </button>
@@ -121,12 +121,12 @@ export function NotificationsTab() {
           <button
             onClick={() => setBrowserPush(!browserPush)}
             className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-              browserPush ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+              browserPush ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
             }`}
           >
             <div
               className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                browserPush ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                browserPush ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
               }`}
             />
           </button>
@@ -148,12 +148,12 @@ export function NotificationsTab() {
           <button
             onClick={() => setAudioChimes(!audioChimes)}
             className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-              audioChimes ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+              audioChimes ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
             }`}
           >
             <div
               className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                audioChimes ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                audioChimes ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
               }`}
             />
           </button>
@@ -170,12 +170,12 @@ export function NotificationsTab() {
           <button
             onClick={() => setDailyDigest(!dailyDigest)}
             className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-              dailyDigest ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+              dailyDigest ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
             }`}
           >
             <div
               className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                dailyDigest ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                dailyDigest ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
               }`}
             />
           </button>

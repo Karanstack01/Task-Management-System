@@ -147,7 +147,7 @@ export default function DelegatorPortalPage() {
           onClick={() => setActiveTab("ALL")}
           className={`p-5 rounded-2xl text-left transition-all cursor-pointer select-none active:scale-[0.98] duration-200 ${
             activeTab === "ALL"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-md border border-[#111111] dark:border-white scale-[1.01]"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md border border-[#111111] dark:border-white scale-[1.01]"
               : "apple-card text-[#111111] dark:text-white hover:border-black/20 dark:hover:border-white/20"
           }`}
         >
@@ -161,7 +161,7 @@ export default function DelegatorPortalPage() {
           onClick={() => setActiveTab("IN_PROGRESS")}
           className={`p-5 rounded-2xl text-left transition-all cursor-pointer select-none active:scale-[0.98] duration-200 ${
             activeTab === "IN_PROGRESS"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-md border border-[#111111] dark:border-white scale-[1.01]"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md border border-[#111111] dark:border-white scale-[1.01]"
               : "apple-card text-[#111111] dark:text-white hover:border-black/20 dark:hover:border-white/20"
           }`}
         >
@@ -175,7 +175,7 @@ export default function DelegatorPortalPage() {
           onClick={() => setActiveTab("AWAITING_VERIFICATION")}
           className={`p-5 rounded-2xl text-left transition-all cursor-pointer select-none active:scale-[0.98] duration-200 ${
             activeTab === "AWAITING_VERIFICATION"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-md border border-[#111111] dark:border-white scale-[1.01]"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md border border-[#111111] dark:border-white scale-[1.01]"
               : "apple-card text-[#111111] dark:text-white hover:border-black/20 dark:hover:border-white/20"
           }`}
         >
@@ -189,7 +189,7 @@ export default function DelegatorPortalPage() {
           onClick={() => setActiveTab("DONE")}
           className={`p-5 rounded-2xl text-left transition-all cursor-pointer select-none active:scale-[0.98] duration-200 ${
             activeTab === "DONE"
-              ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-md border border-[#111111] dark:border-white scale-[1.01]"
+              ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md border border-[#111111] dark:border-white scale-[1.01]"
               : "apple-card text-[#111111] dark:text-white hover:border-black/20 dark:hover:border-white/20"
           }`}
         >
@@ -227,7 +227,7 @@ export default function DelegatorPortalPage() {
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A1A1A6] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
+                  className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A3A3A3] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer"
                 >
                   Clear &times;
                 </button>
@@ -268,7 +268,7 @@ export default function DelegatorPortalPage() {
                             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-[#111111] dark:text-white bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] transition-colors cursor-pointer shadow-2xs"
                             title="Edit task details & scope"
                           >
-                            <Pencil className="w-3 h-3 text-[#2B4887] dark:text-[#3B82F6]" />
+                            <Pencil className="w-3 h-3 text-[#111111] dark:text-brand" />
                             <span>Edit</span>
                           </button>
 
@@ -286,7 +286,7 @@ export default function DelegatorPortalPage() {
                           {t.status === "AWAITING_VERIFICATION" && (
                             <a
                               href="/verify"
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-[#2357D6]/10 text-[#2357D6] dark:bg-[#2357D6]/20 dark:text-[#60A5FA] hover:bg-[#2357D6]/20 transition-colors"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-brand/10 text-brand dark:bg-brand/20 dark:text-brand hover:bg-brand/20 transition-colors"
                               title="Verify deliverables"
                             >
                               <ShieldCheck className="w-3 h-3" />
@@ -359,7 +359,7 @@ export default function DelegatorPortalPage() {
               if (!isDeleting) setDeletingTask(null);
             }}
           />
-          <div className="relative w-full max-w-md bg-white dark:bg-[#161618] rounded-2xl sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 z-10 animate-in fade-in zoom-in-95 duration-150 space-y-4">
+          <div className="relative w-full max-w-md bg-white dark:bg-[#111111] rounded-2xl sm:rounded-3xl p-6 shadow-2xl border border-black/10 dark:border-white/10 z-10 animate-in fade-in zoom-in-95 duration-150 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center border border-rose-200 dark:border-rose-900/40 shrink-0">
                 <AlertTriangle className="w-5 h-5" />

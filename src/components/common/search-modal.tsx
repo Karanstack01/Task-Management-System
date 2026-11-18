@@ -347,7 +347,7 @@ export function SearchModal({
       className={cn(
         "mx-auto w-full max-w-xl max-h-[80vh] flex flex-col overflow-hidden rounded-2xl border backdrop-blur-2xl transition-all",
         "border-black/[0.08] bg-white/95 text-neutral-900 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]",
-        "dark:border-white/[0.12] dark:bg-[#16161A]/95 dark:text-white dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.75)]",
+        "dark:border-white/[0.12] dark:bg-[#111111]/95 dark:text-white dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.75)]",
         className
       )}
     >
@@ -368,7 +368,7 @@ export function SearchModal({
             <button
               type="button"
               onClick={() => handleQuery("")}
-              className="text-xs text-[#86868B] hover:text-[#111111] dark:hover:text-white px-1.5 py-0.5 rounded-md hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+              className="text-xs text-[#666666] hover:text-[#111111] dark:hover:text-white px-1.5 py-0.5 rounded-md hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
             >
               Clear
             </button>

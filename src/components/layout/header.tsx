@@ -222,7 +222,7 @@ export function Header() {
         {/* Desktop Split-Panel Toggle Button */}
         <button
           onClick={toggleSiderow}
-          className="hidden md:flex p-1.5 rounded-lg text-[#86868B] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
+          className="hidden md:flex p-1.5 rounded-lg text-[#666666] hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
           title={siderowOpen ? "Hide sub-sidebar (Ctrl+\\)" : "Show sub-sidebar (Ctrl+\\)"}
           aria-label="Toggle sub-sidebar"
         >
@@ -231,7 +231,7 @@ export function Header() {
 
         {/* Uppercase Active Section Indicator (Matches user screenshot: 'ORGANIZATION') */}
         <div className="flex items-center gap-2">
-          <span className="text-[11px] sm:text-xs font-bold tracking-wider text-[#86868B] dark:text-[#A1A1A6] uppercase px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.04] dark:border-white/[0.08] backdrop-blur-md">
+          <span className="text-[11px] sm:text-xs font-bold tracking-wider text-[#666666] dark:text-[#A3A3A3] uppercase px-2.5 py-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.04] dark:border-white/[0.08] backdrop-blur-md">
             <Suspense fallback={<SectionLabelFallback activeSection={activeSection} />}>
               <ActiveSectionLabelContent activeSection={activeSection} />
             </Suspense>
@@ -246,13 +246,13 @@ export function Header() {
         <button
           type="button"
           onClick={() => setSearchModalOpen(true)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.07] dark:hover:bg-white/[0.1] border border-black/[0.08] dark:border-white/[0.12] text-xs text-[#86868B] dark:text-[#A1A1A6] transition-all cursor-pointer w-44 sm:w-52 md:w-56 lg:w-60 justify-between shadow-xs hover:shadow-sm group select-none shrink-0"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] hover:bg-black/[0.07] dark:hover:bg-white/[0.1] border border-black/[0.08] dark:border-white/[0.12] text-xs text-[#666666] dark:text-[#A3A3A3] transition-all cursor-pointer w-44 sm:w-52 md:w-56 lg:w-60 justify-between shadow-xs hover:shadow-sm group select-none shrink-0"
         >
           <div className="flex items-center gap-2 truncate">
-            <MagnifyingGlass className="w-3.5 h-3.5 text-[#86868B] group-hover:text-[#111111] dark:group-hover:text-white transition-colors shrink-0" />
+            <MagnifyingGlass className="w-3.5 h-3.5 text-[#666666] group-hover:text-[#111111] dark:group-hover:text-white transition-colors shrink-0" />
             <span className="font-medium text-[#111111]/75 dark:text-white/75 truncate">Search CTMS...</span>
           </div>
-          <kbd className="flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-mono font-bold bg-black/[0.05] dark:bg-white/[0.08] text-[#86868B] dark:text-[#A1A1A6] shrink-0 border border-black/[0.04] dark:border-white/[0.06]">
+          <kbd className="flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-mono font-bold bg-black/[0.05] dark:bg-white/[0.08] text-[#666666] dark:text-[#A3A3A3] shrink-0 border border-black/[0.04] dark:border-white/[0.06]">
             <span>⌘</span>K
           </kbd>
         </button>
@@ -299,7 +299,7 @@ export function Header() {
               />
               <div
                 ref={helpRef}
-                className="apple-popover fixed z-[9999] w-80 sm:w-96 p-5 rounded-2xl bg-white dark:bg-[#161618] border border-black/[0.12] dark:border-white/[0.16] shadow-2xl shadow-black/30 dark:shadow-black/90 ring-1 ring-black/[0.06] dark:ring-white/[0.08] text-[#111111] dark:text-white animate-in fade-in zoom-in-95 duration-150"
+                className="apple-popover fixed z-[9999] w-80 sm:w-96 p-5 rounded-2xl bg-white dark:bg-[#111111] border border-black/[0.12] dark:border-white/[0.16] shadow-2xl shadow-black/30 dark:shadow-black/90 ring-1 ring-black/[0.06] dark:ring-white/[0.08] text-[#111111] dark:text-white animate-in fade-in zoom-in-95 duration-150"
                 style={{
                   top: `${helpCoords.top}px`,
                   right: `${helpCoords.right}px`,
@@ -321,7 +321,7 @@ export function Header() {
                 </div>
                 <button
                   onClick={() => setShowHelp(false)}
-                  className="p-1 rounded-lg text-[#86868B] hover:text-[#111111] dark:hover:text-white cursor-pointer"
+                  className="p-1 rounded-lg text-[#666666] hover:text-[#111111] dark:hover:text-white cursor-pointer"
                 >
                   <X size={14} />
                 </button>
@@ -329,25 +329,25 @@ export function Header() {
 
               <div className="py-3 space-y-2 text-xs">
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#86868B]">Toggle Sub-Sidebar</span>
+                  <span className="text-[#666666]">Toggle Sub-Sidebar</span>
                   <kbd className="px-2 py-0.5 rounded bg-black/[0.05] dark:bg-white/[0.1] font-mono text-[10px] font-bold">
                     Ctrl + \
                   </kbd>
                 </div>
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#86868B]">Global Search</span>
+                  <span className="text-[#666666]">Global Search</span>
                   <kbd className="px-2 py-0.5 rounded bg-black/[0.05] dark:bg-white/[0.1] font-mono text-[10px] font-bold">
                     Ctrl + K
                   </kbd>
                 </div>
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#86868B]">Toggle Theme</span>
+                  <span className="text-[#666666]">Toggle Theme</span>
                   <kbd className="px-2 py-0.5 rounded bg-black/[0.05] dark:bg-white/[0.1] font-mono text-[10px] font-bold">
                     Ctrl + Shift + D
                   </kbd>
                 </div>
                 <div className="flex items-center justify-between py-1">
-                  <span className="text-[#86868B]">Toggle Help</span>
+                  <span className="text-[#666666]">Toggle Help</span>
                   <kbd className="px-2 py-0.5 rounded bg-black/[0.05] dark:bg-white/[0.1] font-mono text-[10px] font-bold">
                     ?
                   </kbd>
@@ -361,13 +361,13 @@ export function Header() {
                   className="flex items-center justify-between p-2.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.04] hover:bg-black/[0.05] dark:hover:bg-white/[0.08] transition-colors text-xs font-medium"
                 >
                   <div className="flex items-center gap-2">
-                    <BookOpen size={14} className="text-[#2357D6] dark:text-[#D4F20D]" />
+                    <BookOpen size={14} className="text-brand dark:text-brand" />
                     <span>Download Official Brand Book</span>
                   </div>
-                  <ExternalLink size={12} className="text-[#86868B]" />
+                  <ExternalLink size={12} className="text-[#666666]" />
                 </a>
 
-                <div className="flex items-center gap-1.5 text-[11px] text-[#86868B] px-1">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#666666] px-1">
                   <Mail size={12} />
                   <span>Support: head@stackdrove.com</span>
                 </div>
@@ -388,7 +388,7 @@ export function Header() {
             aria-label="User Profile"
           >
             <span>OG</span>
-            <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#161618]" />
+            <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#111111]" />
           </button>
 
           {/* Profile Dropdown rendered via portal into document.body */}
@@ -402,7 +402,7 @@ export function Header() {
               />
               <div
                 ref={profileRef}
-                className="apple-popover fixed z-[9999] w-64 p-4 rounded-2xl bg-white dark:bg-[#161618] border border-black/[0.12] dark:border-white/[0.16] shadow-2xl shadow-black/30 dark:shadow-black/90 ring-1 ring-black/[0.06] dark:ring-white/[0.08] text-[#111111] dark:text-white animate-in fade-in zoom-in-95 duration-150"
+                className="apple-popover fixed z-[9999] w-64 p-4 rounded-2xl bg-white dark:bg-[#111111] border border-black/[0.12] dark:border-white/[0.16] shadow-2xl shadow-black/30 dark:shadow-black/90 ring-1 ring-black/[0.06] dark:ring-white/[0.08] text-[#111111] dark:text-white animate-in fade-in zoom-in-95 duration-150"
                 style={{
                   top: `${profileCoords.top}px`,
                   right: `${profileCoords.right}px`,
@@ -419,12 +419,12 @@ export function Header() {
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-xs font-bold truncate">Omar Galal</h4>
-                    <p className="text-[11px] text-[#86868B] truncate">head@stackdrove.com</p>
+                    <p className="text-[11px] text-[#666666] truncate">head@stackdrove.com</p>
                   </div>
                 </div>
 
                 <div className="py-3 space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#86868B] block mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#666666] block mb-1">
                     Active Governance View
                   </span>
                   {(
@@ -461,7 +461,7 @@ export function Header() {
                     onClick={() => setShowProfile(false)}
                     className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold text-[#111111] dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-colors cursor-pointer"
                   >
-                    <Settings size={14} className="text-[#86868B]" />
+                    <Settings size={14} className="text-[#666666]" />
                     <span>Workspace Settings</span>
                   </Link>
                   <button

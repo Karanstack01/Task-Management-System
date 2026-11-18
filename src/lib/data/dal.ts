@@ -25,7 +25,7 @@ import {
   initialHolidays,
   initialRecurringTemplates,
 } from "./mock-db";
-import { isTaskOverdue, getRevisionBlockReason } from "./task-utils";
+import { isTaskOverdue, getRevisionBlockReason, calculateSlaScore } from "./task-utils";
 import {
   normalizeStatus,
   planStatusChange,
@@ -799,37 +799,99 @@ class LocalRepository {
       const completed = assigned.filter((t) => t.status === "DONE");
       const onTime = completed.filter((t) => t.delay_days === 0);
       const delayed = completed.filter((t) => t.delay_days > 0);
+      const activeOverdue = assigned.filter((t) => isTaskOverdue(t));
 
+      // Punctuality rate of completed deliverables
       const punctualityRate =
-        assigned.length > 0 ? Math.round((onTime.length / assigned.length) * 100) : 100;
+        completed.length > 0
+          ? Math.round((onTime.length / completed.length) * 100)
+          : assigned.length > 0
+          ? Math.max(0, 100 - activeOverdue.length * 20)
+          : 100;
 
-      const totalScore = completed.reduce((sum, t) => sum + (t.actual_score || 0), 0);
-      const averageScore = completed.length > 0 ? Number((totalScore / completed.length).toFixed(1)) : 10.0;
+      const completionRate =
+        assigned.length > 0 ? Math.round((completed.length / assigned.length) * 100) : 0;
+
+      // Algorithmic SLA calculation:
+      // Base: 10.0
+      // Deductions: -2.0 per delayed day on completed tasks
+      // Deductions: -0.4 per active overdue task in active queue
+      // First-time bonus: +0.2 if onTime / completed is 100% and completed >= 2
+      let calculatedScore = 10.0;
+      if (completed.length > 0) {
+        const totalCompletedScore = completed.reduce((sum, t) => {
+          const score = calculateSlaScore(t.allocated_score || 10.0, t.delay_days || 0, t.actual_score);
+          return sum + score;
+        }, 0);
+        calculatedScore = totalCompletedScore / completed.length;
+      }
+
+      // Penalty for unresolved overdue items in queue
+      if (activeOverdue.length > 0) {
+        calculatedScore = Math.max(1.0, calculatedScore - activeOverdue.length * 0.4);
+      }
+
+      // First-pass bonus for high performers with clean delivery
+      if (completed.length >= 2 && delayed.length === 0) {
+        calculatedScore = Math.min(10.0, calculatedScore + 0.2);
+      }
+
+      const averageScore = Number(calculatedScore.toFixed(1));
 
       const dept = this.departments.find((d) => d.id === p.department_id);
+
+      const tier: "ELITE" | "ON_TARGET" | "NEEDS_ATTENTION" =
+        averageScore >= 9.0 ? "ELITE" : averageScore >= 7.5 ? "ON_TARGET" : "NEEDS_ATTENTION";
+
+      const trend =
+        averageScore >= 9.0 ? 5.2 : averageScore >= 8.0 ? 2.4 : -3.5;
+
+      const taskSummaries = assigned.map((t) => ({
+        id: t.id,
+        task_no: t.task_no,
+        title: t.title,
+        status: t.status,
+        priority: t.priority,
+        current_target_date: t.current_target_date,
+        completion_date: t.completion_date,
+        delay_days: t.delay_days,
+        allocated_score: t.allocated_score || 10.0,
+        actual_score: t.actual_score || 0.0,
+        is_overdue: isTaskOverdue(t),
+      }));
 
       return {
         userId: p.id,
         fullName: p.full_name,
         email: p.email,
         role: p.role,
+        avatarUrl: p.avatar_url || null,
         departmentName: dept?.name || "General",
+        departmentId: p.department_id || null,
         totalTasks: assigned.length,
         completedTasks: completed.length,
         onTimeTasks: onTime.length,
         delayedTasks: delayed.length,
+        activeOverdueTasks: activeOverdue.length,
         punctualityRate,
+        completionRate,
         averageScore,
         rank: 1,
+        tier,
+        trend,
+        tasks: taskSummaries,
       };
     });
 
-    // Sort descending by average score then punctuality rate
+    // Sort descending by average score then punctuality rate then completed count
     scorecards.sort((a, b) => {
       if (b.averageScore !== a.averageScore) {
         return b.averageScore - a.averageScore;
       }
-      return b.punctualityRate - a.punctualityRate;
+      if (b.punctualityRate !== a.punctualityRate) {
+        return b.punctualityRate - a.punctualityRate;
+      }
+      return b.completedTasks - a.completedTasks;
     });
 
     // Assign rank
@@ -867,15 +929,110 @@ class LocalRepository {
       };
     });
 
+    const DAY = 86400000;
+    const now = Date.now();
+    const openTasks = orgTasks.filter((t) => ["PENDING", "IN_PROGRESS", "OVERDUE"].includes(t.status));
+
+    // Real average turnaround: start -> completion, in days, over completed tasks
+    const turnarounds = completedTasks
+      .map((t) => {
+        const s = new Date(t.start_date || t.created_at).getTime();
+        const e = new Date(t.completion_date || t.updated_at).getTime();
+        return isNaN(s) || isNaN(e) ? null : Math.max(0, (e - s) / DAY);
+      })
+      .filter((v): v is number => v !== null);
+    const averageTurnaroundDays =
+      turnarounds.length > 0
+        ? Number((turnarounds.reduce((a, b) => a + b, 0) / turnarounds.length).toFixed(1))
+        : 0;
+
+    const priorities = ["CRITICAL", "HIGH", "MEDIUM", "LOW"] as const;
+    const priorityBreakdown = priorities.map((p) => {
+      const open = openTasks.filter((t) => t.priority === p);
+      return {
+        priority: p,
+        open: open.length,
+        overdue: open.filter((t) => isTaskOverdue(t)).length,
+        done: completedTasks.filter((t) => t.priority === p).length,
+      };
+    });
+
+    // Deadline health of open work
+    const daysToDue = (t: { current_target_date: string }) =>
+      (new Date(t.current_target_date).getTime() - now) / DAY;
+    const aging = {
+      overdueOver7: openTasks.filter((t) => daysToDue(t) < -7).length,
+      overdue3to7: openTasks.filter((t) => daysToDue(t) >= -7 && daysToDue(t) < -3).length,
+      overdue0to3: openTasks.filter((t) => daysToDue(t) >= -3 && daysToDue(t) < 0).length,
+      dueIn3: openTasks.filter((t) => daysToDue(t) >= 0 && daysToDue(t) < 3).length,
+      dueIn7: openTasks.filter((t) => daysToDue(t) >= 3 && daysToDue(t) < 7).length,
+      later: openTasks.filter((t) => daysToDue(t) >= 7).length,
+    };
+
+    // Weekly created vs completed, last 8 weeks (oldest first)
+    const weekly = Array.from({ length: 8 }, (_, i) => {
+      const end = now - (7 - i) * 7 * DAY + 7 * DAY;
+      const start = end - 7 * DAY;
+      const inWeek = (iso?: string | null) => {
+        if (!iso) return false;
+        const ts = new Date(iso).getTime();
+        return ts >= start && ts < end;
+      };
+      return {
+        label: new Date(start).toLocaleDateString("en-GB", { day: "2-digit", month: "short" }),
+        created: orgTasks.filter((t) => inWeek(t.created_at)).length,
+        completed: completedTasks.filter((t) => inWeek(t.completion_date || t.updated_at)).length,
+      };
+    });
+
+    // Workload per assignee
+    const workload = this.profiles
+      .filter((p) => p.org_id === orgId)
+      .map((p) => {
+        const mine = openTasks.filter((t) => t.delegatee_id === p.id);
+        return {
+          userId: p.id,
+          name: p.full_name,
+          open: mine.length,
+          overdue: mine.filter((t) => isTaskOverdue(t)).length,
+        };
+      })
+      .filter((w) => w.open > 0)
+      .sort((a, b) => b.open - a.open)
+      .slice(0, 6);
+
+    // Most delayed open tasks
+    const topOverdue = overdueTasks
+      .map((t) => ({
+        id: t.id,
+        taskNo: t.task_no,
+        title: t.title,
+        priority: t.priority,
+        assignee: this.profiles.find((p) => p.id === t.delegatee_id)?.full_name || "Unassigned",
+        daysLate: Math.max(1, Math.ceil(-daysToDue(t))),
+      }))
+      .sort((a, b) => b.daysLate - a.daysLate)
+      .slice(0, 5);
+
+    const revised = orgTasks.filter((t) => (t.revision_count || 0) > 0).length;
+
     return {
       totalTasks,
       completedCount: completedTasks.length,
+      pendingCount: orgTasks.filter((t) => t.status === "PENDING").length,
       inProgressCount: orgTasks.filter((t) => t.status === "IN_PROGRESS").length,
       awaitingVerificationCount: orgTasks.filter((t) => t.status === "AWAITING_VERIFICATION").length,
       overdueCount: overdueTasks.length,
+      openCount: openTasks.length,
       completionRate,
       onTimeDeliveryRate,
-      averageTurnaroundDays: 2.4,
+      averageTurnaroundDays,
+      revisionRate: totalTasks > 0 ? Math.round((revised / totalTasks) * 100) : 0,
+      priorityBreakdown,
+      aging,
+      weekly,
+      workload,
+      topOverdue,
       departmentBreakdown,
     };
   }

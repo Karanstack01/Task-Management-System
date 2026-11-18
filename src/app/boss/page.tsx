@@ -104,7 +104,7 @@ export default function BossPortalPage() {
         id: "IN_PROGRESS",
         label: "In Progress",
         sublabel: "Active execution",
-        icon: <Activity className="w-3.5 h-3.5 text-[#2357D6]" strokeWidth={2} />,
+        icon: <Activity className="w-3.5 h-3.5 text-brand" strokeWidth={2} />,
       },
       {
         id: "AWAITING_VERIFICATION",
@@ -132,7 +132,7 @@ export default function BossPortalPage() {
       ...departments.map((d) => ({
         id: d.id,
         label: d.name,
-        icon: <Building2 className="w-3.5 h-3.5 text-[#2357D6] dark:text-[#2357D6]" strokeWidth={2} />,
+        icon: <Building2 className="w-3.5 h-3.5 text-brand dark:text-brand" strokeWidth={2} />,
       })),
     ],
     [departments]
@@ -210,7 +210,7 @@ export default function BossPortalPage() {
           <button
             onClick={loadData}
             aria-label="Refresh data"
-            className="h-9 w-9 rounded-xl border border-black/[0.08] dark:border-white/[0.08] bg-white/70 dark:bg-white/[0.04] hover:bg-white dark:hover:bg-white/[0.08] text-[#111111] dark:text-white transition-colors shadow-2xs flex items-center justify-center cursor-pointer"
+            className="h-9 w-9 rounded-xl border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-white/[0.06] hover:bg-neutral-50 dark:hover:bg-white/[0.1] text-[#111111] dark:text-white transition-colors shadow-2xs flex items-center justify-center cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
@@ -266,7 +266,7 @@ export default function BossPortalPage() {
 
       {/* Interactive Status & Priority Pill Bar (Video Design System) */}
       <div className="glass-section p-3.5 sm:p-4 space-y-2">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#86868B] block">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#666666] block">
           Task Status Filter
         </span>
         <AnimatedStatusFilterBar
@@ -305,7 +305,7 @@ export default function BossPortalPage() {
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A1A1A6] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+              className="text-xs px-2.5 py-1 rounded-full bg-black/[0.05] dark:bg-white/[0.1] text-[#666666] dark:text-[#A3A3A3] hover:text-[#111111] dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1"
             >
               <span>Clear</span>
               <X size={11} />

@@ -18,7 +18,7 @@ import { calculateDelayDays, calculateSlaScore } from "./task-utils";
  * - Submitting work that needs verification requires at least one proof-of-work attachment.
  * - Every state entry writes a consistent set of derived fields (completion/verification/score).
  *
- * Mirrored at the database level by migration 20261114_state_machine_hardening.sql.
+ * Mirrored at the database level by migration 20261114000000_state_machine_hardening.sql.
  */
 
 export type TaskTransitionErrorCode =

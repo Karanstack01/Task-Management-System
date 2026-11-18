@@ -367,7 +367,7 @@ export default function RecurringTemplatesPage() {
                     className="w-full px-3.5 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
                     {profiles.map((p) => (
-                      <option key={p.id} value={p.id} className="dark:bg-[#111115] dark:text-white">
+                      <option key={p.id} value={p.id} className="dark:bg-[#111111] dark:text-white">
                         {p.full_name} ({p.role})
                       </option>
                     ))}
@@ -384,7 +384,7 @@ export default function RecurringTemplatesPage() {
                     className="w-full px-3.5 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
                     {profiles.map((p) => (
-                      <option key={p.id} value={p.id} className="dark:bg-[#111115] dark:text-white">
+                      <option key={p.id} value={p.id} className="dark:bg-[#111111] dark:text-white">
                         {p.full_name} ({p.role})
                       </option>
                     ))}
@@ -401,7 +401,7 @@ export default function RecurringTemplatesPage() {
                     <button
                       type="button"
                       onClick={() => setIsRecurrenceModalOpen(true)}
-                      className="text-[10px] font-semibold text-[#2563EB] dark:text-blue-400 hover:underline cursor-pointer"
+                      className="text-[10px] font-semibold text-brand dark:text-blue-400 hover:underline cursor-pointer"
                     >
                       {recurrenceConfig ? "Edit" : "Custom"}
                     </button>
@@ -417,13 +417,13 @@ export default function RecurringTemplatesPage() {
                     }}
                     className="w-full px-3.5 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
-                    <option value="DAILY" className="dark:bg-[#111115] dark:text-white">DAILY</option>
-                    <option value="WEEKLY" className="dark:bg-[#111115] dark:text-white">WEEKLY</option>
-                    <option value="MONTHLY" className="dark:bg-[#111115] dark:text-white">MONTHLY</option>
-                    <option value="CUSTOM_INTERVAL" className="dark:bg-[#111115] dark:text-white">CUSTOM INTERVAL</option>
+                    <option value="DAILY" className="dark:bg-[#111111] dark:text-white">DAILY</option>
+                    <option value="WEEKLY" className="dark:bg-[#111111] dark:text-white">WEEKLY</option>
+                    <option value="MONTHLY" className="dark:bg-[#111111] dark:text-white">MONTHLY</option>
+                    <option value="CUSTOM_INTERVAL" className="dark:bg-[#111111] dark:text-white">CUSTOM INTERVAL</option>
                   </select>
                   {recurrenceConfig && (
-                    <div className="text-[10px] font-medium text-[#2563EB] dark:text-blue-400 truncate mt-1">
+                    <div className="text-[10px] font-medium text-brand dark:text-blue-400 truncate mt-1">
                       {recurrenceConfig.summaryText}
                     </div>
                   )}
@@ -438,10 +438,10 @@ export default function RecurringTemplatesPage() {
                     onChange={(e) => setPriority(e.target.value as TaskPriority)}
                     className="w-full px-3.5 py-2.5 apple-input rounded-xl text-xs font-medium"
                   >
-                    <option value="LOW" className="dark:bg-[#111115] dark:text-white">LOW</option>
-                    <option value="MEDIUM" className="dark:bg-[#111115] dark:text-white">MEDIUM</option>
-                    <option value="HIGH" className="dark:bg-[#111115] dark:text-white">HIGH</option>
-                    <option value="CRITICAL" className="dark:bg-[#111115] dark:text-white">CRITICAL</option>
+                    <option value="LOW" className="dark:bg-[#111111] dark:text-white">LOW</option>
+                    <option value="MEDIUM" className="dark:bg-[#111111] dark:text-white">MEDIUM</option>
+                    <option value="HIGH" className="dark:bg-[#111111] dark:text-white">HIGH</option>
+                    <option value="CRITICAL" className="dark:bg-[#111111] dark:text-white">CRITICAL</option>
                   </select>
                 </div>
 

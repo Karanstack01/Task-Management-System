@@ -35,7 +35,7 @@ export function OrganizationTab() {
       {/* ------------------------------------------------------------------- */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <nav className="text-[11px] font-semibold text-[#86868B] dark:text-[#A1A1A6] tracking-tight uppercase">
+          <nav className="text-[11px] font-semibold text-[#666666] dark:text-[#A3A3A3] tracking-tight uppercase">
             SETTINGS / ORGANIZATION
           </nav>
           <div className="flex items-center gap-3 mt-1">
@@ -47,7 +47,7 @@ export function OrganizationTab() {
               <span>Enterprise Tenant</span>
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-[#86868B] dark:text-[#A1A1A6] mt-1">
+          <p className="text-xs sm:text-sm text-[#666666] dark:text-[#A3A3A3] mt-1">
             Corporate identity, tenant settings, and allowed authentication email domains.
           </p>
         </div>
@@ -90,7 +90,7 @@ export function OrganizationTab() {
               Subdomain Slug *
             </label>
             <div className="flex mt-1.5">
-              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-black/[0.08] dark:border-white/[0.12] bg-black/[0.03] dark:bg-white/[0.04] text-[#86868B] text-xs">
+              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-black/[0.08] dark:border-white/[0.12] bg-black/[0.03] dark:bg-white/[0.04] text-[#666666] text-xs">
                 app.ctms.io/
               </span>
               <input
@@ -108,7 +108,7 @@ export function OrganizationTab() {
               Company Website URL
             </label>
             <div className="relative mt-1.5">
-              <Globe size={14} className="absolute left-3.5 top-3 text-[#86868B]" />
+              <Globe size={14} className="absolute left-3.5 top-3 text-[#666666]" />
               <input
                 type="url"
                 value={websiteUrl}
@@ -123,7 +123,7 @@ export function OrganizationTab() {
               Primary Contact Email *
             </label>
             <div className="relative mt-1.5">
-              <Mail size={14} className="absolute left-3.5 top-3 text-[#86868B]" />
+              <Mail size={14} className="absolute left-3.5 top-3 text-[#666666]" />
               <input
                 type="email"
                 value={primaryContact}
@@ -146,7 +146,7 @@ export function OrganizationTab() {
               placeholder="acme.com, stackdrove.com"
               className="w-full mt-1.5 px-3.5 py-2.5 text-xs apple-input font-mono"
             />
-            <p className="text-[11px] text-[#86868B] dark:text-[#A1A1A6] mt-1.5">
+            <p className="text-[11px] text-[#666666] dark:text-[#A3A3A3] mt-1.5">
               Only users registering with these verified domain emails can join your organization.
             </p>
           </div>
@@ -156,7 +156,7 @@ export function OrganizationTab() {
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold rounded-xl bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-slate-200 cursor-pointer shadow-xs transition-all active:scale-95"
+            className="bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold rounded-xl cursor-pointer shadow-xs transition-all active:scale-95"
           >
             <Save size={13} />
             <span>{saving ? "Saving changes..." : "Save changes"}</span>

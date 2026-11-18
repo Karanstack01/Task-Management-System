@@ -299,10 +299,10 @@ export function MagneticDropZone({
         "relative flex w-full flex-col items-center justify-center overflow-hidden rounded-2xl border text-center outline-none transition-[border-color,background-color] duration-200 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] select-none",
         compact ? "min-h-[124px] py-3.5 px-4" : "min-h-60 py-7 px-6",
         isOver
-          ? "border-[#2357D6] bg-[#2357D6]/10 ring-2 ring-[#2357D6]/20 shadow-md"
+          ? "border-brand bg-brand/10 ring-2 ring-brand/20 shadow-md"
           : isNear
-            ? "border-[#2357D6]/60 bg-[#2357D6]/5 dark:bg-[#2357D6]/10 shadow-xs"
-            : "border-black/[0.08] bg-white/70 dark:border-white/[0.12] dark:bg-[#16161A]/80 backdrop-blur-md shadow-xs hover:border-black/15 dark:hover:border-white/20",
+            ? "border-brand/60 bg-brand/5 dark:bg-brand/10 shadow-xs"
+            : "border-black/[0.08] bg-white/70 dark:border-white/[0.12] dark:bg-[#111111]/80 backdrop-blur-md shadow-xs hover:border-black/15 dark:hover:border-white/20",
         className
       )}
       onDragOver={handleDragOver}
@@ -324,7 +324,7 @@ export function MagneticDropZone({
       <motion.div
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute top-1/2 left-1/2 -mt-20 -ml-20 size-40 rounded-full bg-[#2357D6]/25 dark:bg-[#2357D6]/35 blur-3xl transition-opacity duration-200",
+          "pointer-events-none absolute top-1/2 left-1/2 -mt-20 -ml-20 size-40 rounded-full bg-brand/25 dark:bg-brand/35 blur-3xl transition-opacity duration-200",
           isNear ? "opacity-100" : "opacity-0"
         )}
         style={{ transform: glowTransform }}
@@ -332,7 +332,7 @@ export function MagneticDropZone({
 
       {firstFile ? (
         <div className="relative flex w-full flex-col items-center">
-          <div className="flex size-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-[#2357D6] shadow-xs dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-[#60A5FA]">
+          <div className="flex size-12 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 text-brand shadow-xs dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-brand">
             <FileTypeIcon aria-hidden="true" size={24} weight="fill" />
           </div>
           <div className="mt-3.5 flex items-center gap-1.5">
@@ -352,7 +352,7 @@ export function MagneticDropZone({
             {firstFile.name}
             {files.length > 1 ? ` +${files.length - 1}` : ""}
           </p>
-          <p className="mt-0.5 font-mono text-[10px] text-[#86868B] dark:text-neutral-500 uppercase">
+          <p className="mt-0.5 font-mono text-[10px] text-[#666666] dark:text-neutral-500 uppercase">
             {formatBytes(firstFile.size)}
           </p>
 
@@ -361,7 +361,7 @@ export function MagneticDropZone({
             {!uploading ? (
               <>
                 <button
-                  className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.08] bg-white px-3 font-medium text-xs text-[#111111] transition-all hover:bg-black/[0.03] active:scale-[0.97] dark:border-white/[0.12] dark:bg-[#1E1E24] dark:text-white dark:hover:bg-[#25252D]"
+                  className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.08] bg-white px-3 font-medium text-xs text-[#111111] transition-all hover:bg-black/[0.03] active:scale-[0.97] dark:border-white/[0.12] dark:bg-[#1F1F1F] dark:text-white dark:hover:bg-[#1F1F1F]"
                   onClick={openFilePicker}
                   type="button"
                 >
@@ -370,7 +370,7 @@ export function MagneticDropZone({
                 </button>
                 <button
                   aria-label={`Remove ${firstFile.name}`}
-                  className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.08] bg-white px-3 font-medium text-xs text-[#666666] transition-all hover:text-rose-600 hover:bg-black/[0.03] active:scale-[0.97] dark:border-white/[0.12] dark:bg-[#1E1E24] dark:text-neutral-400 dark:hover:text-rose-400 dark:hover:bg-[#25252D]"
+                  className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.08] bg-white px-3 font-medium text-xs text-[#666666] transition-all hover:text-rose-600 hover:bg-black/[0.03] active:scale-[0.97] dark:border-white/[0.12] dark:bg-[#1F1F1F] dark:text-neutral-400 dark:hover:text-rose-400 dark:hover:bg-[#1F1F1F]"
                   onClick={clearFiles}
                   type="button"
                 >
@@ -379,7 +379,7 @@ export function MagneticDropZone({
                 </button>
                 {onUpload && (
                   <button
-                    className="flex h-8 cursor-pointer items-center gap-1.5 rounded-xl bg-[#111111] dark:bg-white text-white dark:text-[#111111] px-4 font-semibold text-xs transition-all hover:opacity-90 active:scale-[0.97] shadow-xs"
+                    className="bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] flex h-8 cursor-pointer items-center gap-1.5 rounded-xl px-4 font-semibold text-xs transition-all active:scale-[0.97] shadow-xs"
                     onClick={() => onUpload(firstFile)}
                     type="button"
                   >
@@ -392,13 +392,13 @@ export function MagneticDropZone({
               <div className="w-48 space-y-1.5 py-1">
                 <div className="h-2 w-full bg-black/[0.06] dark:bg-white/[0.1] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#2357D6] transition-all duration-300"
+                    className="h-full bg-brand transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>
                 <div className="flex items-center justify-between text-[10px] text-[#666666] dark:text-neutral-400 font-medium">
                   <span>Uploading to Cloudinary...</span>
-                  <span className="font-bold text-[#2357D6] dark:text-[#60A5FA]">
+                  <span className="font-bold text-brand dark:text-brand">
                     {uploadProgress}%
                   </span>
                 </div>
@@ -408,7 +408,7 @@ export function MagneticDropZone({
         </div>
       ) : (
         <button
-          className="relative flex cursor-pointer flex-col items-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-[#2357D6] focus-visible:ring-offset-2"
+          className="relative flex cursor-pointer flex-col items-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           onClick={openFilePicker}
           type="button"
         >
@@ -416,14 +416,14 @@ export function MagneticDropZone({
             className={cn(
               "flex items-center justify-center rounded-xl border border-black/[0.06] bg-black/[0.03] text-[#666666] shadow-xs transition-colors duration-200 dark:border-white/[0.1] dark:bg-white/[0.06] dark:text-neutral-300",
               compact ? "size-9" : "size-12",
-              isOver && "border-blue-400 bg-blue-50 text-[#2357D6] dark:border-blue-700 dark:bg-blue-950/60 dark:text-[#60A5FA]"
+              isOver && "border-blue-400 bg-blue-50 text-brand dark:border-blue-700 dark:bg-blue-950/60 dark:text-brand"
             )}
           >
             <FileArrowUpIcon
               aria-hidden="true"
               className={cn(
                 "transition-colors duration-200",
-                isNear ? "text-[#2357D6] dark:text-[#60A5FA]" : ""
+                isNear ? "text-brand dark:text-brand" : ""
               )}
               size={compact ? 18 : 24}
               weight="fill"
@@ -436,7 +436,7 @@ export function MagneticDropZone({
             {title}
           </p>
           <p className={cn(
-            "text-[#86868B] dark:text-neutral-400",
+            "text-[#666666] dark:text-neutral-400",
             compact ? "mt-0.5 text-[11px]" : "mt-1 text-xs"
           )}>
             or click to browse · up to {formatBytes(maxSize)}

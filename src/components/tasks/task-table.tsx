@@ -96,19 +96,19 @@ export function TaskTable({
         header: ({ column }) => (
           <button
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="flex items-center gap-1 font-bold text-slate-700 hover:text-[#0B1B3F]"
+            className="flex items-center gap-1 font-bold text-slate-700 hover:text-[#111111]"
           >
             <span>Task #</span>
             <ArrowUpDown size={12} />
           </button>
         ),
         cell: ({ row }) => (
-          <div className="flex items-center gap-1.5 font-bold text-[#0B1B3F]">
+          <div className="flex items-center gap-1.5 font-bold text-[#111111]">
             <span>#{row.original.task_no}</span>
             {row.original.short_link && (
               <button
                 onClick={() => handleCopyShortLink(row.original.short_link)}
-                className="text-slate-400 hover:text-[#2743F5]"
+                className="text-slate-400 hover:text-[#666666]"
                 title="Copy shortlink"
               >
                 <Share2 size={11} />
@@ -122,14 +122,14 @@ export function TaskTable({
         header: "Title & Deliverable Brief",
         cell: ({ row }) => (
           <div className="max-w-xs md:max-w-md">
-            <div className="font-bold text-[#0B1B3F] truncate">{row.original.title}</div>
+            <div className="font-bold text-[#111111] truncate">{row.original.title}</div>
             {row.original.description && (
               <div className="text-[11px] text-slate-500 truncate mt-0.5">
                 {row.original.description}
               </div>
             )}
             {row.original.attachments && row.original.attachments.length > 0 && (
-              <div className="flex items-center gap-1 text-[10px] text-[#2743F5] font-semibold mt-1">
+              <div className="flex items-center gap-1 text-[10px] text-[#666666] font-semibold mt-1">
                 <Paperclip size={11} />
                 <span>{row.original.attachments.length} attachment(s)</span>
               </div>
@@ -145,7 +145,7 @@ export function TaskTable({
         header: "Assignee",
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[#00C48C] text-[#0B1B3F] font-bold text-[10px] flex items-center justify-center shrink-0">
+            <div className="w-6 h-6 rounded-full bg-[#00C48C] text-[#111111] font-bold text-[10px] flex items-center justify-center shrink-0">
               {row.original.delegatee?.full_name?.substring(0, 2).toUpperCase() || "DE"}
             </div>
             <span className="text-xs font-semibold text-slate-700 truncate">
@@ -174,7 +174,7 @@ export function TaskTable({
         header: ({ column }) => (
           <button
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="flex items-center gap-1 font-bold text-slate-700 hover:text-[#0B1B3F]"
+            className="flex items-center gap-1 font-bold text-slate-700 hover:text-[#111111]"
           >
             <span>Target Date</span>
             <ArrowUpDown size={12} />
@@ -229,7 +229,7 @@ export function TaskTable({
           <div className="flex items-center justify-end gap-1.5">
             <button
               onClick={() => setUpdatingTask(row.original)}
-              className="px-2.5 py-1 bg-slate-100 hover:bg-[#00C48C] hover:text-[#0B1B3F] text-slate-700 font-bold text-[11px] rounded-md transition-colors"
+              className="px-2.5 py-1 bg-slate-100 hover:bg-[#00C48C] hover:text-[#111111] text-slate-700 font-bold text-[11px] rounded-md transition-colors"
               title="Update progress & upload proof"
             >
               Update
@@ -293,13 +293,13 @@ export function TaskTable({
       <div className="glass-section p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 shadow-2xs">
         {/* Search */}
         <div className="relative flex-1 max-w-sm">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B] dark:text-neutral-400" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#666666] dark:text-neutral-400" />
           <input
             type="text"
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="Filter tasks by number, title, assignee..."
-            className="w-full pl-9 pr-4 py-2 bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#2357D6] text-[#111111] dark:text-white placeholder:text-[#86868B]"
+            className="w-full pl-9 pr-4 py-2 bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-brand text-[#111111] dark:text-white placeholder:text-[#666666]"
           />
         </div>
 
@@ -317,8 +317,8 @@ export function TaskTable({
               onClick={() => setStatusFilter(pill.value)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 statusFilter === pill.value
-                  ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs font-semibold"
-                  : "glass-well text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.08]"
+                  ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs font-semibold"
+                  : "bg-neutral-100/90 dark:bg-white/[0.06] border border-black/[0.04] dark:border-white/[0.06] text-[#666666] dark:text-neutral-300 hover:text-[#111111] dark:hover:text-white hover:bg-neutral-200/80 dark:hover:bg-white/[0.1]"
               }`}
             >
               {pill.label}
@@ -331,7 +331,7 @@ export function TaskTable({
       <div className="glass-section overflow-hidden shadow-2xs rounded-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-black/[0.02] dark:bg-white/[0.02] text-[#666666] dark:text-[#A1A1A6] uppercase font-bold tracking-wider text-[11px] border-b border-black/[0.06] dark:border-white/[0.08]">
+            <thead className="bg-black/[0.02] dark:bg-white/[0.02] text-[#666666] dark:text-[#A3A3A3] uppercase font-bold tracking-wider text-[11px] border-b border-black/[0.06] dark:border-white/[0.08]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -347,7 +347,7 @@ export function TaskTable({
             <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.06]">
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length} className="px-4 py-8 text-center text-[#86868B] dark:text-neutral-400">
+                  <td colSpan={columns.length} className="px-4 py-8 text-center text-[#666666] dark:text-neutral-400">
                     No tasks match the selected filters.
                   </td>
                 </tr>
@@ -367,7 +367,7 @@ export function TaskTable({
         </div>
 
         {/* Pagination Bar */}
-        <div className="p-3.5 border-t border-black/[0.06] dark:border-white/[0.08] bg-black/[0.01] dark:bg-white/[0.01] flex items-center justify-between text-xs text-[#666666] dark:text-[#A1A1A6]">
+        <div className="p-3.5 border-t border-black/[0.06] dark:border-white/[0.08] bg-black/[0.01] dark:bg-white/[0.01] flex items-center justify-between text-xs text-[#666666] dark:text-[#A3A3A3]">
           <div>
             Showing{" "}
             <strong className="text-[#111111] dark:text-white">

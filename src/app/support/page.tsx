@@ -71,9 +71,9 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F5F8] dark:bg-[#0A0A0C] text-[#111111] dark:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#F1F1F1] dark:bg-[#0A0A0A] text-[#111111] dark:text-white transition-colors duration-200">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#121216]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#111111]/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -117,7 +117,7 @@ export default function SupportPage() {
               onClick={() => handleThemeChange("dark")}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md font-semibold transition-all ${
                 themePref === "dark"
-                  ? "bg-[#111111] text-white dark:bg-white dark:text-[#111111] shadow-xs"
+                  ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs"
                   : "text-[#666666] dark:text-neutral-400 hover:text-[#111111] dark:hover:text-white"
               }`}
             >
@@ -158,7 +158,7 @@ export default function SupportPage() {
 
         {/* SLA Tiers Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
             <div className="flex items-center justify-between text-rose-500 text-xs font-bold mb-2">
               <span>P1 Critical Outage</span>
               <span className="px-1.5 py-0.5 rounded bg-rose-500/10 text-[10px]">15 Min SLA</span>
@@ -167,7 +167,7 @@ export default function SupportPage() {
               Tenant lockout, complete system unavailability, or database authorization failure.
             </div>
           </div>
-          <div className="p-4 rounded-xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
             <div className="flex items-center justify-between text-amber-500 text-xs font-bold mb-2">
               <span>P2 High Priority</span>
               <span className="px-1.5 py-0.5 rounded bg-amber-500/10 text-[10px]">1 Hour SLA</span>
@@ -176,7 +176,7 @@ export default function SupportPage() {
               Delegated task verification failures, SLA score miscalculations, or Cloudinary upload errors.
             </div>
           </div>
-          <div className="p-4 rounded-xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
+          <div className="p-4 rounded-xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] shadow-xs">
             <div className="flex items-center justify-between text-blue-500 text-xs font-bold mb-2">
               <span>P3 Standard Service</span>
               <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-[10px]">4 Hours SLA</span>
@@ -188,7 +188,7 @@ export default function SupportPage() {
         </div>
 
         {/* Interactive Support Request Form or Confirmation */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08] shadow-sm">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08] shadow-sm">
           {submitted ? (
             <div className="text-center py-8 space-y-4">
               <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto">
@@ -239,7 +239,7 @@ export default function SupportPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. employee@company.com"
                     required
-                    className="w-full h-10 px-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all"
+                    className="w-full h-10 px-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all"
                   />
                 </div>
 
@@ -251,7 +251,7 @@ export default function SupportPage() {
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all cursor-pointer"
+                    className="w-full h-10 px-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all cursor-pointer"
                   >
                     <option value="task-delegation">Task Delegation & Assignment</option>
                     <option value="verification">Verification & Revision Workflow</option>
@@ -272,7 +272,7 @@ export default function SupportPage() {
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
-                    className="w-full h-10 px-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all cursor-pointer"
+                    className="w-full h-10 px-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all cursor-pointer"
                   >
                     <option value="p1">P1 — Critical Outage (15 min response)</option>
                     <option value="p2">P2 — High Impact Bug (1 hr response)</option>
@@ -292,7 +292,7 @@ export default function SupportPage() {
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="e.g. Cannot verify task #1002 attachments"
                     required
-                    className="w-full h-10 px-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all"
+                    className="w-full h-10 px-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all"
                   />
                 </div>
               </div>
@@ -308,14 +308,14 @@ export default function SupportPage() {
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Please describe the steps to reproduce, relevant task IDs (#1001, #145), and error messages..."
                   required
-                  className="w-full p-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161618] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all resize-none"
+                  className="w-full p-3.5 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111111] text-xs text-[#111111] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#111111] dark:focus:ring-white transition-all resize-none"
                 />
               </div>
 
               {/* Submit Action */}
               <button
                 type="submit"
-                className="w-full sm:w-auto px-6 h-11 rounded-lg bg-[#111111] text-white hover:bg-neutral-800 dark:bg-white dark:text-[#111111] dark:hover:bg-neutral-100 font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                className="bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] w-full sm:w-auto px-6 h-11 rounded-lg font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer shadow-sm"
               >
                 <Send size={13} />
                 <span>Dispatch Support Ticket</span>
@@ -331,7 +331,7 @@ export default function SupportPage() {
             <span>Frequently Asked Operational Questions</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08]">
+            <div className="p-4 rounded-xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08]">
               <div className="text-xs font-bold text-[#111111] dark:text-white mb-1">
                 How do Delegators request revisions?
               </div>
@@ -339,7 +339,7 @@ export default function SupportPage() {
                 In the Delegator portal, click the Revision action on any task in &quot;Under Review&quot; status to append feedback and return to the delegatee queue.
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-white dark:bg-[#121216] border border-black/[0.06] dark:border-white/[0.08]">
+            <div className="p-4 rounded-xl bg-white dark:bg-[#111111] border border-black/[0.06] dark:border-white/[0.08]">
               <div className="text-xs font-bold text-[#111111] dark:text-white mb-1">
                 Why does Cloudinary fail on upload?
               </div>

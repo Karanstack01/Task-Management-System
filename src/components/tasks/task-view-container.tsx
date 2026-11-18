@@ -180,12 +180,12 @@ export function TaskViewContainer({
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#111111] dark:text-white">
                 {title}
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold glass-pop bg-[#2357D6]/10 text-[#2357D6] dark:bg-[#D4F20D]/20 dark:text-[#D4F20D]">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold glass-pop bg-brand/10 text-brand dark:bg-brand/20 dark:text-brand">
                 {filteredTasks.length} tasks
               </span>
             </div>
             {subtitle && (
-              <p className="text-xs text-[#86868B] dark:text-[#A1A1A6] mt-0.5 font-medium">
+              <p className="text-xs text-[#666666] dark:text-[#A3A3A3] mt-0.5 font-medium">
                 {subtitle}
               </p>
             )}
@@ -256,7 +256,7 @@ export function TaskViewContainer({
           <div className="pt-2 border-t border-black/[0.05] dark:border-white/[0.06] flex flex-wrap items-center justify-between gap-3">
             {/* Section Filter Pills */}
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#86868B] mr-1 hidden sm:inline">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#666666] mr-1 hidden sm:inline">
                 Section:
               </span>
 
@@ -266,7 +266,7 @@ export function TaskViewContainer({
                 className={cn(
                   "px-3 py-1 rounded-full text-xs transition-all cursor-pointer",
                   selectedSection === "ALL"
-                    ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs font-black"
+                    ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs font-black"
                     : "glass-well text-[#666666] dark:text-[#9E9EA4] hover:text-[#111111] dark:hover:text-white font-medium"
                 )}
               >
@@ -281,7 +281,7 @@ export function TaskViewContainer({
                   className={cn(
                     "flex items-center gap-1.5 px-3 py-1 rounded-full text-xs transition-all cursor-pointer",
                     selectedSection === sec.code
-                      ? "bg-[#111111] dark:bg-white text-white dark:text-[#111111] shadow-xs font-black"
+                      ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-xs font-black"
                       : "glass-well text-[#666666] dark:text-[#9E9EA4] hover:text-[#111111] dark:hover:text-white font-medium"
                   )}
                 >
@@ -310,7 +310,7 @@ export function TaskViewContainer({
 
               {/* Group by Section Toggle (for cards and list) */}
               {viewMode !== "kanban" && (
-                <label className="flex items-center gap-1.5 text-xs font-semibold text-[#666666] dark:text-[#A1A1A6] cursor-pointer">
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-[#666666] dark:text-[#A3A3A3] cursor-pointer">
                   <input
                     type="checkbox"
                     checked={groupBySection}

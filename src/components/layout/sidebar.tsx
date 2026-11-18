@@ -275,8 +275,8 @@ export function Sidebar() {
                   className={cn(
                     "w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer relative group",
                     isSelected
-                      ? "bg-[#111111] text-white shadow-md border border-black/10 scale-[1.03] dark:bg-white dark:text-[#111111] dark:border-white/20"
-                      : "text-[#666666] hover:text-[#111111] hover:bg-black/[0.05] dark:text-[#A1A1A6] dark:hover:text-white dark:hover:bg-white/[0.08]"
+                      ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md border border-black/10 scale-[1.03] dark:border-white/20"
+                      : "text-[#666666] hover:text-[#111111] hover:bg-black/[0.05] dark:text-[#A3A3A3] dark:hover:text-white dark:hover:bg-white/[0.08]"
                   )}
                   title={`${sec.label} (${siderowOpen && isSelected ? "Click to collapse" : "Click to view sub-sections"})`}
                   aria-label={sec.label}
@@ -284,7 +284,7 @@ export function Sidebar() {
                   <Icon size={18} className="transition-transform group-hover:scale-105" />
 
                   {/* Clean Tooltip on Hover */}
-                  <div className="absolute left-full ml-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-[#111111] text-white dark:bg-white dark:text-[#111111] shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
+                  <div className="absolute left-full ml-3 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-[#111111] dark:bg-white dark:text-[#111111] text-white shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap">
                     {sec.label}
                   </div>
                 </button>
@@ -295,7 +295,7 @@ export function Sidebar() {
           {/* Bottom Role Matrix Indicator with Brand Glass Theme */}
           <div className="flex flex-col items-center shrink-0 overflow-hidden">
             <div
-              className="w-9 h-9 rounded-xl bg-[#111111] text-white dark:bg-white dark:text-[#111111] font-black text-xs flex items-center justify-center border border-black/10 dark:border-white/20 shadow-xs cursor-default relative group"
+              className="w-9 h-9 rounded-xl bg-[#111111] dark:bg-white dark:text-[#111111] text-white font-black text-xs flex items-center justify-center border border-black/10 dark:border-white/20 shadow-xs cursor-default relative group"
               title={`Role Matrix Active: ${activeRole.replace("_", " ")}`}
             >
               {activeRole === "SUPERADMIN"
@@ -328,7 +328,7 @@ export function Sidebar() {
         >
           {/* Header: Section Title - Locked to EXACT height (h-16) to equal the main header */}
           <div className="h-16 shrink-0 flex flex-col justify-center px-4 sm:px-5 border-b border-black/[0.06] dark:border-white/[0.08]">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#86868B] block truncate leading-tight">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#666666] block truncate leading-tight">
               {currentSectionConfig.shortLabel} / {currentActiveItem?.title || "Overview"}
             </span>
             <h2 className="text-xl font-bold tracking-tight text-[#111111] dark:text-white mt-0.5 truncate leading-tight">
@@ -357,8 +357,8 @@ export function Sidebar() {
                       className={cn(
                         "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 cursor-pointer group relative select-none",
                         active
-                          ? "bg-[#111111] text-white font-bold shadow-sm dark:bg-white dark:text-[#111111]"
-                          : "text-[#555555] hover:text-[#111111] hover:bg-black/[0.04] dark:text-[#A1A1A6] dark:hover:text-white dark:hover:bg-white/[0.06]"
+                          ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white font-bold shadow-sm"
+                          : "text-[#555555] hover:text-[#111111] hover:bg-black/[0.04] dark:text-[#A3A3A3] dark:hover:text-white dark:hover:bg-white/[0.06]"
                       )}
                     >
                       <div className="flex items-center gap-2.5 min-w-0 pl-1">
@@ -368,7 +368,7 @@ export function Sidebar() {
                             "shrink-0 transition-colors",
                             active
                               ? "text-white dark:text-[#111111]"
-                              : "text-[#666666] group-hover:text-[#111111] dark:text-[#8E8E93] dark:group-hover:text-white"
+                              : "text-[#666666] group-hover:text-[#111111] dark:text-[#666666] dark:group-hover:text-white"
                           )}
                         />
                         <span className={cn("truncate", active ? "text-white dark:text-[#111111] font-bold" : "")}>
@@ -418,7 +418,7 @@ export function Sidebar() {
                 align="left"
                 headerTitle="Switch Workspace Role"
                 className="w-full"
-                triggerClassName="w-full justify-between bg-white/90 dark:bg-[#18181B]/90 hover:bg-white dark:hover:bg-[#222226] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
+                triggerClassName="w-full justify-between bg-white/90 dark:bg-[#181818]/90 hover:bg-white dark:hover:bg-[#1F1F1F] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
                 size="sm"
               />
             </div>
@@ -440,7 +440,7 @@ export function Sidebar() {
                 </div>
                 <button
                   onClick={toggleSidebar}
-                  className="p-1.5 rounded-lg text-[#86868B] hover:text-[#111111] dark:hover:text-white"
+                  className="p-1.5 rounded-lg text-[#666666] hover:text-[#111111] dark:hover:text-white"
                   title="Close sidebar"
                 >
                   <X size={15} />
@@ -451,7 +451,7 @@ export function Sidebar() {
               <div className="space-y-4">
                 {visibleSections.map((sec) => (
                   <div key={sec.id} className="space-y-1">
-                    <div className="text-[10px] font-bold text-[#86868B] uppercase tracking-wider px-2">
+                    <div className="text-[10px] font-bold text-[#666666] uppercase tracking-wider px-2">
                       {sec.label}
                     </div>
                     {sec.items
@@ -472,8 +472,8 @@ export function Sidebar() {
                             className={cn(
                               "flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors",
                               active
-                                ? "bg-[#111111] text-white font-bold dark:bg-white dark:text-[#111111]"
-                                : "text-[#666666] dark:text-[#A1A1A6] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]"
+                                ? "bg-[#111111] dark:bg-white dark:text-[#111111] text-white font-bold"
+                                : "text-[#666666] dark:text-[#A3A3A3] hover:bg-black/[0.04] dark:hover:bg-white/[0.06]"
                             )}
                           >
                             <div className="flex items-center gap-2.5">
@@ -522,7 +522,7 @@ export function Sidebar() {
                   align="left"
                   headerTitle="Switch Workspace Role"
                   className="w-full"
-                  triggerClassName="w-full justify-between bg-white/90 dark:bg-[#18181B]/90 hover:bg-white dark:hover:bg-[#222226] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
+                  triggerClassName="w-full justify-between bg-white/90 dark:bg-[#181818]/90 hover:bg-white dark:hover:bg-[#1F1F1F] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
                   size="sm"
                 />
                 <button

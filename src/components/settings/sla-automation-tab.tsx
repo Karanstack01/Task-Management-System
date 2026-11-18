@@ -72,7 +72,7 @@ export function SlaAutomationTab() {
     <div className="space-y-6">
       {/* Top Header */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#8EABC7]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#A3A3A3]">
           Settings / AI & Automation
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-1">
@@ -80,7 +80,7 @@ export function SlaAutomationTab() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               SLA & workflow automation
             </h1>
-            <p className="text-xs text-slate-500 dark:text-[#8EABC7] mt-1 max-w-xl">
+            <p className="text-xs text-slate-500 dark:text-[#A3A3A3] mt-1 max-w-xl">
               Configure automated score allocation, deadline grace periods, and field permissions.
             </p>
           </div>
@@ -88,9 +88,9 @@ export function SlaAutomationTab() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#0C132B] dark:bg-[#2357D6] hover:bg-[#16234D] text-white shadow-md transition-all self-start cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shadow-md transition-all self-start cursor-pointer"
           >
-            <Save size={14} className="text-[#D4F20D]" />
+            <Save size={14} className="text-brand" />
             <span>{saving ? "Saving..." : "Save rules"}</span>
           </button>
         </div>
@@ -116,7 +116,7 @@ export function SlaAutomationTab() {
                 max="10"
                 value={defaultScore}
                 onChange={(e) => setDefaultScore(parseFloat(e.target.value) || 10)}
-                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
+                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
               />
               <p className="text-[11px] text-slate-400 mt-1">
                 Base merit points awarded on first-pass deliverable approval.
@@ -130,7 +130,7 @@ export function SlaAutomationTab() {
               <select
                 value={reminderHour}
                 onChange={(e) => setReminderHour(parseInt(e.target.value))}
-                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
+                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
               >
                 <option value={8}>08:00 AM (Early Dispatch)</option>
                 <option value={9}>09:00 AM (Standard Office)</option>
@@ -148,7 +148,7 @@ export function SlaAutomationTab() {
                 max="30"
                 value={maxRevisionGap}
                 onChange={(e) => setMaxRevisionGap(parseInt(e.target.value) || 5)}
-                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
+                className="w-full mt-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
               />
             </div>
 
@@ -165,12 +165,12 @@ export function SlaAutomationTab() {
                 type="button"
                 onClick={() => setSkipHoliday(!skipHoliday)}
                 className={`w-9 h-5 flex items-center rounded-full p-1 transition-colors ${
-                  skipHoliday ? "bg-[#2357D6] dark:bg-[#D4F20D]" : "bg-slate-200 dark:bg-white/20"
+                  skipHoliday ? "bg-[#111111] dark:bg-white" : "bg-slate-200 dark:bg-white/20"
                 }`}
               >
                 <div
                   className={`w-3.5 h-3.5 rounded-full transition-transform ${
-                    skipHoliday ? "translate-x-4 bg-white dark:bg-[#070B18]" : "translate-x-0 bg-white"
+                    skipHoliday ? "translate-x-4 bg-white dark:bg-[#0A0A0A]" : "translate-x-0 bg-white"
                   }`}
                 />
               </button>
@@ -190,18 +190,18 @@ export function SlaAutomationTab() {
               placeholder="Holiday Name"
               value={newHolidayName}
               onChange={(e) => setNewHolidayName(e.target.value)}
-              className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
+              className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
             />
             <div className="flex gap-1.5">
               <input
                 type="date"
                 value={newHolidayDate}
                 onChange={(e) => setNewHolidayDate(e.target.value)}
-                className="w-full px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-[#080C1E] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
+                className="w-full px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white"
               />
               <button
                 type="submit"
-                className="px-3 py-1.5 rounded-xl bg-[#0C132B] dark:bg-[#2357D6] text-white shrink-0 font-bold"
+                className="px-3 py-1.5 rounded-xl bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] text-white shrink-0 font-bold"
               >
                 Add
               </button>
@@ -215,7 +215,7 @@ export function SlaAutomationTab() {
                 className="p-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs"
               >
                 <div className="flex items-center gap-2">
-                  <Calendar size={13} className="text-[#2357D6] dark:text-[#D4F20D]" />
+                  <Calendar size={13} className="text-brand dark:text-brand" />
                   <span className="font-bold text-slate-900 dark:text-white">{h.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -265,7 +265,7 @@ export function SlaAutomationTab() {
                         onClick={() => togglePermission(field, role)}
                         className={`w-5 h-5 rounded flex items-center justify-center transition-colors mx-auto ${
                           roles[role]
-                            ? "bg-[#2357D6] text-white"
+                            ? "bg-brand text-white dark:text-[#111111]"
                             : "bg-slate-200 dark:bg-white/10 text-transparent"
                         }`}
                       >

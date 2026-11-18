@@ -350,10 +350,10 @@ export function EditTaskDialog({
       />
 
       {/* Main Dialog Container */}
-      <div className="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-[#161618] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col border border-black/10 dark:border-white/10 z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-[#111111] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col border border-black/10 dark:border-white/10 z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         
         {/* Pinned Header */}
-        <div className="p-5 sm:p-6 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between shrink-0 bg-white/80 dark:bg-[#161618]/80 backdrop-blur-xl">
+        <div className="p-5 sm:p-6 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between shrink-0 bg-white/80 dark:bg-[#111111]/80 backdrop-blur-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.08] dark:border-white/[0.1] text-[#111111] dark:text-white flex items-center justify-center shadow-xs">
               <Pencil className="w-5 h-5" />
@@ -363,7 +363,7 @@ export function EditTaskDialog({
                 <h2 className="text-lg sm:text-xl font-semibold text-[#111111] dark:text-white tracking-tight leading-tight">
                   Edit Task Details
                 </h2>
-                <span className="px-2 py-0.5 rounded-lg bg-[#2B4887]/10 dark:bg-[#3B82F6]/20 text-[#2B4887] dark:text-[#60A5FA] font-medium text-xs tracking-tight">
+                <span className="px-2 py-0.5 rounded-lg bg-[#111111]/10 dark:bg-brand/20 text-[#111111] dark:text-brand font-medium text-xs tracking-tight">
                   #{task.task_no}
                 </span>
               </div>

@@ -386,13 +386,13 @@ export async function testEmailConnection(params: {
       to: params.toEmail,
       subject: `StackDrove CTMS - ${label} connection test`,
       html: `
-        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;border:1px solid #DFECF7;border-radius:16px;background:#F8FAFC;">
-          <div style="display:inline-block;padding:6px 12px;background:#0C132B;color:#D4F20D;border-radius:8px;font-weight:bold;font-size:12px;margin-bottom:12px;">STACKDROVE ENTERPRISE CTMS</div>
-          <h2 style="color:#0C132B;margin-top:0;">${label} connection verified</h2>
-          <p style="color:#475569;font-size:14px;line-height:1.5;">
+        <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;border:1px solid #EEEEEE;border-radius:16px;background:#F7F7F7;">
+          <div style="display:inline-block;padding:6px 12px;background:#111111;color:#FFFFFF;border-radius:8px;font-weight:bold;font-size:12px;margin-bottom:12px;">STACKDROVE ENTERPRISE CTMS</div>
+          <h2 style="color:#111111;margin-top:0;">${label} connection verified</h2>
+          <p style="color:#4D4D4D;font-size:14px;line-height:1.5;">
             This test message was sent from the Master Enterprise Integrations console using <strong>${cfg.user}</strong> via <strong>${cfg.host}</strong>.
           </p>
-          <p style="color:#2357D6;font-weight:bold;font-size:13px;">Status: email delivery is working.</p>
+          <p style="color:#111111;font-weight:bold;font-size:13px;">Status: email delivery is working.</p>
         </div>`,
     });
     pushLog({
