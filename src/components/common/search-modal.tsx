@@ -131,72 +131,7 @@ const DEFAULT_TAGS: SearchTag[] = [
   { id: "files", label: "Audit Proofs", icon: <FileArrowDown className="h-3.5 w-3.5 text-amber-500" /> },
 ];
 
-const DEFAULT_RESULTS: SearchResult[] = [
-  {
-    name: "Task #1001: Deliverable Proof for Security Compliance",
-    meta: "Assigned to Rohan Mehta · Awaiting Verification",
-    category: "tasks",
-    status: "AWAITING_VERIFICATION",
-    href: "/verify",
-    actions: [
-      { icon: <Checks className="h-4 w-4 text-emerald-500" />, label: "Review Deliverable" },
-      { icon: <ChatTeardropText className="h-4 w-4" />, label: "Comments" },
-    ],
-  },
-  {
-    name: "Task #1002: Client Onboarding Workflow Pipeline",
-    meta: "Assigned to Neha Gupta · In Progress",
-    category: "tasks",
-    status: "IN_PROGRESS",
-    href: "/boss",
-    actions: [
-      { icon: <ChatTeardropText className="h-4 w-4" />, label: "View Comments" },
-    ],
-  },
-  {
-    name: "Task #1004: Quarterly SLA Compliance Audit Review",
-    meta: "Assigned to Ananya Patel · Timeline Extension (+3d)",
-    category: "tasks",
-    status: "PENDING",
-    href: "/boss",
-  },
-  {
-    name: "Rohan Mehta",
-    meta: "rohan@stackdrove.com · Operations Lead (Tier 1)",
-    category: "people",
-    href: "/scorecards",
-    actions: [
-      { icon: <EnvelopeSimple className="h-4 w-4" />, label: "Email" },
-    ],
-  },
-  {
-    name: "Neha Gupta",
-    meta: "neha@stackdrove.com · Senior Delegator",
-    category: "people",
-    href: "/scorecards",
-    actions: [
-      { icon: <EnvelopeSimple className="h-4 w-4" />, label: "Email" },
-    ],
-  },
-  {
-    name: "Executive Dashboard",
-    meta: "Operational velocity, throughput & department metrics",
-    category: "workspaces",
-    href: "/dashboard",
-  },
-  {
-    name: "Boss Delegation Matrix",
-    meta: "Cross-department delegation oversight & SLA deadlines",
-    category: "workspaces",
-    href: "/boss",
-  },
-  {
-    name: "Daily Routine Checklist",
-    meta: "Automated recurring daily operational checklist dispatcher",
-    category: "workspaces",
-    href: "/checklist",
-  },
-];
+const DEFAULT_RESULTS: SearchResult[] = [];
 
 const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   { label: "Create new task", shortcut: "N", href: "/tasks/create" },
@@ -205,11 +140,7 @@ const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   { label: "Staff scorecards & leaderboards", shortcut: "S", href: "/scorecards" },
 ];
 
-const DEFAULT_FILES: SearchFile[] = [
-  { name: "security-compliance-audit", ext: ".pdf", verified: true, href: "/sd/stackdrove-brand-book.pdf" },
-  { name: "quarterly-operations-summary", ext: ".pdf", verified: true, href: "/sd/stackdrove-brand-book.pdf" },
-  { name: "stackdrove-official-brand-book", ext: ".pdf", verified: true, href: "/sd/stackdrove-brand-book.pdf" },
-];
+const DEFAULT_FILES: SearchFile[] = [];
 
 export function SearchModal({
   placeholder = "Search tasks, team members, workspaces, audit proofs...",

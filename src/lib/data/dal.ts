@@ -67,7 +67,9 @@ export interface StatusChangeOptions {
   };
 }
 
-// In-Memory state for local development & immediate test execution
+const STORAGE_KEY = "stackdrove_ctms_data_v1";
+
+// Browser-persisted state (localStorage) for local development & system testing
 class LocalRepository {
   private organizations: Organization[] = [...initialOrganizations];
   private departments: Department[] = [...initialDepartments];
@@ -78,9 +80,75 @@ class LocalRepository {
   private verifications: TaskVerification[] = [];
   private holidays: HolidayCalendarItem[] = [...initialHolidays];
   private templates: RecurringTemplate[] = [...initialRecurringTemplates];
-  private settings: Record<string, SystemSettings> = {
-    "org-sd-01": { ...initialSystemSettings },
-  };
+  private settings: Record<string, SystemSettings> = {};
+
+  constructor() {
+    this.load();
+  }
+
+  /** Restores data saved by a previous visit so test data survives page reloads. */
+  private load() {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      this.organizations = s.organizations ?? [];
+      this.departments = s.departments ?? [];
+      this.profiles = s.profiles ?? [];
+      this.tasks = s.tasks ?? [];
+      this.attachments = s.attachments ?? [];
+      this.revisions = s.revisions ?? [];
+      this.verifications = s.verifications ?? [];
+      this.holidays = s.holidays ?? [];
+      this.templates = s.templates ?? [];
+      this.settings = s.settings ?? {};
+      // The platform superadmin must always exist.
+      for (const p of initialProfiles) {
+        if (!this.profiles.some((x) => x.id === p.id)) this.profiles.unshift({ ...p });
+      }
+    } catch {
+      // Corrupt or unavailable storage: start clean.
+    }
+  }
+
+  /** Called after every data operation (see the localDb proxy below). */
+  persist() {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          organizations: this.organizations,
+          departments: this.departments,
+          profiles: this.profiles,
+          tasks: this.tasks,
+          attachments: this.attachments,
+          revisions: this.revisions,
+          verifications: this.verifications,
+          holidays: this.holidays,
+          templates: this.templates,
+          settings: this.settings,
+        })
+      );
+    } catch {
+      // Quota exceeded / private mode: keep working in memory.
+    }
+  }
+
+  /** Wipes every company, user and task, leaving only the platform superadmin. */
+  resetAllData() {
+    this.organizations = [];
+    this.departments = [];
+    this.profiles = initialProfiles.map((p) => ({ ...p }));
+    this.tasks = [];
+    this.attachments = [];
+    this.revisions = [];
+    this.verifications = [];
+    this.holidays = [];
+    this.templates = [];
+    this.settings = {};
+  }
 
   // -------------------------------------------------------------
   // ORGANIZATIONS & TENANT LICENSING (SUPERADMIN ENGINE)
@@ -127,7 +195,37 @@ class LocalRepository {
     };
 
     this.organizations.push(newOrg);
+
+    // The primary contact becomes the workspace's first COMPANY_ADMIN so they can sign in
+    // (with Google / Microsoft, or a password) and set up the rest of the company.
+    const contact = data.primary_contact_email.trim().toLowerCase();
+    if (contact && !this.profiles.some((p) => p.email.toLowerCase() === contact)) {
+      this.profiles.push({
+        id: `user-${Date.now()}`,
+        org_id: newOrg.id,
+        department_id: null,
+        full_name: contact.split("@")[0],
+        email: contact,
+        phone_number: null,
+        role: "COMPANY_ADMIN",
+        is_primary_owner: true,
+        avatar_url: null,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    }
     return newOrg;
+  }
+
+  async updateOrganization(
+    orgId: string,
+    patch: Partial<Pick<Organization, "name" | "slug" | "website_url" | "primary_contact_email" | "allowed_domains">>
+  ): Promise<Organization | null> {
+    const org = this.organizations.find((o) => o.id === orgId);
+    if (!org) return null;
+    Object.assign(org, patch, { updated_at: new Date().toISOString() });
+    return { ...org };
   }
 
   // Master Kill Switch (Superadmin Control)
@@ -1039,5 +1137,24 @@ class LocalRepository {
 }
 
 // Singleton Local Server Repository
-export const localDb = new LocalRepository();
+const repository = new LocalRepository();
+
+/** Saves to localStorage after every operation so nothing entered during testing is lost on reload. */
+export const localDb: LocalRepository = new Proxy(repository, {
+  get(target, prop) {
+    const value = Reflect.get(target, prop, target);
+    if (typeof value !== "function" || prop === "persist" || prop === "constructor") return value;
+    return (...args: unknown[]) => {
+      const result = (value as (...a: unknown[]) => unknown).apply(target, args);
+      if (result instanceof Promise) {
+        return result.then((r) => {
+          target.persist();
+          return r;
+        });
+      }
+      target.persist();
+      return result;
+    };
+  },
+});
 

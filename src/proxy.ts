@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 const SESSION_COOKIE = "ctms_session";
 
 /** Pages reachable without a session. */
-const PUBLIC_PATHS = ["/login", "/saas-expired", "/terms", "/privacy", "/support"];
+const PUBLIC_PATHS = ["/login", "/auth/callback", "/saas-expired", "/terms", "/privacy", "/support"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

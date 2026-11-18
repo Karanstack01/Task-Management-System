@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json().catch(() => ({}));
-    const { orgId = "org-sd-01", recipientMobile, metaPhoneId, metaToken, gatewayUrl, gatewayUsername, gatewayPassword } = body;
+    const { orgId = "", recipientMobile, metaPhoneId, metaToken, gatewayUrl, gatewayUsername, gatewayPassword } = body;
 
     if (!ORG_ID_PATTERN.test(orgId)) {
       return NextResponse.json({ success: false, message: "Invalid organization." }, { status: 400 });

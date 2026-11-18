@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json().catch(() => ({}));
-    const { provider = "MICROSOFT_365", orgId = "org-sd-01", toEmail, recipientEmail, host, port, user, appPassword, senderName } = body;
+    const { provider = "MICROSOFT_365", orgId = "", toEmail, recipientEmail, host, port, user, appPassword, senderName } = body;
 
     if (!ORG_ID_PATTERN.test(orgId)) {
       return NextResponse.json({ success: false, message: "Invalid organization." }, { status: 400 });

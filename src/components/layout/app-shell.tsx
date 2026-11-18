@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { useUIStore } from "@/lib/store/ui-store";
 
 /**
  * AppShell manages application-wide framing:
@@ -15,7 +16,15 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+  // Pages read the signed-in user's company on first render, so hold them back until the saved session is restored.
+  const sessionReady = useSyncExternalStore(
+    (onChange) => useUIStore.persist.onFinishHydration(onChange),
+    () => useUIStore.persist.hasHydrated(),
+    () => false
+  );
+
   const isStandalone =
+    pathname?.startsWith("/auth") ||
     pathname === "/login" ||
     pathname?.startsWith("/login") ||
     pathname === "/saas-expired" ||
@@ -55,7 +64,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto overflow-x-hidden relative z-10">
           {/* Keyed by route so every section switch replays the enter + stagger animation. */}
           <div key={pathname} className="page-enter">
-            {children}
+            {sessionReady ? children : null}
           </div>
         </main>
         <MobileNav />

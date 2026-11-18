@@ -2,18 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 import { Task } from "@/types/database.types";
 import { TaskViewContainer } from "@/components/tasks/task-view-container";
 import { KanbanBoardSkeleton, Skeleton } from "@/components/common/skeleton-loaders";
 
 export default function TasksPage() {
+  const orgId = useActiveOrgId();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadTasks() {
       try {
-        const data = await localDb.getTasks({ orgId: "org-sd-01" });
+        const data = await localDb.getTasks({ orgId });
         setTasks(data);
       } catch (err) {
         console.error("Failed to load tasks", err);

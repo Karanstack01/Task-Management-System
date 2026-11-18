@@ -18,6 +18,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useUIStore, RoleType } from "@/lib/store/ui-store";
+import { useActiveProfile } from "@/lib/hooks/use-active-org";
 import { NAV_SECTIONS } from "@/lib/navigation/navigation-config";
 import { getCurrentTheme, setThemePreferenceAnimated } from "@/lib/theme/theme-service";
 import { NotificationPopover } from "@/components/notifications/notification-popover";
@@ -95,6 +96,7 @@ function SectionLabelFallback({ activeSection }: { activeSection: string }) {
 }
 
 export function Header() {
+  const activeProfile = useActiveProfile();
   const router = useRouter();
   const {
     activeRole,
@@ -369,7 +371,7 @@ export function Header() {
 
                 <div className="flex items-center gap-1.5 text-[11px] text-[#666666] px-1">
                   <Mail size={12} />
-                  <span>Support: head@stackdrove.com</span>
+                  <span>Support: stackdrove@gmail.com</span>
                 </div>
               </div>
             </div>
@@ -415,11 +417,13 @@ export function Header() {
               >
                 <div className="flex items-center gap-3 pb-3 border-b border-black/[0.06] dark:border-white/[0.08]">
                   <div className="w-9 h-9 rounded-full bg-[#E11D48] text-white font-bold flex items-center justify-center text-sm shrink-0">
-                    OG
+                    {activeProfile
+                      ? activeProfile.full_name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
+                      : "?"}
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-xs font-bold truncate">Omar Galal</h4>
-                    <p className="text-[11px] text-[#666666] truncate">head@stackdrove.com</p>
+                    <h4 className="text-xs font-bold truncate">{activeProfile?.full_name ?? "Signed out"}</h4>
+                    <p className="text-[11px] text-[#666666] truncate">{activeProfile?.email ?? ""}</p>
                   </div>
                 </div>
 

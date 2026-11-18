@@ -27,6 +27,8 @@ import {
 import { TableSkeleton } from "@/components/common/skeleton-loaders";
 import { notify } from "@/lib/notifications/toast-service";
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function AdminConsolePage() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -57,7 +59,7 @@ export default function AdminConsolePage() {
   // Status feedback
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     loadData();

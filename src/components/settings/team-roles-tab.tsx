@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Users, Plus, X, Mail, Shield, Check, Search } from "lucide-react";
 import { notify } from "@/lib/notifications/toast-service";
+import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+import type { Department, UserRole } from "@/types/database.types";
 
 interface TeamMember {
   id: string;
@@ -15,71 +18,10 @@ interface TeamMember {
   status: "active" | "invited";
 }
 
-const INITIAL_MEMBERS: TeamMember[] = [
-  {
-    id: "m-1",
-    name: "Rajesh Sharma",
-    email: "head@stackdrove.com",
-    role: "COMPANY_ADMIN",
-    department: "Technology",
-    avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-    initials: "RS",
-    status: "active",
-  },
-  {
-    id: "m-2",
-    name: "Amit Goel",
-    email: "boss@stackdrove.com",
-    role: "BOSS",
-    department: "Executive",
-    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-    initials: "AG",
-    status: "active",
-  },
-  {
-    id: "m-3",
-    name: "Neha Gupta",
-    email: "neha.manager@stackdrove.com",
-    role: "DELEGATOR",
-    department: "Operations",
-    avatarUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop",
-    initials: "NG",
-    status: "active",
-  },
-  {
-    id: "m-4",
-    name: "Rohan Mehta",
-    email: "rohan@stackdrove.com",
-    role: "DELEGATEE",
-    department: "Technology",
-    avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-    initials: "RM",
-    status: "active",
-  },
-  {
-    id: "m-5",
-    name: "Ananya Patel",
-    email: "ananya@stackdrove.com",
-    role: "DELEGATEE",
-    department: "Operations",
-    avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
-    initials: "AP",
-    status: "active",
-  },
-  {
-    id: "m-6",
-    name: "Kabir Khan",
-    email: "kabir@stackdrove.com",
-    role: "DELEGATEE",
-    department: "Marketing",
-    avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop",
-    initials: "KK",
-    status: "active",
-  },
-];
-
 export function TeamRolesTab() {
-  const [members, setMembers] = useState<TeamMember[]>(INITIAL_MEMBERS);
+  const orgId = useActiveOrgId();
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -87,36 +29,55 @@ export function TeamRolesTab() {
   const [inviteName, setInviteName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("DELEGATEE");
-  const [inviteDept, setInviteDept] = useState("Technology");
+  const [inviteDept, setInviteDept] = useState("");
 
-  const handleSendInvite = (e: React.FormEvent) => {
+  const refresh = useCallback(async () => {
+    if (!orgId) return;
+    const [profiles, depts] = await Promise.all([localDb.getProfiles(orgId), localDb.getDepartments(orgId)]);
+    setDepartments(depts);
+    setMembers(
+      profiles.map((p) => ({
+        id: p.id,
+        name: p.full_name,
+        email: p.email,
+        role: p.role,
+        department: depts.find((d) => d.id === p.department_id)?.name ?? "—",
+        avatarUrl: p.avatar_url || undefined,
+        initials: p.full_name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2),
+        status: p.is_active ? "active" : "invited",
+      }))
+    );
+  }, [orgId]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void refresh();
+  }, [refresh]);
+
+  const handleSendInvite = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inviteEmail.trim() || !inviteName.trim()) return;
 
-    const newMember: TeamMember = {
-      id: `m-${Date.now()}`,
-      name: inviteName.trim(),
+    const result = await localDb.createProfile({
+      fullName: inviteName.trim(),
       email: inviteEmail.trim(),
-      role: inviteRole,
-      department: inviteDept,
-      initials: inviteName
-        .split(" ")
-        .map((p) => p[0])
-        .join("")
-        .toUpperCase()
-        .substring(0, 2),
-      status: "invited",
-    };
+      role: inviteRole as UserRole,
+      orgId,
+      departmentId: inviteDept || undefined,
+    });
+    if (!result.profile) {
+      notify.error("Could not add member", { description: result.error });
+      return;
+    }
 
-    setMembers((prev) => [newMember, ...prev]);
     setShowInviteModal(false);
     setInviteName("");
     setInviteEmail("");
-    notify.success("Invitation Dispatched", {
-      description: `Sent onboarding magic link to ${newMember.email}`,
+    await refresh();
+    notify.success("Member added", {
+      description: `${result.profile.email} can now sign in with Google, Microsoft or their password.`,
     });
   };
-
   const filteredMembers = members.filter(
     (m) =>
       m.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -165,7 +126,7 @@ export function TeamRolesTab() {
         </div>
 
         <span className="text-xs font-semibold text-[#666666] dark:text-[#A3A3A3]">
-          {members.length} total seats used
+          {members.length} team members
         </span>
       </div>
 
@@ -318,10 +279,8 @@ export function TeamRolesTab() {
                     onChange={(e) => setInviteDept(e.target.value)}
                     className="w-full mt-1 px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/15 text-slate-900 dark:text-white font-bold"
                   >
-                    <option value="Technology">Technology</option>
-                    <option value="Operations">Operations</option>
-                    <option value="Executive">Executive</option>
-                    <option value="Marketing">Marketing</option>
+                    <option value="">No department</option>
+                    {departments.map((d) => (<option key={d.id} value={d.id}>{d.name}</option>))}
                   </select>
                 </div>
               </div>

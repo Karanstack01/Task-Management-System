@@ -38,6 +38,8 @@ import { TaskCardsGrid } from "@/components/tasks/task-cards-grid";
 import { cn } from "@/lib/utils";
 import { isTaskOverdue } from "@/lib/data/task-utils";
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function BossPortalPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -51,7 +53,7 @@ export default function BossPortalPage() {
   const [deptFilter, setDeptFilter] = useState<string>("ALL");
   const [delegateeFilter, setDelegateeFilter] = useState<string>("ALL");
 
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     loadData();

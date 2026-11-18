@@ -24,6 +24,8 @@ import { GooeySearch } from "@/components/common/gooey-search";
 import { EditTaskDialog } from "@/components/tasks/edit-task-dialog";
 import { notify } from "@/lib/notifications/toast-service";
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function DelegatorPortalPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -37,7 +39,7 @@ export default function DelegatorPortalPage() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const delegatorId = "user-delegator";
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     loadData();

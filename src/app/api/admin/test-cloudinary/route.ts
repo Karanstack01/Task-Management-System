@@ -5,7 +5,7 @@ import { resolveCloudinaryConfig } from "@/lib/integrations/resolve";
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { orgId = "org-sd-01", cloudName, apiKey, apiSecret, uploadPreset } = body;
+    const { orgId = "", cloudName, apiKey, apiSecret, uploadPreset } = body;
 
     let configToTest = {
       cloudName,

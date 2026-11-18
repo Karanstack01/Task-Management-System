@@ -63,6 +63,8 @@ const TIER_STYLE = {
   NEEDS_ATTENTION: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300",
 } as const;
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function ScorecardsLeaderboardPage() {
   const [scorecards, setScorecards] = useState<ScorecardRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,7 +74,7 @@ export default function ScorecardsLeaderboardPage() {
   const [selectedEmployee, setSelectedEmployee] = useState<ScorecardRow | null>(null);
   const [showFormulaModal, setShowFormulaModal] = useState(false);
 
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     localDb

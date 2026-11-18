@@ -115,7 +115,7 @@ export function getSpawnBlockReason(
  * 8.1 Spawns tasks from the org's recurring master templates that are due.
  */
 export async function processRecurringTasks(
-  orgId: string = "org-sd-01",
+  orgId: string,
   now: Date = new Date()
 ): Promise<RecurrenceProcessResult> {
   const holidays = await localDb.getHolidays(orgId);
@@ -183,7 +183,7 @@ export async function processRecurringTasks(
 /**
  * 8.2 Daily Morning 9:00 AM Reminder Digest
  */
-export async function processDailyReminders(orgId: string = "org-sd-01"): Promise<{
+export async function processDailyReminders(orgId: string): Promise<{
   assigneesNotified: number;
   tasksDueToday: number;
 }> {
@@ -242,7 +242,7 @@ export async function processDailyReminders(orgId: string = "org-sd-01"): Promis
  * 8.3 Monthly Automated Archiving Worker
  */
 export async function processMonthlyArchiving(
-  orgId: string = "org-sd-01",
+  orgId: string,
   now: Date = new Date()
 ): Promise<{
   archivedCount: number;

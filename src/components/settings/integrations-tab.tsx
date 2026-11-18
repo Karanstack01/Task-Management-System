@@ -1,4 +1,5 @@
 "use client";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -118,31 +119,10 @@ const INITIAL_INTEGRATIONS: IntegrationItem[] = [
   },
 ];
 
-const INITIAL_API_KEYS: ApiKeyItem[] = [
-  {
-    id: "key-prod-1",
-    name: "Production CTMS Dispatcher",
-    prefix: "sd_live_••••3f9a",
-    environment: "production",
-    scopes: ["tasks:read", "tasks:write", "verify:approve", "deliverables:upload"],
-    lastUsed: "used 2 min ago",
-    createdDate: "Oct 1, 2026",
-    expiresIn: "In 90 days • Jan 1, 2027",
-  },
-  {
-    id: "key-sand-2",
-    name: "Staging Test Suite",
-    prefix: "sd_test_••••81c2",
-    environment: "sandbox",
-    scopes: ["tasks:read", "deliverables:upload"],
-    lastUsed: "used yesterday",
-    createdDate: "Oct 14, 2026",
-    expiresIn: "In 180 days • Apr 1, 2027",
-  },
-];
+const INITIAL_API_KEYS: ApiKeyItem[] = [];
 
 export function IntegrationsTab() {
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
   const [integrations, setIntegrations] = useState<IntegrationItem[]>(INITIAL_INTEGRATIONS);
   const [apiKeys, setApiKeys] = useState<ApiKeyItem[]>(INITIAL_API_KEYS);
   

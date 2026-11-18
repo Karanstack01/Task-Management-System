@@ -20,6 +20,7 @@ import {
   Repeat,
 } from "lucide-react";
 import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 import { Profile, Department, TaskPriority, TaskFrequency } from "@/types/database.types";
 import { generateShortUrl } from "@/lib/whatsapp/shortener";
 import { sendTaskAssignedAlertAction } from "@/app/actions/notification-actions";
@@ -32,6 +33,7 @@ import {
 } from "@/components/common/custom-recurrence-modal";
 
 export default function CreateTaskPage() {
+  const orgId = useActiveOrgId();
   const router = useRouter();
 
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -56,8 +58,8 @@ export default function CreateTaskPage() {
 
   useEffect(() => {
     async function loadData() {
-      const p = await localDb.getProfiles("org-sd-01");
-      const d = await localDb.getDepartments("org-sd-01");
+      const p = await localDb.getProfiles(orgId);
+      const d = await localDb.getDepartments(orgId);
       setProfiles(p);
       setDepartments(d);
 
@@ -281,7 +283,7 @@ export default function CreateTaskPage() {
 
       // 1. Insert into Database
       const newTask = await localDb.createTask({
-        orgId: "org-sd-01",
+        orgId: orgId,
         title,
         description: recurrenceConfig
           ? `${description || ""}\n[Recurrence Schedule: ${recurrenceConfig.summaryText}]`.trim()
@@ -317,7 +319,7 @@ export default function CreateTaskPage() {
             : "CUSTOM_INTERVAL";
 
         await localDb.createRecurringTemplate({
-          orgId: "org-sd-01",
+          orgId: orgId,
           title,
           description: description || undefined,
           delegatorId,
@@ -341,7 +343,7 @@ export default function CreateTaskPage() {
 
       // 3. Dispatch Multi-Channel Notifications via Server Action
       const alerts = await sendTaskAssignedAlertAction({
-        orgId: "org-sd-01",
+        orgId: orgId,
         recipientEmail: delegatee?.email,
         recipientPhone: delegatee?.phone_number,
         recipientName: delegatee?.full_name || "Assignee",

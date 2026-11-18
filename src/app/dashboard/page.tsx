@@ -20,9 +20,11 @@ import {
 
 type AnalyticsData = Awaited<ReturnType<typeof localDb.getAnalyticsSummary>>;
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function AnalyticsDashboardPage() {
   const [data, setData] = useState<AnalyticsData | null>(null);
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     localDb.getAnalyticsSummary(orgId).then(setData);

@@ -15,13 +15,7 @@ import {
 import { notify } from "@/lib/notifications/toast-service";
 import { InvoiceItem } from "./settings-types";
 
-const INITIAL_INVOICES: InvoiceItem[] = [
-  { id: "inv-1", invoiceNo: "INV-2026-010", date: "Oct 1, 2026", amount: "₹2,480.00", status: "paid" },
-  { id: "inv-2", invoiceNo: "INV-2026-009", date: "Sep 1, 2026", amount: "₹2,480.00", status: "paid" },
-  { id: "inv-3", invoiceNo: "INV-2026-008", date: "Aug 1, 2026", amount: "₹2,480.00", status: "paid" },
-  { id: "inv-4", invoiceNo: "INV-2026-007", date: "Jul 1, 2026", amount: "₹2,112.40", status: "paid" },
-  { id: "inv-5", invoiceNo: "INV-2026-006", date: "Jun 1, 2026", amount: "₹1,980.00", status: "paid" },
-];
+const INITIAL_INVOICES: InvoiceItem[] = [];
 
 export function BillingTab() {
   const [invoices] = useState<InvoiceItem[]>(INITIAL_INVOICES);
@@ -309,13 +303,13 @@ export function BillingTab() {
 
               <div>
                 <p className="text-[#666666] dark:text-[#A3A3A3] text-[11px] font-medium">Billing contact</p>
-                <p className="font-semibold text-[#111111] dark:text-white">Vikram Singhania</p>
+                <p className="font-semibold text-[#111111] dark:text-white">Not set</p>
               </div>
 
               <div>
                 <p className="text-[#666666] dark:text-[#A3A3A3] text-[11px] font-medium">Invoice email</p>
                 <p className="font-semibold text-[#111111] dark:text-white">
-                  billing@stackdrove.com
+                  Not set
                 </p>
               </div>
 
@@ -351,7 +345,7 @@ export function BillingTab() {
             <div className="flex items-center justify-between text-xs">
               <div>
                 <p className="font-bold text-[#111111] dark:text-white">Email receipts</p>
-                <p className="text-[11px] text-[#666666] dark:text-[#A3A3A3]">Sent to billing@stackdrove.com</p>
+                <p className="text-[11px] text-[#666666] dark:text-[#A3A3A3]">Sent to Not set</p>
               </div>
               <button
                 onClick={() => setEmailReceipts(!emailReceipts)}

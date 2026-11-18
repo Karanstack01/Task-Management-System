@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { createClient } from "@/lib/supabase/client";
 
 export type RoleType =
   | "SUPERADMIN"
@@ -75,6 +76,7 @@ export const useUIStore = create<UIState>()(
       },
       endSession: () => {
         writeSessionCookie(false);
+        void createClient().auth.signOut().catch(() => {}); // end the Supabase Auth session too
         set({ activeUserId: null, activeRole: "COMPANY_ADMIN", activeSection: "workspaces" });
       },
 

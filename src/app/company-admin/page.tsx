@@ -161,8 +161,10 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function CompanyAdminPage() {
-  const orgId = "org-sd-01";
+  const orgId = useActiveOrgId();
 
   const [org, setOrg] = useState<Organization | null>(null);
   const [profiles, setProfiles] = useState<Profile[]>([]);

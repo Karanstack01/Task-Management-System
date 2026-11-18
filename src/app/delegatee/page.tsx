@@ -30,6 +30,9 @@ import { TaskCardsGrid } from "@/components/tasks/task-cards-grid";
 import { TaskListView } from "@/components/tasks/task-list-view";
 import { cn } from "@/lib/utils";
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+import { useUIStore } from "@/lib/store/ui-store";
+
 export default function DelegateePortalPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,9 +44,9 @@ export default function DelegateePortalPage() {
   const [selectedTaskForUpdate, setSelectedTaskForUpdate] = useState<Task | null>(null);
   const [selectedTaskForRevision, setSelectedTaskForRevision] = useState<Task | null>(null);
 
-  // Active delegatee persona: Priya Sharma (user-del-1)
-  const delegateeId = "user-del-1";
-  const orgId = "org-sd-01";
+  // Tasks shown are the signed-in user's own
+  const delegateeId = useUIStore((s) => s.activeUserId) ?? "";
+  const orgId = useActiveOrgId();
 
   useEffect(() => {
     loadData();

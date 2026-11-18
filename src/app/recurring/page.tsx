@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 import { RecurringTemplate, Profile, TaskPriority, TaskFrequency } from "@/types/database.types";
 import {
   Repeat,
@@ -23,6 +24,7 @@ import {
 } from "@/components/common/custom-recurrence-modal";
 
 export default function RecurringTemplatesPage() {
+  const orgId = useActiveOrgId();
   const [templates, setTemplates] = useState<RecurringTemplate[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +53,6 @@ export default function RecurringTemplatesPage() {
   async function loadData() {
     setLoading(true);
     try {
-      const orgId = "org-sd-01";
       const [tpls, profs] = await Promise.all([
         localDb.getRecurringTemplates(orgId),
         localDb.getProfiles(orgId),
@@ -104,7 +105,6 @@ export default function RecurringTemplatesPage() {
 
     setSubmitting(true);
     try {
-      const orgId = "org-sd-01";
       const delegator = profiles.find((p) => p.id === delegatorId);
       await localDb.createRecurringTemplate({
         orgId,

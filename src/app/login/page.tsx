@@ -33,7 +33,7 @@ import {
   RotateCw,
 } from "lucide-react";
 import { useUIStore, RoleType } from "@/lib/store/ui-store";
-import { localDb } from "@/lib/data/dal";
+import { resolveSignIn, signInWithPassword, signOutEverywhere, startOAuth, isProviderEnabled, type OAuthProviderId } from "@/lib/auth/sign-in";
 import { notify } from "@/lib/notifications/toast-service";
 import {
   getThemePreference,
@@ -41,8 +41,6 @@ import {
   ThemePreference,
 } from "@/lib/theme/theme-service";
 import { AnimatedStatusBadge } from "@/components/common/animated-status-badge";
-import { getOrgAccessState } from "@/lib/data/org-lifecycle";
-import type { Profile } from "@/types/database.types";
 
 /**
  * Authentic Official Google 'G' Multi-Color SVG
@@ -89,12 +87,12 @@ export default function LoginPage() {
   const { startSession } = useUIStore();
 
   // Form states
-  const [identifier, setIdentifier] = useState("head@stackdrove.com");
-  const [password, setPassword] = useState("stackdrove2026");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [oauthProvider, setOauthProvider] = useState<"google" | "microsoft" | null>(null);
+  const [oauthProvider, setOauthProvider] = useState<OAuthProviderId | null>(null);
 
   // Theme switcher state (light, dark, system)
   const [themePref, setThemePref] = useState<ThemePreference>("system");
@@ -138,117 +136,99 @@ export default function LoginPage() {
     return routeForRole(role);
   };
 
-  /**
-   * Gate shared by password and SSO sign-in. Returns true when the user may enter;
-   * otherwise notifies / redirects and returns false.
-   */
-  const checkAccess = async (user: Profile): Promise<boolean> => {
-    if (!user.is_active) {
-      notify.error("Account Deactivated", {
-        description: "Your account has been deactivated. Contact your workspace administrator.",
-      });
-      return false;
+  /** Finishes a verified sign-in: maps the email to a workspace user and opens their home page. */
+  const finishSignIn = async (email: string, via: string): Promise<boolean> => {
+    const result = await resolveSignIn(email);
+    switch (result.status) {
+      case "no_profile":
+        await signOutEverywhere();
+        notify.error("No workspace access", {
+          description: `${email} has not been added to any company yet. Ask your administrator to add this email.`,
+        });
+        return false;
+      case "inactive":
+        await signOutEverywhere();
+        notify.error("Account Deactivated", {
+          description: "Your account has been deactivated. Contact your workspace administrator.",
+        });
+        return false;
+      case "workspace_missing":
+        await signOutEverywhere();
+        notify.error("Workspace Not Found", { description: "Your organization could not be loaded." });
+        return false;
+      case "blocked":
+        await signOutEverywhere();
+        notify.error("Workspace unavailable", { description: "Redirecting to subscription lock screen..." });
+        router.push(
+          `/saas-expired?org=${encodeURIComponent(result.orgName)}&reason=${encodeURIComponent(result.reason)}`
+        );
+        return false;
+      case "ok":
+        startSession(result.user.id, result.user.role);
+        notify.success(`Welcome back, ${result.user.full_name}!`, {
+          description: `Signed in ${via} as ${result.user.role}`,
+        });
+        router.push(destinationFor(result.user.role));
+        return true;
     }
-    if (!user.org_id) return true; // Platform SUPERADMIN has no tenant
-    const org = await localDb.getOrganizationById(user.org_id);
-    if (!org) {
-      notify.error("Workspace Not Found", { description: "Your organization could not be loaded." });
-      return false;
-    }
-    const access = getOrgAccessState(org);
-    if (!access.canAccess) {
-      notify.error(`Workspace ${access.status.replace("_", " ").toLowerCase()}`, {
-        description: "Redirecting to subscription lock screen...",
-      });
-      router.push(
-        `/saas-expired?org=${encodeURIComponent(org.name)}&reason=${encodeURIComponent(access.reason || "")}`
-      );
-      return false;
-    }
-    return true;
   };
 
-  // Google & Microsoft OAuth Sign In Handler
-  const handleOAuthLogin = async (provider: "google" | "microsoft") => {
+  // Show errors sent back from the Google / Microsoft callback.
+  useEffect(() => {
+    const err = new URLSearchParams(window.location.search).get("error");
+    if (err) notify.error("Sign-in failed", { description: err });
+  }, []);
+
+  // Google & Microsoft sign-in: real OAuth through Supabase Auth (redirects away, returns via /auth/callback)
+  const handleOAuthLogin = async (provider: OAuthProviderId) => {
+    const label = provider === "google" ? "Google" : "Microsoft";
     setOauthProvider(provider);
     setLoading(true);
-
     try {
-      const profiles = await localDb.getProfiles();
-      const user =
-        profiles.find((p) => p.email.toLowerCase() === identifier.toLowerCase()) ||
-        profiles.find((p) => p.role === "COMPANY_ADMIN") ||
-        profiles[0];
-
-      if (!user || !(await checkAccess(user))) return;
-
-      // Simulated corporate SSO handshake
-      await new Promise((resolve) => setTimeout(resolve, 750));
-
-      startSession(user.id, user.role);
-      notify.success(
-        `Signed in via ${provider === "google" ? "Google Workspace" : "Microsoft Entra ID"}`,
-        {
-          description: `Welcome back, ${user.full_name} (${user.role})`,
-        }
-      );
-      router.push(destinationFor(user.role));
+      if (!(await isProviderEnabled(provider))) {
+        notify.error(`${label} sign-in is not enabled`, {
+          description: `Turn on the ${label} provider in Supabase → Authentication → Providers (see SUPABASE_SETUP.md).`,
+        });
+        return;
+      }
+      const { error } = await startOAuth(provider);
+      if (error) {
+        notify.error(`${label} sign-in failed`, { description: error });
+        return;
+      }
+      return; // browser is redirecting to the provider
     } catch {
-      notify.error("Single Sign-On Failed", {
-        description: "Could not authenticate with enterprise identity provider.",
-      });
+      notify.error("Single Sign-On Failed", { description: "Could not reach the identity provider." });
     } finally {
+      // Keep the spinner while the redirect happens; clear it only on failure paths.
       setLoading(false);
       setOauthProvider(null);
     }
   };
 
-  // Corporate ID & Password Login Handler
+  // Email + password sign-in, verified by Supabase Auth
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!identifier.trim()) {
-      notify.warning("Identifier Required", {
-        description: "Please enter your Corporate Email or Employee ID.",
-      });
+    const email = identifier.trim();
+    if (!email || !password) {
+      notify.warning("Email and password required", { description: "Enter your email and password to continue." });
       return;
     }
 
     setLoading(true);
-
     try {
-      const profiles = await localDb.getProfiles();
-      const user = profiles.find(
-        (p) =>
-          p.email.toLowerCase() === identifier.trim().toLowerCase() ||
-          p.id.toLowerCase() === identifier.trim().toLowerCase() ||
-          (p.full_name && p.full_name.toLowerCase().includes(identifier.trim().toLowerCase()))
-      );
-
-      if (!user) {
-        notify.error("Account Not Found", {
-          description: "No authorized corporate user matched this Email or Employee ID.",
+      const { email: verified, error } = await signInWithPassword(email, password);
+      if (error || !verified) {
+        notify.error("Sign-in failed", {
+          description: error === "Invalid login credentials" ? "Incorrect email or password." : error || "Could not sign in.",
         });
-        setLoading(false);
         return;
       }
-
-      // Account + tenant lifecycle check (deactivated / suspended / expired / cancelled / past due)
-      if (!(await checkAccess(user))) return;
-
-      // Simulated verification
-      await new Promise((resolve) => setTimeout(resolve, 600));
-
-      startSession(user.id, user.role);
-      notify.success(`Welcome back, ${user.full_name}!`, {
-        description: `Logged in as ${user.role} — ${user.department?.name || "Operations"}`,
-      });
-
-      router.push(destinationFor(user.role));
+      await finishSignIn(verified, "with password");
     } finally {
       setLoading(false);
     }
   };
-
   /**
    * Sequence of 6 Ongoing Action Elements Requested by User:
    * 1. card view

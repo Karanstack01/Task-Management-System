@@ -21,11 +21,7 @@ export function SlaAutomationTab() {
     revisions: { BOSS: true, DELEGATOR: true, DELEGATEE: true },
   });
 
-  const [holidays, setHolidays] = useState<{ id: string; name: string; date: string }[]>([
-    { id: "h-1", name: "Republic Day", date: "2026-01-26" },
-    { id: "h-2", name: "Independence Day", date: "2026-08-15" },
-    { id: "h-3", name: "Diwali Festival", date: "2026-11-08" },
-  ]);
+  const [holidays, setHolidays] = useState<{ id: string; name: string; date: string }[]>([]);
 
   const [newHolidayName, setNewHolidayName] = useState("");
   const [newHolidayDate, setNewHolidayDate] = useState("");

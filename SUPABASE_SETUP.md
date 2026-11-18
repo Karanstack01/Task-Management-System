@@ -83,3 +83,34 @@ needed on Vercel — it is only used by the setup scripts on your machine.
 | `ETIMEDOUT` / `ENOTFOUND` | Use the **Session pooler** string; check your network. |
 | `relation "…" does not exist` | Migrations not applied yet — run `npm run db:setup`. |
 | `db:check` says a key is the wrong role | You pasted the keys in the wrong places. Swap them, then **rotate** the service key in the dashboard if it was ever in a `NEXT_PUBLIC_` variable. |
+
+
+## Sign-in: password, Google and Microsoft
+
+All three sign-in methods are verified by **Supabase Auth**. After Supabase confirms the email, the app only lets the
+person in if that email already exists as a user in a company (or is the platform superadmin).
+
+### Superadmin password login
+```
+node scripts/create-superadmin.mjs <email> <password>
+```
+Creates (or resets the password of) the superadmin in Supabase Auth. The password is never stored in the repo.
+
+### Google
+1. Google Cloud Console → APIs & Services → Credentials → **Create OAuth client ID** → *Web application*.
+2. Authorised redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback`
+3. Supabase Dashboard → Authentication → Providers → **Google** → enable, paste Client ID + Secret.
+
+### Microsoft (Entra ID)
+1. Azure Portal → Microsoft Entra ID → App registrations → **New registration** (accounts in any organizational directory + personal if wanted).
+2. Redirect URI (Web): `https://<project-ref>.supabase.co/auth/v1/callback`
+3. Certificates & secrets → new client secret. Copy the **Value**.
+4. Supabase Dashboard → Authentication → Providers → **Azure** → enable, paste Application (client) ID + secret, and the tenant URL if you want to restrict to one tenant.
+
+### URL configuration (Supabase → Authentication → URL Configuration)
+- Site URL: your app URL (e.g. `http://localhost:3000`, later your production URL)
+- Redirect URLs: `<app url>/auth/callback`
+
+### Recommended hardening
+Authentication → Sign In / Providers → turn **off** "Allow new users to sign up". Users are created by the superadmin script or
+by SSO for emails you already added in the app, so open sign-up is not needed.

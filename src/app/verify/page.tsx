@@ -26,9 +26,12 @@ import { notify } from "@/lib/notifications/toast-service";
 import { calculateDelayDays, calculateSlaScore } from "@/lib/data/task-utils";
 import { useUIStore } from "@/lib/store/ui-store";
 
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
+
 export default function VerificationPortalPage() {
   const sessionUserId = useUIStore((s) => s.activeUserId);
   const activeRole = useUIStore((s) => s.activeRole);
+  const orgId = useActiveOrgId();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [attachments, setAttachments] = useState<TaskAttachment[]>([]);
@@ -54,7 +57,6 @@ export default function VerificationPortalPage() {
   async function loadData() {
     setLoading(true);
     try {
-      const orgId = "org-sd-01";
       const [allTasks, profs] = await Promise.all([
         localDb.getTasks({ orgId, status: "AWAITING_VERIFICATION" }),
         localDb.getProfiles(orgId),

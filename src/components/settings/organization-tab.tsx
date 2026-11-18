@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Building2,
   Save,
@@ -8,26 +8,48 @@ import {
   Mail,
 } from "lucide-react";
 import { notify } from "@/lib/notifications/toast-service";
+import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 
 export function OrganizationTab() {
-  const [orgName, setOrgName] = useState("StackDrove Technologies");
-  const [slug, setSlug] = useState("stackdrove");
-  const [websiteUrl, setWebsiteUrl] = useState("https://stackdrove.com");
-  const [primaryContact, setPrimaryContact] = useState("head@stackdrove.com");
-  const [allowedDomains, setAllowedDomains] = useState("stackdrove.com, ctms.com");
+  const orgId = useActiveOrgId();
+  const [orgName, setOrgName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [primaryContact, setPrimaryContact] = useState("");
+  const [allowedDomains, setAllowedDomains] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const handleSave = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!orgId) return;
+    localDb.getOrganizationById(orgId).then((org) => {
+      if (!org) return;
+      setOrgName(org.name);
+      setSlug(org.slug);
+      setWebsiteUrl(org.website_url || "");
+      setPrimaryContact(org.primary_contact_email || "");
+      setAllowedDomains(org.allowed_domains.join(", "));
+    });
+  }, [orgId]);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setTimeout(() => {
-      setSaving(false);
-      notify.success("Organization Profile Saved", {
-        description: "Corporate workspace details updated across all tenant routing systems.",
+    try {
+      await localDb.updateOrganization(orgId, {
+        name: orgName.trim(),
+        slug: slug.trim(),
+        website_url: websiteUrl.trim(),
+        primary_contact_email: primaryContact.trim(),
+        allowed_domains: allowedDomains.split(",").map((d) => d.trim().replace(/^@/, "").toLowerCase()).filter(Boolean),
       });
-    }, 600);
+      notify.success("Organization Profile Saved", {
+        description: "Corporate workspace details updated.",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
-
   return (
     <div className="space-y-6 max-w-5xl">
       {/* ------------------------------------------------------------------- */}
@@ -67,7 +89,7 @@ export function OrganizationTab() {
             </h2>
           </div>
           <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] text-[#666666] dark:text-slate-300">
-            Tenant ID: sd-ent-0914
+            Tenant ID: {orgId || "—"}
           </span>
         </div>
 

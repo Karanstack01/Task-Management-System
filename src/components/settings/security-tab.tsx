@@ -18,75 +18,9 @@ import {
 import { notify } from "@/lib/notifications/toast-service";
 import { ActiveSessionItem, SecurityEventItem } from "./settings-types";
 
-const INITIAL_SESSIONS: ActiveSessionItem[] = [
-  {
-    id: "sess-1",
-    device: "MacBook Pro",
-    browser: "Chrome",
-    location: "Oakland, CA",
-    lastActive: "active 2 min ago",
-    isCurrent: true,
-  },
-  {
-    id: "sess-2",
-    device: "iPhone 15",
-    browser: "StackDrove app",
-    location: "San Francisco, CA",
-    lastActive: "active 18 min ago",
-    isCurrent: false,
-  },
-  {
-    id: "sess-3",
-    device: "iPad Air",
-    browser: "Safari",
-    location: "Berkeley, CA",
-    lastActive: "yesterday 7:40 PM",
-    isCurrent: false,
-  },
-  {
-    id: "sess-4",
-    device: "Dispatch desk PC",
-    browser: "Edge",
-    location: "Sunnyvale, CA",
-    lastActive: "Oct 28",
-    isCurrent: false,
-  },
-];
+const INITIAL_SESSIONS: ActiveSessionItem[] = [];
 
-const INITIAL_EVENTS: SecurityEventItem[] = [
-  {
-    id: "ev-1",
-    type: "sign_in",
-    title: "New sign-in from San Francisco, CA",
-    location: "MacBook Pro • Chrome",
-    timestamp: "Today 8:02 AM",
-    actor: "Vikram Singhania",
-  },
-  {
-    id: "ev-2",
-    type: "blocked",
-    title: "Blocked sign-in from unknown device",
-    location: "Ashburn, VA (IP: 198.51.100.24)",
-    timestamp: "Yesterday 11:14 PM",
-    actor: "Anonymous",
-  },
-  {
-    id: "ev-3",
-    type: "key_rotated",
-    title: "API key rotated",
-    location: "Production key (ctms_live_...379a)",
-    timestamp: "Oct 28 4:12 PM",
-    actor: "Rajesh Sharma",
-  },
-  {
-    id: "ev-4",
-    type: "two_factor",
-    title: "2FA reset approved",
-    location: "Rohan Mehta • Delegatee",
-    timestamp: "Oct 26 2:15 PM",
-    actor: "Admin Desk",
-  },
-];
+const INITIAL_EVENTS: SecurityEventItem[] = [];
 
 export function SecurityTab() {
   const [sessions, setSessions] = useState<ActiveSessionItem[]>(INITIAL_SESSIONS);
