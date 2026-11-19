@@ -16,6 +16,7 @@ import {
   ExternalLink,
   LogOut,
   Settings,
+  UserRound,
 } from "lucide-react";
 import { useUIStore, RoleType } from "@/lib/store/ui-store";
 import { useActiveProfile } from "@/lib/hooks/use-active-org";
@@ -385,11 +386,16 @@ export function Header() {
           <button
             ref={profileButtonRef}
             onClick={() => setShowProfile((prev) => !prev)}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#E11D48] hover:bg-[#BE123C] text-white flex items-center justify-center text-xs font-bold shadow-xs transition-transform active:scale-95 cursor-pointer relative"
-            title="Profile & Role Governance (OG)"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#111111] dark:bg-white text-white dark:text-[#111111] flex items-center justify-center text-xs font-bold shadow-xs transition-transform active:scale-95 cursor-pointer relative"
+            title="My profile & account"
             aria-label="User Profile"
           >
-            <span>OG</span>
+            {activeProfile?.avatar_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={activeProfile.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <span>{activeProfile ? activeProfile.full_name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() : "?"}</span>
+            )}
             <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#111111]" />
           </button>
 
@@ -416,10 +422,15 @@ export function Header() {
                 }}
               >
                 <div className="flex items-center gap-3 pb-3 border-b border-black/[0.06] dark:border-white/[0.08]">
-                  <div className="w-9 h-9 rounded-full bg-[#E11D48] text-white font-bold flex items-center justify-center text-sm shrink-0">
-                    {activeProfile
-                      ? activeProfile.full_name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
-                      : "?"}
+                  <div className="w-9 h-9 rounded-full bg-[#111111] dark:bg-white text-white dark:text-[#111111] font-bold flex items-center justify-center text-sm shrink-0 overflow-hidden">
+                    {activeProfile?.avatar_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={activeProfile.avatar_url} alt="" className="w-full h-full object-cover" />
+                    ) : activeProfile ? (
+                      activeProfile.full_name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
+                    ) : (
+                      "?"
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h4 className="text-xs font-bold truncate">{activeProfile?.full_name ?? "Signed out"}</h4>
@@ -460,6 +471,14 @@ export function Header() {
                 </div>
 
                 <div className="pt-2.5 border-t border-black/[0.06] dark:border-white/[0.08] space-y-1">
+                  <Link
+                    href="/profile"
+                    onClick={() => setShowProfile(false)}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 text-xs font-semibold text-[#111111] dark:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-colors cursor-pointer"
+                  >
+                    <UserRound size={14} className="text-[#666666]" />
+                    <span>My profile</span>
+                  </Link>
                   <Link
                     href="/settings?tab=organization"
                     onClick={() => setShowProfile(false)}

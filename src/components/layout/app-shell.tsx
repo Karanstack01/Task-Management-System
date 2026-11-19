@@ -6,6 +6,9 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { useUIStore } from "@/lib/store/ui-store";
+import { useActiveOrgId, useActiveProfile } from "@/lib/hooks/use-active-org";
+import { localDb } from "@/lib/data/dal";
+import { Building2 } from "lucide-react";
 
 /**
  * AppShell manages application-wide framing:
@@ -22,6 +25,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     () => useUIStore.persist.hasHydrated(),
     () => false
   );
+
+  const orgId = useActiveOrgId();
+  const profile = useActiveProfile();
+  const managedOrgId = useUIStore((s) => s.managedOrgId);
+  const setManagedOrgId = useUIStore((s) => s.setManagedOrgId);
+  const orgs = profile?.role === "SUPERADMIN" ? ((localDb as unknown as { organizations: { id: string; name: string }[] }).organizations ?? []) : [];
 
   const isStandalone =
     pathname?.startsWith("/auth") ||
@@ -62,8 +71,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-transparent transition-colors duration-300 relative z-10">
         <Header />
         <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto overflow-x-hidden relative z-10">
-          {/* Keyed by route so every section switch replays the enter + stagger animation. */}
-          <div key={pathname} className="page-enter">
+          {orgs.length > 0 && (
+            <div className="max-w-7xl mx-auto mb-4 flex items-center gap-2 text-xs text-[#666666] dark:text-[#A3A3A3]">
+              <Building2 size={14} />
+              <span className="font-semibold">Managing company</span>
+              <select
+                value={managedOrgId && orgs.some((o) => o.id === managedOrgId) ? managedOrgId : orgs[0].id}
+                onChange={(e) => setManagedOrgId(e.target.value)}
+                className="apple-input px-2.5 py-1 text-xs font-semibold"
+              >
+                {orgs.map((o) => (
+                  <option key={o.id} value={o.id}>{o.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {/* Keyed by route and company so every switch replays the enter animation and reloads that company's data. */}
+          <div key={`${pathname}:${orgId}`} className="page-enter">
             {sessionReady ? children : null}
           </div>
         </main>

@@ -43,7 +43,6 @@ const SETTINGS_TABS: NavTabItem[] = [
     id: "team_roles",
     label: "Team & roles",
     icon: Users,
-    badge: "12",
     roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN", "BOSS"],
   },
   {

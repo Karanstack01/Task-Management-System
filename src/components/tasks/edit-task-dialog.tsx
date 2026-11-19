@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { notify } from "@/lib/notifications/toast-service";
 import { AppleDropdown, DropdownItem } from "@/components/common/apple-dropdown";
+import { AppleDateTimePicker } from "@/components/common/apple-date-time-picker";
 
 export interface EditTaskDialogProps {
   task: Task | null;
@@ -57,6 +58,7 @@ export function EditTaskDialog({
   const [status, setStatus] = useState<TaskStatus>("PENDING");
   const [frequency, setFrequency] = useState<TaskFrequency>("ONE_TIME");
   const [targetDate, setTargetDate] = useState("");
+  const [targetTime, setTargetTime] = useState("18:00");
   const [allocatedScore, setAllocatedScore] = useState(10);
   const [verificationNeeded, setVerificationNeeded] = useState(true);
 
@@ -287,7 +289,7 @@ export function EditTaskDialog({
         department_id: departmentId || null,
         priority,
         frequency,
-        current_target_date: targetDate,
+        current_target_date: new Date(`${targetDate}T${targetTime || "18:00"}:00Z`).toISOString(),
         allocated_score: Number(allocatedScore) || 10,
         verification_needed: verificationNeeded,
       });
@@ -585,19 +587,16 @@ export function EditTaskDialog({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Target Due Date */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight">
-                  <Calendar className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400" />
-                  <span>Target Due Date</span>
-                  <span className="text-rose-500 font-medium text-sm leading-none ml-0.5">*</span>
-                </label>
-                <input
-                  type="date"
+              {/* Target Due Date & Time Picker */}
+              <div className="sm:col-span-2">
+                <AppleDateTimePicker
+                  label="Target Due Date and SLA Cutoff Time"
                   required
-                  value={targetDate}
-                  onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full h-10 px-3.5 rounded-xl apple-input text-xs font-medium text-[#111111] dark:text-white outline-none cursor-pointer"
+                  date={targetDate}
+                  time={targetTime}
+                  onDateChange={setTargetDate}
+                  onTimeChange={setTargetTime}
+                  className="max-w-full"
                 />
               </div>
 

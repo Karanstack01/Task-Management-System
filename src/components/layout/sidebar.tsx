@@ -16,9 +16,11 @@ import {
   getDefaultHrefForRole,
 } from "@/lib/navigation/navigation-config";
 import { cn } from "@/lib/utils";
-import { AppleDropdown, DropdownItem } from "@/components/common/apple-dropdown";
-import { ShieldCheck, LogOut, X } from "lucide-react";
+import { X } from "lucide-react";
 import { notify } from "@/lib/notifications/toast-service";
+import { RoleSwitcher } from "@/components/layout/role-switcher";
+import { localDb } from "@/lib/data/dal";
+import { useActiveOrgId } from "@/lib/hooks/use-active-org";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -57,97 +59,6 @@ export function Sidebar() {
     }
   }, [pathname, activeRole, visibleSections, setActiveSection]);
 
-  const roleDropdownItems: DropdownItem[] = useMemo(
-    () => [
-      {
-        id: "SUPERADMIN",
-        label: "Superadmin",
-        sublabel: "Platform Governance",
-        badge: "Tier 0",
-        thumbnail: (
-          <div className="w-5 h-5 rounded-full bg-[#111111] border border-black/20 flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-            SA
-          </div>
-        ),
-      },
-      {
-        id: "executive-tier",
-        label: "Executive Tier",
-        sublabel: "Strategic & Oversight",
-        thumbnail: (
-          <div className="w-5 h-5 rounded-full bg-[#1C1C1E] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-            EX
-          </div>
-        ),
-        children: [
-          {
-            id: "COMPANY_ADMIN",
-            label: "Company Admin",
-            sublabel: "Organization Head",
-            thumbnail: (
-              <div className="w-5 h-5 rounded-full bg-[#242426] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-                CA
-              </div>
-            ),
-          },
-          {
-            id: "BOSS",
-            label: "Boss / C-Suite",
-            sublabel: "Executive Cockpit",
-            thumbnail: (
-              <div className="w-5 h-5 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-                BO
-              </div>
-            ),
-          },
-        ],
-      },
-      {
-        id: "operational-tier",
-        label: "Operational Tier",
-        sublabel: "Execution & Delivery",
-        thumbnail: (
-          <div className="w-5 h-5 rounded-full bg-[#2C2C2E] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-            OP
-          </div>
-        ),
-        children: [
-          {
-            id: "ADMIN",
-            label: "Admin Lead",
-            sublabel: "Operations & Workflows",
-            thumbnail: (
-              <div className="w-5 h-5 rounded-full bg-[#333336] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-                AD
-              </div>
-            ),
-          },
-          {
-            id: "DELEGATOR",
-            label: "Delegator",
-            sublabel: "Task Management",
-            thumbnail: (
-              <div className="w-5 h-5 rounded-full bg-[#3A3A3C] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-                DL
-              </div>
-            ),
-          },
-          {
-            id: "DELEGATEE",
-            label: "Delegatee",
-            sublabel: "Assigned Deliverables",
-            thumbnail: (
-              <div className="w-5 h-5 rounded-full bg-[#48484A] flex items-center justify-center text-white text-[10px] font-bold shadow-xs">
-                DE
-              </div>
-            ),
-          },
-        ],
-      },
-    ],
-    []
-  );
-
   // Find currently active section configuration (ensuring it's permitted)
   const currentSectionConfig =
     visibleSections.find((sec) => sec.id === activeSection) ||
@@ -161,6 +72,104 @@ export function Sidebar() {
       setCurrentSearch(window.location.search);
     }
   }, [pathname]);
+
+  // Dynamic live data counts for sidebar badges
+  const orgId = useActiveOrgId() || "org-sd-01";
+  const activeUserId = useUIStore((s) => s.activeUserId);
+
+  const [liveCounts, setLiveCounts] = useState<{
+    delegatee?: number;
+    checklist?: number;
+    verify?: number;
+    team_roles?: number;
+  }>({});
+
+  const refreshCounts = useCallback(async () => {
+    try {
+      const allTasks = await localDb.getTasks({ orgId });
+
+      // Delegatee tasks: tasks assigned to active user, or to the active delegatee in the workspace
+      const myTasks = activeUserId
+        ? allTasks.filter((t) => t.delegatee_id === activeUserId && t.status !== "CANCELLED")
+        : allTasks.filter((t) => t.delegatee_id === "user-del-1" || (t.delegatee_id && t.status !== "CANCELLED"));
+
+      const delegateeCount = myTasks.length;
+
+      // Daily Checklist items count
+      let checklistCount = 5;
+      if (typeof window !== "undefined") {
+        try {
+          const saved = localStorage.getItem("ctms_daily_checklist");
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) checklistCount = parsed.length;
+          }
+        } catch {}
+      }
+
+      // Verification queue count (status === "AWAITING_VERIFICATION")
+      const verifyCount = allTasks.filter((t) => t.status === "AWAITING_VERIFICATION").length;
+
+      // Profiles count
+      const profiles = await localDb.getProfiles(orgId);
+      const teamRolesCount = profiles.length;
+
+      setLiveCounts({
+        delegatee: delegateeCount,
+        checklist: checklistCount,
+        verify: verifyCount,
+        team_roles: teamRolesCount,
+      });
+    } catch {
+      // Fallback silently
+    }
+  }, [orgId, activeUserId]);
+
+  useEffect(() => {
+    void refreshCounts();
+    const handleUpdate = () => void refreshCounts();
+
+    window.addEventListener("ctms:task-updated", handleUpdate);
+    window.addEventListener("ctms:tasks-updated", handleUpdate);
+    window.addEventListener("stackdrove:task-updated", handleUpdate);
+    window.addEventListener("ctms:checklist-updated", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+
+    return () => {
+      window.removeEventListener("ctms:task-updated", handleUpdate);
+      window.removeEventListener("ctms:tasks-updated", handleUpdate);
+      window.removeEventListener("stackdrove:task-updated", handleUpdate);
+      window.removeEventListener("ctms:checklist-updated", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, [refreshCounts, pathname, activeRole]);
+
+  const resolveItemBadge = useCallback(
+    (item: NavItemConfig): string | undefined => {
+      if (item.id === "delegatee") {
+        return liveCounts.delegatee !== undefined && liveCounts.delegatee > 0
+          ? String(liveCounts.delegatee)
+          : undefined;
+      }
+      if (item.id === "checklist") {
+        return liveCounts.checklist !== undefined && liveCounts.checklist > 0
+          ? String(liveCounts.checklist)
+          : undefined;
+      }
+      if (item.id === "verify") {
+        return liveCounts.verify !== undefined && liveCounts.verify > 0
+          ? String(liveCounts.verify)
+          : undefined;
+      }
+      if (item.id === "team_roles") {
+        return liveCounts.team_roles !== undefined && liveCounts.team_roles > 0
+          ? String(liveCounts.team_roles)
+          : undefined;
+      }
+      return item.badge;
+    },
+    [liveCounts]
+  );
 
   // Robust active item matching: exact match precedence prevents sibling routes
   // (e.g. /tasks vs /tasks/create) from both being highlighted at the same time.
@@ -224,6 +233,16 @@ export function Sidebar() {
       setActiveSection(sec.id);
       setSiderowOpen(true);
     }
+  };
+
+  const handleLogout = () => {
+    endSession();
+    try {
+      sessionStorage.clear();
+      localStorage.removeItem("stackdrove_user_session");
+    } catch {}
+    notify.success("Logged Out", { description: "You have safely exited the CTMS workspace." });
+    router.replace("/login");
   };
 
   const handleRoleChange = (newRole: RoleType) => {
@@ -344,6 +363,7 @@ export function Sidebar() {
                 .map((item) => {
                   const active = isItemActive(item, currentSectionConfig);
                   const SubIcon = item.icon;
+                  const itemBadge = resolveItemBadge(item);
 
                   return (
                     <Link
@@ -376,18 +396,18 @@ export function Sidebar() {
                         </span>
                       </div>
 
-                      {item.badge && (
+                      {itemBadge && (
                         <span
                           className={cn(
                             "text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 transition-colors backdrop-blur-md",
-                            item.badge.includes("live")
+                            itemBadge.includes("live")
                               ? "bg-emerald-500 text-white border border-emerald-400"
                               : active
                               ? "bg-white/20 text-white dark:bg-black/15 dark:text-[#111111]"
                               : "bg-black/[0.05] dark:bg-white/10 text-[#666666] dark:text-neutral-300"
                           )}
                         >
-                          {item.badge}
+                          {itemBadge}
                         </span>
                       )}
                     </Link>
@@ -396,34 +416,10 @@ export function Sidebar() {
             </nav>
           </div>
 
-          {/* Bottom Role Matrix Engine Control Deck (Brand Book Minimalist Glass) */}
-          <div className="p-3 sm:p-3.5 pt-2 border-t border-black/[0.06] dark:border-white/[0.08] shrink-0">
-            <div className="role-matrix-deck p-2.5 space-y-2">
-              <div className="flex items-center justify-between px-0.5">
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#111111] dark:text-white" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#111111] dark:text-white">
-                    Role Matrix Engine
-                  </span>
-                </div>
-                <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded-full bg-black/[0.07] dark:bg-white/[0.12] text-[#111111] dark:text-white border border-black/[0.08] dark:border-white/[0.12]">
-                  RBAC
-                </span>
-              </div>
-              <AppleDropdown
-                items={roleDropdownItems}
-                value={activeRole}
-                onChange={(val) => handleRoleChange(val as RoleType)}
-                direction="up"
-                align="left"
-                headerTitle="Switch Workspace Role"
-                className="w-full"
-                triggerClassName="w-full justify-between bg-white/90 dark:bg-[#181818]/90 hover:bg-white dark:hover:bg-[#1F1F1F] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
-                size="sm"
-              />
-            </div>
-          </div>
-        </div>
+          {/* Bottom: who is signed in + one-click role switching */}
+          <div className="p-3 sm:p-3.5 pt-3 border-t border-black/[0.06] dark:border-white/[0.08] shrink-0">
+            <RoleSwitcher activeRole={activeRole} onChange={handleRoleChange} onLogout={handleLogout} />
+          </div>        </div>
       </aside>
 
       {/* ========================================================================= */}
@@ -459,6 +455,7 @@ export function Sidebar() {
                       .map((item) => {
                         const active = isItemActive(item, sec);
                         const SubIcon = item.icon;
+                        const itemBadge = resolveItemBadge(item);
                         return (
                           <Link
                             key={item.id}
@@ -480,7 +477,7 @@ export function Sidebar() {
                               <SubIcon size={15} className={active ? "text-white dark:text-[#111111]" : ""} />
                               <span className={active ? "text-white dark:text-[#111111] font-bold" : ""}>{item.title}</span>
                             </div>
-                            {item.badge && (
+                            {itemBadge && (
                               <span
                                 className={cn(
                                   "text-[10px] font-bold px-1.5 py-0.5 rounded-full",
@@ -489,7 +486,7 @@ export function Sidebar() {
                                     : "bg-black/[0.05] dark:bg-white/10"
                                 )}
                               >
-                                {item.badge}
+                                {itemBadge}
                               </span>
                             )}
                           </Link>
@@ -500,54 +497,19 @@ export function Sidebar() {
               </div>
             </div>
 
-            {/* Mobile Role Matrix Engine Deck */}
-            <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
-              <div className="role-matrix-deck p-2.5 space-y-2">
-                <div className="flex items-center justify-between px-0.5">
-                  <div className="flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#111111] dark:text-white" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#111111] dark:text-white">
-                      Role Matrix Engine
-                    </span>
-                  </div>
-                  <span className="text-[9px] font-extrabold px-1.5 py-0.2 rounded-full bg-black/[0.07] dark:bg-white/[0.12] text-[#111111] dark:text-white border border-black/[0.08] dark:border-white/[0.12]">
-                    RBAC
-                  </span>
-                </div>
-                <AppleDropdown
-                  items={roleDropdownItems}
-                  value={activeRole}
-                  onChange={(val) => handleRoleChange(val as RoleType)}
-                  direction="up"
-                  align="left"
-                  headerTitle="Switch Workspace Role"
-                  className="w-full"
-                  triggerClassName="w-full justify-between bg-white/90 dark:bg-[#181818]/90 hover:bg-white dark:hover:bg-[#1F1F1F] text-[#111111] dark:text-white shadow-2xs border border-black/[0.08] dark:border-white/[0.12] backdrop-blur-md transition-all"
-                  size="sm"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    toggleSidebar();
-                    endSession();
-                    try {
-                      sessionStorage.clear();
-                      localStorage.removeItem("stackdrove_user_session");
-                    } catch {}
-                    notify.success("Logged Out", {
-                      description: "You have safely exited the CTMS workspace.",
-                    });
-                    router.replace("/login");
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/15 border border-rose-500/20 transition-all cursor-pointer mt-1"
-                >
-                  <LogOut size={13} />
-                  <span>Log Out / Exit Session</span>
-                </button>
-              </div>
+            {/* Mobile: who is signed in + role switching */}
+            <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.08]">
+              <RoleSwitcher
+                activeRole={activeRole}
+                onChange={handleRoleChange}
+                onLogout={() => {
+                  toggleSidebar();
+                  handleLogout();
+                }}
+                onNavigate={toggleSidebar}
+              />
             </div>
-          </div>
-          <div className="flex-1" onClick={toggleSidebar} />
+          </div>          <div className="flex-1" onClick={toggleSidebar} />
         </div>
       )}
     </>

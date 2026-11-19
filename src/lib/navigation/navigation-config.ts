@@ -72,8 +72,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         title: "My Tasks (Delegatee)",
         href: "/delegatee",
         icon: ListTodo,
-        badge: "24",
-        badgeType: "default",
         roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN", "BOSS", "DELEGATOR", "DELEGATEE"],
       },
       {
@@ -81,8 +79,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         title: "Daily Checklist",
         href: "/checklist",
         icon: CheckSquare,
-        badge: "6",
-        badgeType: "default",
         roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN", "BOSS", "DELEGATOR", "DELEGATEE"],
       },
     ],
@@ -148,8 +144,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         href: "/verify",
         icon: Clock,
         roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN", "BOSS", "DELEGATOR"],
-        badge: "3",
-        badgeType: "default",
       },
       {
         id: "recurring",
@@ -204,7 +198,6 @@ export const NAV_SECTIONS: NavSectionConfig[] = [
         title: "Team & Roles",
         href: "/settings?tab=team_roles",
         icon: Users,
-        badge: "12",
         roles: ["SUPERADMIN", "COMPANY_ADMIN", "ADMIN", "BOSS"],
       },
       {

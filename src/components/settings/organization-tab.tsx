@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import {
@@ -34,15 +34,26 @@ export function OrganizationTab() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!orgId) {
+      notify.error("No company selected", { description: "Create or pick a company first." });
+      return;
+    }
     setSaving(true);
     try {
-      await localDb.updateOrganization(orgId, {
+      const saved = await localDb.updateOrganization(orgId, {
         name: orgName.trim(),
         slug: slug.trim(),
         website_url: websiteUrl.trim(),
         primary_contact_email: primaryContact.trim(),
         allowed_domains: allowedDomains.split(",").map((d) => d.trim().replace(/^@/, "").toLowerCase()).filter(Boolean),
       });
+      if (!saved) {
+        notify.error("Could not save", { description: "This company no longer exists." });
+        return;
+      }
+      setOrgName(saved.name);
+      setSlug(saved.slug);
+      setAllowedDomains(saved.allowed_domains.join(", "));
       notify.success("Organization Profile Saved", {
         description: "Corporate workspace details updated.",
       });
@@ -51,7 +62,12 @@ export function OrganizationTab() {
     }
   };
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6 w-full">
+      {!orgId && (
+        <div className="apple-card p-5 text-xs text-[#666666] dark:text-[#A3A3A3]">
+          No company is selected yet. Create one in the Superadmin hub, then pick it from &quot;Managing company&quot;.
+        </div>
+      )}
       {/* ------------------------------------------------------------------- */}
       {/* 1. Header & Title (Clean Apple macOS style)                          */}
       {/* ------------------------------------------------------------------- */}
@@ -89,7 +105,7 @@ export function OrganizationTab() {
             </h2>
           </div>
           <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded-lg bg-black/[0.04] dark:bg-white/[0.06] text-[#666666] dark:text-slate-300">
-            Tenant ID: {orgId || "—"}
+            Tenant ID: {orgId || "â€”"}
           </span>
         </div>
 
@@ -188,3 +204,4 @@ export function OrganizationTab() {
     </div>
   );
 }
+

@@ -1,29 +1,46 @@
-﻿"use client";
+"use client";
 
+import { useEffect, useReducer } from "react";
 import { useUIStore } from "@/lib/store/ui-store";
 import { localDb } from "@/lib/data/dal";
 
-/** Synchronous lookup of a stored profile (the repository loads from localStorage on the client). */
-function findProfileOrg(userId: string | null): string {
-  if (!userId) return "";
-  const internal = localDb as unknown as { profiles?: { id: string; org_id?: string | null }[] };
-  return internal.profiles?.find((p) => p.id === userId)?.org_id ?? "";
+type StoredProfile = {
+  id: string;
+  full_name: string;
+  email: string;
+  role: string;
+  org_id?: string | null;
+  phone_number?: string | null;
+  avatar_url?: string | null;
+};
+
+function internals() {
+  return localDb as unknown as { profiles?: StoredProfile[]; organizations?: { id: string }[] };
 }
 
 /**
- * The company (organization) the signed-in user belongs to. Empty for the platform SUPERADMIN,
- * who has no company of their own. Replaces the old hard-coded demo org id.
+ * The company (organization) the signed-in user works in. A company user gets their own;
+ * the platform SUPERADMIN (no company) gets the company they chose to manage, or the first one.
  */
 export function useActiveOrgId(): string {
   const userId = useUIStore((s) => s.activeUserId);
-  return findProfileOrg(userId);
+  const managed = useUIStore((s) => s.managedOrgId);
+  const db = internals();
+  const profile = userId ? db.profiles?.find((p) => p.id === userId) : undefined;
+  if (!profile) return "";
+  if (profile.org_id) return profile.org_id;
+  const orgs = db.organizations ?? [];
+  return orgs.find((o) => o.id === managed)?.id ?? orgs[0]?.id ?? "";
 }
 
-/** The signed-in user's profile (name, email, role), or null when signed out. */
-export function useActiveProfile() {
+/** The signed-in user's profile (name, email, role, avatar), or null when signed out. */
+export function useActiveProfile(): StoredProfile | null {
   const userId = useUIStore((s) => s.activeUserId);
-  const internal = localDb as unknown as {
-    profiles?: { id: string; full_name: string; email: string; role: string; org_id?: string | null }[];
-  };
-  return (userId && internal.profiles?.find((p) => p.id === userId)) || null;
+  const [, refresh] = useReducer((n: number) => n + 1, 0);
+  // Re-render when the profile page saves a change (name / picture) so the header updates immediately.
+  useEffect(() => {
+    window.addEventListener("stackdrove:profile-updated", refresh);
+    return () => window.removeEventListener("stackdrove:profile-updated", refresh);
+  }, []);
+  return (userId && internals().profiles?.find((p) => p.id === userId)) || null;
 }

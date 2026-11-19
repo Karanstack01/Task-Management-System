@@ -44,6 +44,9 @@ interface UIState {
    * activeRole is the role the UI is currently rendered as (the header "view as" switcher can change it).
    */
   activeUserId: string | null;
+  /** Company a SUPERADMIN is currently managing (superadmins have no company of their own). */
+  managedOrgId: string | null;
+  setManagedOrgId: (orgId: string | null) => void;
   activeRole: RoleType;
   setActiveRole: (role: RoleType) => void;
   startSession: (userId: string, role: RoleType) => void;
@@ -68,6 +71,8 @@ export const useUIStore = create<UIState>()(
       setActiveSection: (sec: SectionId) => set({ activeSection: sec }),
 
       activeUserId: null,
+      managedOrgId: null,
+      setManagedOrgId: (orgId: string | null) => set({ managedOrgId: orgId }),
       activeRole: "COMPANY_ADMIN",
       setActiveRole: (role: RoleType) => set({ activeRole: role }),
       startSession: (userId: string, role: RoleType) => {
@@ -87,7 +92,7 @@ export const useUIStore = create<UIState>()(
       name: "stackdrove_user_session",
       storage: createJSONStorage(() => localStorage),
       // Only the session survives reloads; drawers/search are per-visit UI state.
-      partialize: (s) => ({ activeUserId: s.activeUserId, activeRole: s.activeRole }),
+      partialize: (s) => ({ activeUserId: s.activeUserId, activeRole: s.activeRole, managedOrgId: s.managedOrgId }),
       // Rehydrated on the client after mount (see SessionHydrator) to avoid SSR hydration mismatches.
       skipHydration: true,
     }

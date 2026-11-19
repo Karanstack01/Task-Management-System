@@ -8,6 +8,7 @@ import { getRevisionBlockReason } from "@/lib/data/task-utils";
 import { useUIStore } from "@/lib/store/ui-store";
 import { Clock, Calendar, AlertTriangle, X, FileText } from "lucide-react";
 import { notify } from "@/lib/notifications/toast-service";
+import { AppleDateTimePicker } from "@/components/common/apple-date-time-picker";
 
 interface RevisionDialogProps {
   task: Task;
@@ -186,18 +187,14 @@ export function RevisionDialog({
               </div>
 
               <div>
-                <label className="text-xs font-extrabold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight block mb-1.5">
-                  <Calendar size={14} className="text-[#111111] dark:text-brand" />
-                  <span>Requested New Target Date</span>
-                  <span className="text-rose-500 font-extrabold text-sm leading-none ml-0.5">*</span>
-                </label>
-                <input
-                  type="date"
+                <AppleDateTimePicker
+                  date={newDate}
+                  onDateChange={setNewDate}
+                  minDate={minDate}
+                  allowTime={false}
+                  label="Requested New Target Date"
                   required
-                  value={newDate}
-                  onChange={(e) => setNewDate(e.target.value)}
-                  min={minDate}
-                  className="w-full h-10 px-3.5 apple-input rounded-xl text-xs font-medium"
+                  className="max-w-full"
                 />
               </div>
 

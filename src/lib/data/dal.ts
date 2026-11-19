@@ -69,6 +69,18 @@ export interface StatusChangeOptions {
 
 const STORAGE_KEY = "stackdrove_ctms_data_v1";
 
+/** "@Acme.com", "name@acme.com" and "acme.com" all become "acme.com". */
+function normalizeDomains(input: string[]): string[] {
+  return Array.from(
+    new Set(
+      input
+        .map((d) => d.trim().toLowerCase())
+        .map((d) => (d.includes("@") ? d.slice(d.lastIndexOf("@") + 1) : d))
+        .filter(Boolean)
+    )
+  );
+}
+
 // Browser-persisted state (localStorage) for local development & system testing
 class LocalRepository {
   private organizations: Organization[] = [...initialOrganizations];
@@ -93,7 +105,10 @@ class LocalRepository {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       const s = JSON.parse(raw);
-      this.organizations = s.organizations ?? [];
+      this.organizations = (s.organizations ?? []).map((o: Organization) => ({
+        ...o,
+        allowed_domains: normalizeDomains(o.allowed_domains ?? []),
+      }));
       this.departments = s.departments ?? [];
       this.profiles = s.profiles ?? [];
       this.tasks = s.tasks ?? [];
@@ -180,7 +195,7 @@ class LocalRepository {
       logo_url: null,
       website_url: `https://${data.allowed_domains[0] || "example.com"}`,
       support_email: data.primary_contact_email,
-      allowed_domains: data.allowed_domains.map((d) => d.replace(/^@/, "").toLowerCase()),
+      allowed_domains: normalizeDomains(data.allowed_domains),
       primary_contact_email: data.primary_contact_email,
       subscription_plan: data.subscription_plan || "PROFESSIONAL",
       subscription_status: "ACTIVE",
@@ -220,12 +235,38 @@ class LocalRepository {
 
   async updateOrganization(
     orgId: string,
-    patch: Partial<Pick<Organization, "name" | "slug" | "website_url" | "primary_contact_email" | "allowed_domains">>
+    patch: Partial<
+      Pick<
+        Organization,
+        | "name"
+        | "slug"
+        | "website_url"
+        | "primary_contact_email"
+        | "allowed_domains"
+        | "subscription_plan"
+        | "max_users"
+        | "subscription_expires_at"
+      >
+    >
   ): Promise<Organization | null> {
     const org = this.organizations.find((o) => o.id === orgId);
     if (!org) return null;
-    Object.assign(org, patch, { updated_at: new Date().toISOString() });
+    const next = { ...patch };
+    if (next.allowed_domains) next.allowed_domains = normalizeDomains(next.allowed_domains);
+    if (next.slug) next.slug = next.slug.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    Object.assign(org, next, { updated_at: new Date().toISOString() });
     return { ...org };
+  }
+
+  /** Updates the editable parts of a person's own profile (name, phone, picture). */
+  async updateProfile(
+    userId: string,
+    patch: Partial<Pick<Profile, "full_name" | "phone_number" | "avatar_url">>
+  ): Promise<Profile | null> {
+    const profile = this.profiles.find((p) => p.id === userId);
+    if (!profile) return null;
+    Object.assign(profile, patch, { updated_at: new Date().toISOString() });
+    return { ...profile };
   }
 
   // Master Kill Switch (Superadmin Control)

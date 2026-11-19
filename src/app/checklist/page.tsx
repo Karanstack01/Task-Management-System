@@ -62,42 +62,59 @@ const initialRoutineItems: RoutineItem[] = [
   },
 ];
 
+const CHECKLIST_STORAGE_KEY = "ctms_daily_checklist";
+
 export default function ChecklistRoutinePage() {
-  const [items, setItems] = useState<RoutineItem[]>(initialRoutineItems);
+  const [items, setItems] = useState<RoutineItem[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem(CHECKLIST_STORAGE_KEY);
+        if (saved) return JSON.parse(saved);
+      } catch {}
+    }
+    return initialRoutineItems;
+  });
+
+  const persistItems = (newItems: RoutineItem[]) => {
+    setItems(newItems);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(CHECKLIST_STORAGE_KEY, JSON.stringify(newItems));
+        window.dispatchEvent(new Event("ctms:checklist-updated"));
+      } catch {}
+    }
+  };
 
   const toggleItem = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          const nextCompleted = !item.completed;
-          return {
-            ...item,
-            completed: nextCompleted,
-            completedAt: nextCompleted
-              ? new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-              : undefined,
-          };
-        }
-        return item;
-      })
-    );
+    const updated = items.map((item) => {
+      if (item.id === id) {
+        const nextCompleted = !item.completed;
+        return {
+          ...item,
+          completed: nextCompleted,
+          completedAt: nextCompleted
+            ? new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+            : undefined,
+        };
+      }
+      return item;
+    });
+    persistItems(updated);
   };
 
   const completedCount = items.filter((i) => i.completed).length;
   const progressPercent = Math.round((completedCount / items.length) * 100);
 
   const handleReset = () => {
-    setItems((prev) =>
-      prev.map((i) => ({ ...i, completed: false, completedAt: undefined }))
-    );
+    const updated = items.map((i) => ({ ...i, completed: false, completedAt: undefined }));
+    persistItems(updated);
     notify.info("Routine Reset", { description: "Daily routine checklist cleared for a new cycle." });
   };
 
   const handleCompleteAll = () => {
     const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    setItems((prev) =>
-      prev.map((i) => ({ ...i, completed: true, completedAt: timeStr }))
-    );
+    const updated = items.map((i) => ({ ...i, completed: true, completedAt: timeStr }));
+    persistItems(updated);
     notify.success("All Routine Items Completed!", { description: "100% daily checklist achieved." });
   };
 

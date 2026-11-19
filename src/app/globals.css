@@ -132,7 +132,7 @@
   --action-hover: #000000;
   --brand-muted: #666666;       /* brand accent grey */
   --brand-border: rgba(17, 17, 17, 0.09);
-  --font-brand: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-brand: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", var(--font-geist-sans), "Inter", "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -155,7 +155,9 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.014em;
+  letter-spacing: -0.011em;
+  font-feature-settings: "cv11", "ss03", "calt";
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -526,8 +528,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-fade-in {
-  animation: sectionFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity;
+  animation: sectionFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 @keyframes tabSwitchFade {
@@ -542,8 +543,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tab-switch-enter {
-  animation: tabSwitchFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity;
+  animation: tabSwitchFade 0.24s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 /* Glass Surface Compatibility & Advanced Refraction */
@@ -1346,7 +1346,7 @@ body {
 
 .uiverse-loader {
   color: rgb(124, 124, 124);
-  font-family: var(--font-apple), -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-brand);
   font-weight: 500;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
@@ -2109,4 +2109,130 @@ html { scroll-behavior: smooth; }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+/* ==========================================================================
+   Apple layer — typography, materials, springs and controls.
+   Sits last so it refines everything above without touching component code.
+   ========================================================================== */
+:root {
+  --apple-spring: cubic-bezier(0.2, 0.9, 0.25, 1.05);   /* gentle overshoot, like UIKit springs */
+  --apple-ease: cubic-bezier(0.25, 0.1, 0.25, 1);        /* the classic "ease" curve */
+  --apple-radius: 14px;
+  --apple-radius-lg: 20px;
+  --apple-hairline: rgba(60, 60, 67, 0.12);
+  --apple-fill: rgba(120, 120, 128, 0.12);               /* iOS tertiary system fill */
+  --apple-shadow-1: 0 1px 2px rgba(0,0,0,.04), 0 2px 8px rgba(0,0,0,.04);
+  --apple-shadow-2: 0 2px 4px rgba(0,0,0,.04), 0 12px 32px -8px rgba(0,0,0,.14);
+  --apple-shadow-3: 0 8px 16px rgba(0,0,0,.06), 0 32px 64px -16px rgba(0,0,0,.28);
+}
+.dark, [data-theme="dark"] {
+  --apple-hairline: rgba(255, 255, 255, 0.12);
+  --apple-fill: rgba(235, 235, 245, 0.14);
+  --apple-shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --apple-shadow-2: 0 2px 4px rgba(0,0,0,.4), 0 14px 36px -8px rgba(0,0,0,.6);
+  --apple-shadow-3: 0 8px 16px rgba(0,0,0,.5), 0 36px 72px -16px rgba(0,0,0,.75);
+}
+
+/* Type scale: SF-style tracking — big text tighter, small text slightly looser. */
+h1 { letter-spacing: -0.034em; font-weight: 700; line-height: 1.08; }
+h2 { letter-spacing: -0.028em; font-weight: 650; line-height: 1.15; }
+h3 { letter-spacing: -0.02em;  font-weight: 600; line-height: 1.25; }
+h4, h5, h6 { letter-spacing: -0.012em; font-weight: 600; }
+.text-xs, .text-\[10px\], .text-\[11px\] { letter-spacing: 0.005em; }
+.uppercase { letter-spacing: 0.06em; }
+.tabular-nums, table td, [class*="font-mono"] { font-variant-numeric: tabular-nums; }
+code, kbd, pre, .font-mono { font-family: var(--font-mono); }
+::selection { background: rgba(10, 132, 255, 0.28); }
+
+/* Materials: translucent "vibrancy" for floating surfaces (header, menus, dialogs). */
+header, [role="menu"], [role="dialog"], [role="listbox"], [data-popover] {
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+}
+[role="menu"], [role="dialog"], [role="listbox"], [data-popover] {
+  border-radius: var(--apple-radius-lg);
+  box-shadow: var(--apple-shadow-3);
+  border: 0.5px solid var(--apple-hairline);
+}
+
+/* Cards: continuous corners, hairline borders, soft layered shadows, springy lift. */
+.glass-section, .glass-card, .liquid-card, .apple-card, .cc-glass, .sd-card {
+  border-radius: var(--apple-radius-lg) !important;
+  border-width: 0.5px !important;
+  border-color: var(--apple-hairline) !important;
+  box-shadow: var(--apple-shadow-1) !important;
+  transition: transform .45s var(--apple-spring), box-shadow .35s var(--apple-ease), border-color .25s ease !important;
+}
+@media (hover: hover) {
+  .glass-section:hover, .glass-card:hover, .liquid-card:hover, .apple-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: var(--apple-shadow-2) !important;
+    border-color: var(--apple-hairline) !important;
+  }
+}
+
+/* Buttons: pill/rounded-rect, springy press, no harsh outlines. */
+button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled):active, [role="button"]:active { transform: scale(0.96); transition-duration: .12s; }
+button:not(:disabled):hover { transition-timing-function: var(--apple-spring); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Focus: the soft blue Apple ring, only for keyboard users. */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3.5px solid rgba(10, 132, 255, 0.45);
+  outline-offset: 1px;
+  border-radius: 10px;
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline-offset: 0; }
+
+/* Text fields: inset fill, rounded, ring on focus. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+textarea, select {
+  border-radius: 12px;
+  transition: box-shadow .25s var(--apple-ease), background-color .25s ease, border-color .25s ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+textarea:focus, select:focus {
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.18);
+  border-color: rgba(10, 132, 255, 0.6) !important;
+}
+input::placeholder, textarea::placeholder { color: rgba(60, 60, 67, 0.45); }
+.dark input::placeholder, .dark textarea::placeholder, [data-theme="dark"] input::placeholder { color: rgba(235, 235, 245, 0.35); }
+
+/* Checkboxes become iOS-style rounded squares. */
+input[type="checkbox"] { border-radius: 6px; }
+
+/* Scrollbars: thin overlay style that only shows on hover, like macOS. */
+* { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+*:hover { scrollbar-color: rgba(120,120,128,.45) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: transparent; border-radius: 10px; border: 3px solid transparent; background-clip: content-box;
+}
+*:hover::-webkit-scrollbar-thumb { background-color: rgba(120,120,128,.45); }
+::-webkit-scrollbar-thumb:hover { background-color: rgba(120,120,128,.7) !important; }
+
+/* Tables: hairline separators, no heavy borders. */
+table { border-collapse: separate; border-spacing: 0; }
+tbody tr + tr td { border-top: 0.5px solid var(--apple-hairline); }
+
+/* Smoother, more physical entrances (override the earlier motion layer's timings). */
+.page-enter > div > *, .page-enter > section > * { animation-duration: .65s; animation-timing-function: var(--apple-spring); }
+[class*="fixed"][class*="inset-0"]:not([class*="pointer-events-none"]) > [class*="rounded"],
+[class*="fixed"][class*="inset-0"]:not([class*="pointer-events-none"]) > div > [class*="rounded"]:first-child {
+  animation: md-pop .5s var(--apple-spring) .02s backwards;
+}
+[class*="fixed"][class*="inset-0"][class*="backdrop"], [class*="fixed"][class*="inset-0"][class*="bg-black"] {
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+
+/* Reduced motion: no springs, no lifts. */
+@media (prefers-reduced-motion: reduce) {
+  .glass-section:hover, .glass-card:hover, .liquid-card:hover, .apple-card:hover { transform: none !important; }
+  button:not(:disabled):active { transform: none; }
 }

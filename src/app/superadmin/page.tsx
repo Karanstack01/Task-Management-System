@@ -15,13 +15,22 @@ import {
   RefreshCw,
   Search,
   X,
+  Pencil,
+  LogIn,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useUIStore } from "@/lib/store/ui-store";
 import { localDb } from "@/lib/data/dal";
 import { Organization } from "@/types/database.types";
 import { getOrgAccessState } from "@/lib/data/org-lifecycle";
 import { toast } from "sonner";
 
 export default function SuperadminPage() {
+  const router = useRouter();
+  const setManagedOrgId = useUIStore((s) => s.setManagedOrgId);
+  const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
+  const [formExpiry, setFormExpiry] = useState("");
+
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -78,9 +87,60 @@ export default function SuperadminPage() {
     }
   };
 
-  // Handle Tenant Provisioning
+  const openCreate = () => {
+    setEditingOrg(null);
+    setFormName("");
+    setFormSlug("");
+    setFormDomain("");
+    setFormContact("");
+    setFormPlan("PROFESSIONAL");
+    setFormUsers(50);
+    setFormDays(365);
+    setShowModal(true);
+  };
+
+  const openEdit = (org: Organization) => {
+    setEditingOrg(org);
+    setFormName(org.name);
+    setFormSlug(org.slug);
+    setFormDomain(org.allowed_domains.join(", "));
+    setFormContact(org.primary_contact_email || "");
+    setFormPlan(org.subscription_plan);
+    setFormUsers(org.max_users);
+    setFormExpiry(org.subscription_expires_at ? org.subscription_expires_at.slice(0, 10) : "");
+    setShowModal(true);
+  };
+
+  /** Opens the company's own admin console as the superadmin. */
+  const manageOrg = (org: Organization) => {
+    setManagedOrgId(org.id);
+    router.push("/company-admin");
+  };
+
+  // Handle Tenant Provisioning (or editing an existing tenant)
   const handleProvision = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (editingOrg) {
+      const domains = formDomain.split(",").map((d) => d.trim()).filter(Boolean);
+      if (!formName.trim() || domains.length === 0) {
+        toast.error("Name and at least one domain are required.");
+        return;
+      }
+      await localDb.updateOrganization(editingOrg.id, {
+        name: formName.trim(),
+        slug: formSlug.trim(),
+        allowed_domains: domains,
+        primary_contact_email: formContact.trim(),
+        subscription_plan: formPlan,
+        max_users: Number(formUsers),
+        subscription_expires_at: formExpiry ? new Date(formExpiry).toISOString() : undefined,
+      });
+      toast.success(`Organization '${formName}' updated.`);
+      setShowModal(false);
+      setEditingOrg(null);
+      fetchOrgs();
+      return;
+    }
     if (!formName || !formSlug || !formDomain || !formContact) {
       toast.error("Please fill in all required tenant details.");
       return;
@@ -143,7 +203,7 @@ export default function SuperadminPage() {
         </div>
 
         <button
-          onClick={() => setShowModal(true)}
+          onClick={openCreate}
           className="bg-[#111111] hover:bg-black text-white dark:bg-white dark:text-[#111111] dark:hover:bg-[#E5E5E5] inline-flex items-center gap-2 font-semibold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all hover:scale-[1.01] active:scale-[0.98] shrink-0 cursor-pointer"
         >
           <Plus size={15} />
@@ -249,7 +309,7 @@ export default function SuperadminPage() {
                   <th className="px-4 py-3.5">Max Seats</th>
                   <th className="px-4 py-3.5">Expires At</th>
                   <th className="px-4 py-3.5">Status</th>
-                  <th className="px-4 py-3.5 text-right">Master Kill Switch</th>
+                  <th className="px-4 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.06] font-medium">
@@ -315,6 +375,21 @@ export default function SuperadminPage() {
                         )}
                       </td>
                       <td className="px-4 py-3.5 text-right">
+                       <div className="inline-flex items-center gap-2">
+                        <button
+                          onClick={() => openEdit(org)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer border border-black/[0.1] dark:border-white/[0.14] text-[#111111] dark:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.08]"
+                        >
+                          <Pencil size={12} />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          onClick={() => manageOrg(org)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer border border-black/[0.1] dark:border-white/[0.14] text-[#111111] dark:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.08]"
+                        >
+                          <LogIn size={12} />
+                          <span>Manage</span>
+                        </button>
                         <button
                           onClick={() => handleToggleKillSwitch(org)}
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all shadow-xs ${
@@ -326,6 +401,7 @@ export default function SuperadminPage() {
                           <Power size={12} />
                           <span>{isSusp ? "Reactivate" : "Kill Switch"}</span>
                         </button>
+                       </div>
                       </td>
                     </tr>
                   );
@@ -346,7 +422,7 @@ export default function SuperadminPage() {
                   <Crown size={17} />
                 </div>
                 <h3 className="font-bold text-base text-[#111111] dark:text-white">
-                  Provision Client Organization
+                  {editingOrg ? "Edit Client Organization" : "Provision Client Organization"}
                 </h3>
               </div>
               <button
@@ -453,17 +529,31 @@ export default function SuperadminPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="font-semibold text-[#111111] dark:text-slate-200 block mb-1">
-                  Validity (Days)
-                </label>
-                <input
-                  type="number"
-                  value={formDays}
-                  onChange={(e) => setFormDays(Number(e.target.value))}
-                  className="w-full px-3.5 py-2.5 apple-input"
-                />
-              </div>
+              {editingOrg ? (
+                <div>
+                  <label className="font-semibold text-[#111111] dark:text-slate-200 block mb-1">
+                    Subscription expires on (blank = never)
+                  </label>
+                  <input
+                    type="date"
+                    value={formExpiry}
+                    onChange={(e) => setFormExpiry(e.target.value)}
+                    className="w-full px-3.5 py-2.5 apple-input"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label className="font-semibold text-[#111111] dark:text-slate-200 block mb-1">
+                    Validity (Days)
+                  </label>
+                  <input
+                    type="number"
+                    value={formDays}
+                    onChange={(e) => setFormDays(Number(e.target.value))}
+                    className="w-full px-3.5 py-2.5 apple-input"
+                  />
+                </div>
+              )}
 
               <div className="pt-4 border-t border-black/[0.06] dark:border-white/[0.08] flex items-center justify-end gap-3">
                 <button
@@ -477,7 +567,7 @@ export default function SuperadminPage() {
                   type="submit"
                   className="apple-btn-primary px-6 py-2 text-xs cursor-pointer shadow-xs"
                 >
-                  Confirm &amp; Provision
+                  {editingOrg ? "Save changes" : "Confirm &amp; Provision"}
                 </button>
               </div>
             </form>

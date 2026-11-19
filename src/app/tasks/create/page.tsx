@@ -26,6 +26,7 @@ import { generateShortUrl } from "@/lib/whatsapp/shortener";
 import { sendTaskAssignedAlertAction } from "@/app/actions/notification-actions";
 import { toast } from "sonner";
 import Link from "next/link";
+import { AppleDateTimePicker } from "@/components/common/apple-date-time-picker";
 import { AppleDropdown, DropdownItem } from "@/components/common/apple-dropdown";
 import {
   CustomRecurrenceModal,
@@ -49,6 +50,7 @@ export default function CreateTaskPage() {
   const [departmentId, setDepartmentId] = useState("");
   const [priority, setPriority] = useState<TaskPriority>("HIGH");
   const [targetDate, setTargetDate] = useState("");
+  const [targetTime, setTargetTime] = useState("18:00");
   const [frequency, setFrequency] = useState<TaskFrequency>("ONE_TIME");
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false);
   const [recurrenceConfig, setRecurrenceConfig] = useState<CustomRecurrenceConfig | null>(null);
@@ -279,7 +281,8 @@ export default function CreateTaskPage() {
 
     setSubmitting(true);
     try {
-      const targetIso = new Date(targetDate + "T18:00:00Z").toISOString();
+      const timeVal = targetTime && targetTime.includes(":") ? targetTime : "18:00";
+      const targetIso = new Date(`${targetDate}T${timeVal}:00Z`).toISOString();
 
       // 1. Insert into Database
       const newTask = await localDb.createTask({
@@ -623,36 +626,49 @@ export default function CreateTaskPage() {
               <span className="text-[10px] text-neutral-400 font-medium">Compliance Target</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              {/* Apple-grade Interactive Date & Time Picker */}
               <div>
-                <label className="text-xs font-semibold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight block mb-1.5">
-                  <Calendar size={14} className="text-neutral-500 dark:text-neutral-400" />
-                  <span>Target Completion Date</span>
-                  <span className="text-rose-500 font-medium text-sm leading-none ml-0.5">*</span>
-                </label>
-                <input
-                  type="date"
+                <AppleDateTimePicker
+                  label="Target Due Date and SLA Cutoff Time"
                   required
-                  value={targetDate}
-                  onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full h-10 px-3.5 apple-input rounded-xl text-xs font-medium text-[#111111] dark:text-white"
+                  date={targetDate}
+                  time={targetTime}
+                  onDateChange={setTargetDate}
+                  onTimeChange={setTargetTime}
+                  minDate={new Date().toISOString().split('T')[0]}
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-semibold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight block mb-1.5">
-                  <Award size={14} className="text-amber-500 dark:text-amber-400" />
-                  <span>SLA Score Weight (Points)</span>
-                </label>
-                <input
-                  type="number"
-                  step="0.5"
-                  min="1"
-                  max="100"
-                  value={allocatedScore}
-                  onChange={(e) => setAllocatedScore(Number(e.target.value))}
-                  className="w-full h-10 px-3.5 apple-input rounded-xl text-xs font-semibold text-[#111111] dark:text-white"
-                />
+              <div className="space-y-4 pt-1">
+                <div>
+                  <label className="text-xs font-semibold text-[#111111] dark:text-white flex items-center gap-1.5 tracking-tight block mb-1.5">
+                    <Award size={14} className="text-amber-500 dark:text-amber-400" />
+                    <span>SLA Score Weight (Points)</span>
+                  </label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    min="1"
+                    max="100"
+                    value={allocatedScore}
+                    onChange={(e) => setAllocatedScore(Number(e.target.value))}
+                    className="w-full h-10 px-3.5 apple-input rounded-xl text-xs font-semibold text-[#111111] dark:text-white"
+                  />
+                  <p className="text-[11px] text-neutral-400 mt-1.5 leading-relaxed">
+                    Standard enterprise SLA baseline is 10.0 points. Daily delay deductions will decrement this score by 20% per business day past cutoff.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.04] dark:border-white/[0.05] space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-[#111111] dark:text-white">
+                    <Clock size={13} className="text-neutral-500" />
+                    <span>Cutoff Window</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-400 leading-relaxed">
+                    Deliverable must be submitted by {targetTime || '18:00'} UTC on {targetDate ? new Date(targetDate + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'target date'} for 100% on-time SLA verification credit.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

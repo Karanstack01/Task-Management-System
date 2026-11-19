@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/providers";
 import { AppShell } from "@/components/layout/app-shell";
 
-// Brand typeface: a neutral grotesk with tight tracking (the brand book's wordmark and headings).
-const geist = Geist({
+// Apple-style typography: macOS/iOS get the real SF Pro via the system stack; everywhere else gets Inter,
+// the closest web typeface, with optical sizing so headings tighten and body text stays open.
+const geist = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
+  axes: ["opsz"],
 });
 
 const geistMono = Geist_Mono({
